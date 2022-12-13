@@ -6,6 +6,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import O_BottomBar from "./src/components/O_BottomBar";
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 const MainAppContainer = styled.SafeAreaView`
   position: relative;
@@ -17,6 +29,17 @@ const MainAppContainer = styled.SafeAreaView`
 export default function App() {
   // const Stack = createNativeStackNavigator();
   // const Tab = createBottomTabNavigator();
+  let [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
   return (
     <NavigationContainer>
       <ThemeProvider theme={theme}>

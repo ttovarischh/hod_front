@@ -13,8 +13,7 @@ export const SmallText = styled(Font)`
 export const HeaderText = styled(Font)`
   color: white;
   font-size: 28px;
-  font-weight: 700;
-  text-transform: uppercase;
   line-height: 33px;
   letter-spacing: 0.36px;
+  font-family: "Inter_700Bold";
 `;

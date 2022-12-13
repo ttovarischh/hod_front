@@ -13,6 +13,9 @@ export const dark = {
     text: {
         active: Colors.white,
         inactive: Colors.inactive
+    },
+    card: {
+        bg: Colors.greyBg
     }
 };
 
@@ -27,6 +30,9 @@ export const light: ThemeType = {
     text: {
         active: Colors.white,
         inactive: Colors.inactive
+    },
+    card: {
+        bg: Colors.greyBg
     }
 }
 

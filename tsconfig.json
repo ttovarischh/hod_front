@@ -1,7 +1,9 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "esModuleInterop": true,
+    "strict": true,
+    "jsx": "react"
   },
-  "types": ["jest", "styled-components-react-native"]
+  "types": ["jest", "styled-components-react-native"],
 }

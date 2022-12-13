@@ -1,9 +1,12 @@
+// deprecated
+
 import React, { useContext, FC } from 'react';
 import { TouchableHighlight, Image, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 import { FlexBox, EffectsTabIcon, HomeIcon } from '../common';
 import { ThemeContext } from 'styled-components'
 import { SmallText } from '../common/StyledFont';
+import A_Icon from './A_Icon';
 
 const FooterWrapper = styled(FlexBox)`
   width: 100%;
@@ -42,15 +45,16 @@ export default function O_Footer (props: any) {
     return (
         <FooterWrapper alignItems='center' justifyContent='space-between'>
             <Tab direction="column" alignItems='center' isLeft={true} isPrima={true}>
-                <EffectsTabIcon fill={theme.bottomBar.ic}></EffectsTabIcon>
+                <A_Icon iconName="effects" fill={theme.bottomBar.ic}></A_Icon>
                 <TabText>Эффекты</TabText>
+
             </Tab>
             <Tab direction="column" alignItems='center'>
-                <HomeIcon fill={theme.bottomBar.ic}></HomeIcon>
+                <A_Icon iconName="home" fill={theme.bottomBar.ic}></A_Icon>
                 <TabText>Главная</TabText>
             </Tab>
             <Tab direction="column" alignItems='center' isRight={true} isPrima={true}>
-                <EffectsTabIcon fill={theme.bottomBar.ic}></EffectsTabIcon>
+                <A_Icon iconName="profile" fill={theme.bottomBar.ic}></A_Icon>
                 <TabText>Профиль</TabText>
             </Tab>
         </FooterWrapper>

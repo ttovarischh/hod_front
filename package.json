@@ -8,25 +8,34 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
+  "resolutions": {
+    "@types/react": "~17.0.47"
+  },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.1",
+    "@react-navigation/material-bottom-tabs": "^6.2.9",
     "@react-navigation/native": "^6.1.0",
     "@react-navigation/native-stack": "^6.9.5",
     "@react-navigation/stack": "^6.3.8",
+    "axios": "^1.2.1",
     "expo": "^47.0.8",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-paper": "^5.0.1",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
-    "react-native-svg": "^13.6.0",
+    "react-native-svg": "13.4.0",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/node": "^18.11.13",
-    "@types/react": "~18.0.14",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
     "@types/react-native": "^0.70.8",
     "@types/styled-components": "^5.1.26",
     "@types/styled-components-react-native": "^5.2.0",

@@ -16,6 +16,10 @@ export const dark = {
     },
     card: {
         bg: Colors.greyBg
+    },
+    button: {
+        solid: Colors.lightBg,
+        border: Colors.inactive,
     }
 };
 
@@ -33,6 +37,10 @@ export const light: ThemeType = {
     },
     card: {
         bg: Colors.greyBg
+    },
+    button: {
+        solid: Colors.lightBg,
+        border: Colors.inactive,
     }
 }
 

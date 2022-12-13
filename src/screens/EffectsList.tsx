@@ -3,6 +3,11 @@ import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
 import { FlexBox, HeaderText, TitleText, SmallText } from "../common";
+import { createStackNavigator } from "@react-navigation/stack";
+import SingleEffectsScreen from "./SingleEffectScreen";
+import { Button } from "react-native-paper";
+import { StackActions } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
 
 const EffectsScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -12,6 +17,10 @@ const EffectsScreenWrapper = styled.View`
   padding-right: 14px;
   padding-top: 3px;
 `;
+
+const EffectLink = styled.TouchableOpacity`
+  width: 100%;
+`
 
 const EffectInfoWrapper = styled(FlexBox)`
   padding: 11px 13px 19px 13px;
@@ -35,9 +44,12 @@ const Img = styled.Image`
 
 const CardListWrapper = styled(FlexBox)``;
 
-function EffectsScreen() {
+function EffectsList(props: { navigation: any }) {
+  const { navigation } = props;
   const [isLoading, setLoading] = useState(true);
   const [effectsData, setEffectsData] = useState<any[]>([]);
+  const HomeStack = createStackNavigator();
+  const pushAction = StackActions.push("Single");
 
   useEffect(() => {
     axios
@@ -66,18 +78,22 @@ function EffectsScreen() {
   const list = () => {
     return effectsData.map((effect) => {
       return (
-        <CardWrapper
-          direction="column"
-          key={effect.id}
-          style={[styles.card, styles.shadowProp]}
-        >
-          <Img source={{ uri: "http://localhost:3000/" + effect.image.url }} />
-          {/* <Text>{effect.image.url}</Text> */}
-          <EffectInfoWrapper direction="column">
-            <TitleText style={{marginBottom: 8}}>{effect.name}</TitleText>
-            <SmallText numberOfLines={3}>{effect.descr}</SmallText>
-          </EffectInfoWrapper>
-        </CardWrapper>
+          <CardWrapper
+            direction="column"
+            key={effect.id}
+            style={[styles.card, styles.shadowProp]}
+          >
+             <EffectLink onPress={() => navigation.push("Single", {effect: effect})}>
+            <Img
+              source={{ uri: "http://localhost:3000/" + effect.image.url }}
+            />
+            {/* <Text>{effect.image.url}</Text> */}
+            <EffectInfoWrapper direction="column">
+              <TitleText style={{ marginBottom: 8 }}>{effect.name}</TitleText>
+              <SmallText numberOfLines={3}>{effect.descr}</SmallText>
+            </EffectInfoWrapper>
+            </EffectLink>
+          </CardWrapper>
       );
     });
   };
@@ -85,7 +101,7 @@ function EffectsScreen() {
   return (
     <EffectsScreenWrapper>
       <ScrollView>
-        <HeaderText>Эффекты D&D</HeaderText>
+        <HeaderText>Эффекты в D&D</HeaderText>
         <FlexBox direction="column" offsetTop="24px">
           {list()}
         </FlexBox>
@@ -106,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EffectsScreen;
+export default EffectsList;

@@ -1,6 +1,7 @@
 // common components
 export {FlexBox} from './FlexBox';
-export {SmallText, HeaderText, TitleText} from './StyledFont';
+export {SmallText, HeaderText, TitleText, ButtonText, NoteText} from './StyledFont';
+export {Loader} from './Loader'
 
 // icons
 export { default as EffectsTabIcon } from './icons/EffectsTabIcon';

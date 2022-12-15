@@ -4,7 +4,6 @@ import { ThemeContext } from "styled-components";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-// import EffectsScreen from "../screens/EffectsScreen";
 import A_Icon from "./A_Icon";
 import { FlexBox, SmallText } from "../common";
 import styled, { ThemeProvider } from "styled-components/native";
@@ -14,6 +13,8 @@ import EffectsList from "../screens/EffectsList";
 import GamesScreen from "../screens/Home/GamesScreen";
 import JoinGameScreen from "../screens/Home/JoinGameScreen";
 import SingleGameScreen from "../screens/Home/SingleGame";
+import SmallSingleGame from "../screens/Home/SmallSingleGame";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const FooterWrapper = styled(FlexBox)`
   width: 100%;
@@ -67,7 +68,7 @@ function CustomTabBar(props: {
   }
 
   return (
-    <FooterWrapper alignItems="center" justifyContent="space-between" style={[styles.card, styles.shadowProp]}>
+    <FooterWrapper alignItems="center" justifyContent="space-between" style={styles.card}>
       {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const label =
@@ -153,6 +154,7 @@ function EffectsScreen() {
         gestureDirection: "horizontal",
         headerShown: false,
       }}
+      initialRouteName="EffectsList"
     >
       <EffectsNavigator.Screen name="EffectsList" component={EffectsList} />
       <EffectsNavigator.Screen name="Single" component={SingleEffectsScreen} />
@@ -162,19 +164,37 @@ function EffectsScreen() {
 
 const HomeNavigator = createStackNavigator();
 
-function Home() {
+function Home(props: { route: any, navigation: any }) {
+  const { navigation, route } = props;
+
+  const routeName = getFocusedRouteNameFromRoute(route);
+
+    React.useEffect(() => {
+      if (routeName === 'SGame') {
+        navigation.setOptions({
+              tabBarVisible: false
+        });
+      } else {
+        navigation.setOptions({
+          tabBarVisible: true
+        });
+      }
+  }, [navigation, route]);
+
+
   return (
     <HomeNavigator.Navigator
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
-        headerShown: false,
+        // headerShown: false,
       }}
     >
-      <HomeNavigator.Screen name="Home" component={HomeScreen} />
-      <HomeNavigator.Screen name="Games" component={GamesScreen} />
-      <HomeNavigator.Screen name="Join" component={JoinGameScreen} />
-      <HomeNavigator.Screen name="SGame" component={SingleGameScreen}/>
+      <HomeNavigator.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+      <HomeNavigator.Screen name="Games" component={GamesScreen} options={{headerShown: false}}/>
+      <HomeNavigator.Screen name="Join" component={JoinGameScreen} options={{headerShown: false}}/>
+      <HomeNavigator.Screen name="SGame" component={SingleGameScreen} options={{headerShown: false}}/>
+      <HomeNavigator.Screen name="Test" component={SmallSingleGame} options={{headerShown: false}}/>
     </HomeNavigator.Navigator>
   );
 }
@@ -183,6 +203,7 @@ export default function O_BottomBar() {
   // const Tab = createMaterialBottomTabNavigator();
   const Tab = createBottomTabNavigator();
   const theme = useContext(ThemeContext);
+
   return (
     <ThemeProvider theme={theme}>
       <Tab.Navigator
@@ -211,11 +232,11 @@ export default function O_BottomBar() {
         <Tab.Screen
           name="profile"
           component={ProfileScreen}
-          options={{
-            tabBarIcon: () => (
-              <A_Icon iconName="profile" fill={theme.bottomBar.ic}></A_Icon>
-            ),
-          }}
+          // options={{
+          //   tabBarIcon: () => (
+          //     <A_Icon iconName="profile" fill={theme.bottomBar.ic}></A_Icon>
+          //   ),
+          // }}
         />
       </Tab.Navigator>
     </ThemeProvider>
@@ -224,12 +245,9 @@ export default function O_BottomBar() {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 24,
-  },
-  shadowProp: {
-    shadowColor: "#151516",
-    shadowOffset: { width: 5, height: -8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5.62,
-  },
+    paddingBottom: 30,
+    marginBottom: -35,
+    borderTopColor: '#383841',
+    borderTopWidth: 1,
+  }
 });

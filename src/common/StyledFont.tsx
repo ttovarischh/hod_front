@@ -5,6 +5,12 @@ export const Font = styled.Text`
   font-size: 14px;
 `;
 
+export const NoteText = styled(Font)`
+  color: #5A5A5E;
+  font-size: 14px;
+  font-family: "Inter_400Regular";
+`;
+
 export const SmallText = styled(Font)`
   color: white;
   font-size: 16px;
@@ -17,6 +23,15 @@ export const HeaderText = styled(Font)`
   line-height: 33px;
   letter-spacing: 0.36px;
   font-family: "Inter_700Bold";
+`;
+
+export const ButtonText = styled(Font)`
+  color: #FFFFFF;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0.36px;
+  font-family: "Inter_500Medium";
+  text-align: center;
 `;
 
 export const TitleText = styled(Font)`

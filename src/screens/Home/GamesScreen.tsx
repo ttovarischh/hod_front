@@ -89,7 +89,7 @@ function GamesScreen(props: { route: any; navigation: any }) {
                   </Loader>
                 )}
                 <Img
-                  source={require("../../../assets/images/placeholder.png")}
+                  source={require("../../../assets/images/placeholder.jpg")}
                   onLoad={() => setLoaded(true)}
                 />
                 <EffectInfoWrapper direction="column">

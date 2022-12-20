@@ -9,7 +9,13 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, HeaderText, TitleText, SmallText, NoteText} from "../../common";
+import {
+  FlexBox,
+  HeaderText,
+  TitleText,
+  SmallText,
+  NoteText,
+} from "../../common";
 import Svg, { Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
 import { Item } from "react-native-paper/lib/typescript/components/List/List";
@@ -34,6 +40,10 @@ const SingleEffectHeaderWrapper = styled(FlexBox)`
   width: 100%;
   height: 350px;
   padding: 13px 13px 19px 13px;
+`;
+
+const Middle = styled(FlexBox)`
+  flex-wrap: no-wrap;
 `;
 
 const BackButton = styled.TouchableOpacity`
@@ -100,6 +110,8 @@ const PlayerWrapper = styled(FlexBox)`
   border-radius: 20px;
   padding: 8px 20px 8px 20px;
   min-height: 34px;
+  margin-right: 4px;
+  margin-bottom: 4px;
 `;
 
 const PlayersWrapper = styled(FlexBox)`
@@ -142,6 +154,11 @@ function SingleGameScreen(props: { route: any; navigation: any }) {
   const params = route.params || {};
   const { code = {} } = params;
   const [isVisible, setIsVisible] = useState(false);
+  const [isInc, setIsInc] = useState(false);
+
+  const handleInc = () => {
+    setIsInc(true);
+  };
 
   const [isLoading, setLoading] = useState(true);
   // const [data, setData] = useState([]);
@@ -253,42 +270,82 @@ function SingleGameScreen(props: { route: any; navigation: any }) {
                 </FlexBox>
               </PlayersWrapper>
             </CardWrapper>
-            {/* <Text>{data.players && data.players}</Text> */}
-            {/* <TouchableOpacity
-              onPress={() => console.log("It's success" + JSON.stringify(data))}
-            >
-              <Text>Press this button</Text>
-            </TouchableOpacity> */}
-            <CardWrapper direction="column">
-              {data.players?.map((player: any, i: any) => (
-                <>
-                  <TitleText>{player.name}</TitleText>
-                  <PlayersWrapper offsetBottom="15" offsetTop="14">
-                    <HeaderText>{player.perc}</HeaderText>
-                    <HeaderText>{player.inv}</HeaderText>
-                    <HeaderText>{player.ins}</HeaderText>
-                  </PlayersWrapper>
-                  <PlayersWrapper direction="column" offsetBottom="15">
-                    <NoteText>Состояния</NoteText>
-                    <FlexBox direction="row" offsetTop="10">
-                      <PlayerWrapper offsetRight="6">
-                        <SmallText>Отравлен</SmallText>
-                      </PlayerWrapper>
-                      <PlayerWrapper offsetRight="6">
-                        <SmallText>Очарован</SmallText>
-                      </PlayerWrapper>
-                      <PlayerWrapper offsetRight="6">
-                        <A_Icon fill="white" iconName="plus"></A_Icon>
-                      </PlayerWrapper>
-                    </FlexBox>
-                  </PlayersWrapper>
-                  <NoteText>Языки</NoteText>
-                  <FlexBox offsetTop="10">
-                    <SmallText>{player.languages}</SmallText>
+            {data.players?.map((player: any, i: any) => (
+              <CardWrapper direction="column">
+                <TitleText>{player.name}</TitleText>
+                <PlayersWrapper
+                  offsetBottom="15"
+                  offsetTop="14"
+                  justifyContent="center"
+                >
+                  <FlexBox justifyContent="center" alignItems="center">
+                    <A_Icon iconName="eye" fill="white" />
+                    <HeaderText style={{ marginLeft: 8 }}>
+                      {player.perc}
+                    </HeaderText>
                   </FlexBox>
-                </>
-              ))}
-            </CardWrapper>
+                  <Middle
+                    justifyContent="center"
+                    alignItems="center"
+                    offsetLeft="42"
+                    offsetRight="42"
+                  >
+                    <A_Icon iconName="lupa" fill="white" />
+                    <HeaderText style={{ marginLeft: 8 }}>
+                      {player.inv}
+                    </HeaderText>
+                  </Middle>
+                  <FlexBox justifyContent="center" alignItems="center">
+                    <A_Icon iconName="chel" fill="white" />
+                    <HeaderText style={{ marginLeft: 8 }}>
+                      {player.ins}
+                    </HeaderText>
+                  </FlexBox>
+                </PlayersWrapper>
+                <PlayersWrapper direction="column" offsetBottom="15">
+                  <NoteText>Состояния</NoteText>
+                  <FlexBox direction="row" offsetTop="10">
+                    <PlayerWrapper offsetRight="6">
+                      <SmallText>Отравлен</SmallText>
+                    </PlayerWrapper>
+                    <PlayerWrapper offsetRight="6">
+                      <SmallText>Очарован</SmallText>
+                    </PlayerWrapper>
+                    <PlayerWrapper offsetRight="6">
+                      <A_Icon fill="white" iconName="plus"></A_Icon>
+                    </PlayerWrapper>
+                  </FlexBox>
+                </PlayersWrapper>
+                <NoteText>Языки</NoteText>
+                <FlexBox offsetTop="10">
+                  <SmallText>{player.languages}</SmallText>
+                </FlexBox>
+              </CardWrapper>
+            ))}
+
+            {isInc && (
+              <>
+                {data.monsters?.map((monster: any, i: any) => (
+                  <CardWrapper direction="column">
+                    <TitleText style={{ color: "#B04141" }}>
+                      {monster.name}
+                    </TitleText>
+                    <PlayersWrapper
+                      offsetBottom="15"
+                      offsetTop="14"
+                      justifyContent="center"
+                    >
+                      <FlexBox justifyContent="center" alignItems="center">
+                        <A_Icon iconName="heart" fill="white" />
+                        <HeaderText style={{ marginLeft: 8 }}>
+                          {monster.hp}
+                        </HeaderText>
+                      </FlexBox>
+                    </PlayersWrapper>
+                  </CardWrapper>
+                ))}
+              </>
+            )}
           </>
         ) : (
           <Error
@@ -303,6 +360,7 @@ function SingleGameScreen(props: { route: any; navigation: any }) {
         route={route}
         navigation={navigation}
         handleCodeClick={handleCodeClick}
+        handleIncClick={handleInc}
       />
     </SingleGameWrapper>
   );

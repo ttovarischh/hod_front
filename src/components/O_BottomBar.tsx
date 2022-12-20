@@ -2,14 +2,14 @@ import React, { useContext, FC } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { ThemeContext } from "styled-components";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import HomeScreen from "../screens/Home/HomeScreen";
+import ProfileScreen from "../screens/Profile/ProfileScreen";
 import A_Icon from "./A_Icon";
 import { FlexBox, SmallText } from "../common";
 import styled, { ThemeProvider } from "styled-components/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import SingleEffectsScreen from "../screens/SingleEffectScreen";
-import EffectsList from "../screens/EffectsList";
+import SingleEffectsScreen from "../screens/Effect/SingleEffectScreen";
+import EffectsList from "../screens/Effect/EffectsList";
 import GamesScreen from "../screens/Home/GamesScreen";
 import JoinGameScreen from "../screens/Home/JoinGameScreen";
 import SingleGameScreen from "../screens/Home/SingleGame";
@@ -42,11 +42,11 @@ const Tab = styled(FlexBox)`
     isLeft ? "10px" : "22%"};
   border-bottom-left-radius: ${({ isRight = false }: TabProps) =>
     isRight ? "10px" : "22%"};
-  padding-left: ${({ isPrima = false }: TabProps) => (isPrima ? "32px" : "0")};
-  padding-right: ${({ isPrima = false }: TabProps) => (isPrima ? "32px" : "0")};
+  padding-left: ${({ isPrima = false }: TabProps) => (isPrima ? "42px" : "0")};
+  padding-right: ${({ isPrima = false }: TabProps) => (isPrima ? "42px" : "0")};
   background-color: ${({ isPrima = false }: TabProps) =>
     isPrima ? ({ theme }) => theme.bottomBar.tab : "transparent"};
-  min-width: ${({ isPrima = false }: TabProps) => (isPrima ? "126px" : "0")};
+  // min-width: ${({ isPrima = false }: TabProps) => (isPrima ? "126px" : "0")};
   flex-shrink: 0;
 `;
 

@@ -141,23 +141,6 @@ function ProfileScreen(props: { navigation: any; route: any }) {
       .finally(() => console.log(JSON.stringify(usersData)));
   }, []);
 
-  // const hideTabBar = () => {
-  //   navigation.setOptions({
-  //     tabBarVisible: false
-  //   });
-  // };
-  // const showTabBar = () => {
-  //   navigation.setOptions({
-  //     tabBarVisible: true
-  //   });
-  // };
-
-  // React.useEffect(() => {
-  //   navigation.setOptions({
-  //     tabBarVisible: false
-  //   });
-  //   console.log("Hidden")
-  // }, []);
   const list = () => {
     return usersData.map((user) => {
       return (

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import styled, { ThemeProvider } from "styled-components/native";
 import theme from "./src/common/themes/mainTheme";
@@ -16,6 +17,10 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import Splash from "./src/screens/Auth/Splash";
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs([`to contain units`, `key`])
 
 const MainAppContainer = styled.SafeAreaView`
   position: relative;
@@ -25,8 +30,12 @@ const MainAppContainer = styled.SafeAreaView`
 `;
 
 export default function App() {
-  // const Stack = createNativeStackNavigator();
-  // const Tab = createBottomTabNavigator();
+  const [isFirst, setIsFirst] = useState(false);
+
+  const handleSplash = () => {
+    setIsFirst(true);
+  };
+
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
@@ -43,7 +52,11 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <MainAppContainer>
           <StatusBar style="light" />
-          <O_BottomBar></O_BottomBar>
+          {!isFirst ? (
+            <Splash handleSplash={handleSplash}></Splash>
+          ) : (
+            <O_BottomBar></O_BottomBar>
+          )}
         </MainAppContainer>
       </ThemeProvider>
     </NavigationContainer>

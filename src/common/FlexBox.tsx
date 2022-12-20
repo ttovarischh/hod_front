@@ -22,5 +22,6 @@ export const FlexBox = styled.View<FlexBoxProps>`
         margin-left: ${offsetLeft || '0px'};
         margin-right: ${offsetRight || '0px'};
         height: auto;
+        flex-wrap: wrap;
     `}
 `

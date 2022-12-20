@@ -8,13 +8,15 @@ export const Font = styled.Text`
 export const NoteText = styled(Font)`
   color: #5A5A5E;
   font-size: 14px;
-  font-family: "Inter_400Regular";
+  font-weight: 400;
+  // font-family: "Inter_400Regular";
 `;
 
 export const SmallText = styled(Font)`
   color: white;
   font-size: 16px;
-  font-family: "Inter_400Regular";
+  font-weight: 400;
+  // font-family: "Inter_400Regular";
 `;
 
 export const HeaderText = styled(Font)`
@@ -22,7 +24,8 @@ export const HeaderText = styled(Font)`
   font-size: 28px;
   line-height: 33px;
   letter-spacing: 0.36px;
-  font-family: "Inter_700Bold";
+  font-weight: 700;
+  // font-family: "Inter_700Bold";
 `;
 
 export const ButtonText = styled(Font)`
@@ -30,7 +33,8 @@ export const ButtonText = styled(Font)`
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.36px;
-  font-family: "Inter_500Medium";
+  font-weight: 500;
+  // font-family: "Inter_500Medium";
   text-align: center;
 `;
 
@@ -39,6 +43,7 @@ export const TitleText = styled(Font)`
   font-size: 20px;
   line-height: 33px;
   letter-spacing: 0.36px;
-  font-family: "Inter_500Medium";
+  font-weight: 500;
+  // font-family: "Inter_500Medium";
   text-transform: uppercase;
 `;

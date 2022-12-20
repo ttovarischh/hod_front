@@ -92,9 +92,8 @@ const Tab = styled(FlexBox)`
   position: relative;
 `;
 
-function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): any }) {
-  // handleButtonClick(): any;
-  const { route, navigation, handleCodeClick } = props;
+function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): any, handleIncClick(): any}) {
+  const { route, navigation, handleCodeClick, handleIncClick } = props;
   const params = route.params || {};
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = React.useState<any>([]);
@@ -119,7 +118,7 @@ function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): a
         </Tab>
       </TouchableOpacity>
       <Tab>
-        <IncButton>
+        <IncButton onPress={handleIncClick}>
           <A_Icon iconName="inc" fill="white"></A_Icon>
         </IncButton>
       </Tab>

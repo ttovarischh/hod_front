@@ -20,6 +20,7 @@ export const dark = {
     button: {
         solid: Colors.lightBg,
         border: Colors.inactive,
+        small: Colors.blue,
     }
 };
 
@@ -41,6 +42,7 @@ export const light: ThemeType = {
     button: {
         solid: Colors.lightBg,
         border: Colors.inactive,
+        small: Colors.blue,
     }
 }
 

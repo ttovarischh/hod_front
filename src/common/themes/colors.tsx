@@ -4,5 +4,6 @@ export var Colors = {
     greyBg: '#1C1C1E',
     lightBg: '#383841',
     inactive: '#989899',
-    bg: 'black'
+    bg: 'black',
+    blue: '#2520FF',
 };

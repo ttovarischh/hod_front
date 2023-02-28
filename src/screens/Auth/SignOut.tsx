@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Text, View} from 'react-native';
 
-import { useAuth } from '../../contexts/Auth';
+import { useAuth } from '../Deprecated/Auth';
 
 
 const SignOutScreen = () => {

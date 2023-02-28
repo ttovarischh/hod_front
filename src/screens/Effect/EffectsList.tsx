@@ -2,12 +2,23 @@ import React, { useState, useEffect, useContext } from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, HeaderText, TitleText, SmallText } from "../../common";
+import {
+  FlexBox,
+  HeaderText,
+  TitleText,
+  SmallText,
+  TestText,
+  FigureText,
+} from "../../common";
 import { createStackNavigator } from "@react-navigation/stack";
 import SingleEffectsScreen from "./SingleEffectScreen";
 import { Button } from "react-native-paper";
 import { StackActions } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
+import A_Icon from "../../components/A_Icon";
+import { ThemeContext } from "styled-components";
+import { ActivityIndicator } from "react-native-paper";
+import A_Loader from "../../components/A_Loader";
 
 const EffectsScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -15,21 +26,25 @@ const EffectsScreenWrapper = styled.View`
   color: white;
   padding-left: 14px;
   padding-right: 14px;
-  padding-top: 3px;
+  padding-top: 22px;
+  // padding-top: 70px;
 `;
 
 const EffectLink = styled.TouchableOpacity`
   width: 100%;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
 
 const EffectInfoWrapper = styled(FlexBox)`
-  padding: 11px 13px 19px 13px;
+  margin-left: 18px;
 `;
 
 const CardWrapper = styled(FlexBox)`
-  background-color: ${({ theme }) => theme.card.bg};
+  // background-color: ${({ theme }) => theme.card.bg};
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 12px;
   //   overflow: hidden;
   //   padding: 11px 13px 19px 13px;
@@ -50,6 +65,7 @@ function EffectsList(props: { navigation: any }) {
   const [effectsData, setEffectsData] = useState<any[]>([]);
   const HomeStack = createStackNavigator();
   const pushAction = StackActions.push("Single");
+  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     axios
@@ -78,35 +94,31 @@ function EffectsList(props: { navigation: any }) {
   const list = () => {
     return effectsData.map((effect) => {
       return (
-          <CardWrapper
-            direction="column"
-            key={effect.id}
-            style={[styles.card, styles.shadowProp]}
+        <CardWrapper direction="column" key={effect.id}>
+          <EffectLink
+            onPress={() => navigation.push("Single", { effect: effect })}
           >
-             <EffectLink onPress={() => navigation.push("Single", {effect: effect})}>
-            <Img
-              source={{ uri: "http://localhost:3000/" + effect.image.url }}
-            />
-            {/* <Text>{effect.image.url}</Text> */}
-            <EffectInfoWrapper direction="column">
-              <TitleText style={{ marginBottom: 8 }}>{effect.name}</TitleText>
-              <SmallText numberOfLines={2}>{effect.descr}</SmallText>
+            <A_Icon iconName={effect.image} fill={theme.bottomBar.ic}></A_Icon>
+            <EffectInfoWrapper direction="row">
+              <TestText>{effect.name}</TestText>
+              <FigureText>&#40;{effect.id}&#41;</FigureText>
             </EffectInfoWrapper>
-            </EffectLink>
-          </CardWrapper>
+          </EffectLink>
+        </CardWrapper>
       );
     });
   };
 
   return (
-    <EffectsScreenWrapper>
-      <ScrollView>
-        <HeaderText>Эффекты в D&D</HeaderText>
-        <FlexBox direction="column" offsetTop="24px">
-          {list()}
-        </FlexBox>
-      </ScrollView>
-    </EffectsScreenWrapper>
+    <>
+      {isLoading ? (
+        <A_Loader></A_Loader>
+      ) : (
+        <EffectsScreenWrapper>
+          <FlexBox direction="column">{list()}</FlexBox>
+        </EffectsScreenWrapper>
+      )}
+    </>
   );
 }
 

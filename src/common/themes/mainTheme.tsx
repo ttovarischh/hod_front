@@ -6,7 +6,7 @@ export const dark = {
     appBg: Colors.bg,
     icons: Colors.black,
     bottomBar: {
-        bg: Colors.greyBg,
+        bg: Colors.weirdGrey,
         ic: Colors.white,
         tab: Colors.lightBg,
     },
@@ -28,7 +28,7 @@ export const light: ThemeType = {
     appBg: Colors.bg,
     icons: Colors.black,
     bottomBar: {
-        bg: Colors.greyBg,
+        bg: Colors.weirdGrey,
         ic: Colors.white,
         tab: Colors.lightBg,
     },

@@ -1,12 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FlexBox, NavBarText, ProfileText } from "../../common";
+import {
+  FlexBox,
+  NavBarText,
+  HugeText,
+  TitleText,
+  SuperBigText,
+} from "../../common";
 import styled from "styled-components/native";
 import { Context as AuthContext } from "../../contexts/AuthContext";
 import A_Icon from "../../components/A_Icon";
 import A_Loader from "../../components/A_Loader";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -38,13 +45,6 @@ const Cover = styled.Image`
   top: 0;
 `;
 
-const Avatar = styled.Image`
-  border-radius: 100%;
-  width: 44px;
-  height: 44px;
-  opacity: 0.9;
-`;
-
 const BigAvatarWrapper = styled(FlexBox)`
   border-radius: 1000%;
   background: #1a1a1a;
@@ -57,17 +57,13 @@ const BigAvatarWrapper = styled(FlexBox)`
   align-content: center;
 `;
 
-function ProfileScreen(props: { navigation: any; route: any }) {
+export default function ProfileScreen(props: { navigation: any; route: any }) {
   const { navigation, route } = props;
   const [isLoading, setLoading] = useState(true);
   const [usersData, setUsersData] = useState<UserProps>();
-  const { state, signout } = useContext(AuthContext);
-  const [arr, setArr] = useState<any[]>([]);
-  const [token, setToken] = React.useState("");
-  const [usersId, setUserId] = useState<any[]>([]);
-  // const [gamesData, setGamesData] = useState<null>();
-  const [gamesData, setGamesData] = useState<any[]>([])
-
+  const { signout } = useContext(AuthContext);
+  const [gamesData, setGamesData] = useState<any[]>([]);
+  const { t } = useTranslation();
 
   type UserProps = {
     email: string;
@@ -136,37 +132,43 @@ function ProfileScreen(props: { navigation: any; route: any }) {
           <Cover source={require("../../../assets/images/cover.png")} />
           <ProfileInnerWrapper>
             <BigAvatarWrapper>
-              <NavBarText style={{ marginTop: 30 }}>Завершено игр</NavBarText>
-              <Text style={{ fontSize: 232, color: "white", lineHeight: 250 }}>
+              <NavBarText offsetTop={30} color="white">
+                {t("common:doneGames")}
+              </NavBarText>
+              <SuperBigText>
                 {gamesData.length != 0 ? gamesData.length : "68"}
-              </Text>
+              </SuperBigText>
             </BigAvatarWrapper>
-            <ProfileText style={{ marginBottom: 4 }}>
+            <HugeText offsetBottom={4}>
               {usersData && usersData["username"]}
-            </ProfileText>
-            <NavBarText style={{ marginBottom: 26 }}>
+            </HugeText>
+            <NavBarText offsetBottom={26}>
               {usersData && usersData["email"]}
             </NavBarText>
-            <NavBarText
-              style={{ color: "#5F5F5F", textAlign: "center", maxWidth: 285 }}
-            >
-              {getFeeling()}
-            </NavBarText>
+            <FlexBox style={{ maxWidth: 285 }}>
+              <NavBarText color="#5F5F5F" center>
+                {getFeeling()}
+              </NavBarText>
+            </FlexBox>
           </ProfileInnerWrapper>
           <SingleEffectHeaderWrapper>
             <TouchableOpacity
-              onPress={signout}
+              onPress={() => navigation.push("Settings")}
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",
                 marginTop: 116,
               }}
             >
-              <FlexBox direction="row">
-                <A_Icon iconName="settings" fill="white" />
-                <NavBarText style={{ fontSize: 20, marginLeft: 12 }}>
-                  Sing out
-                </NavBarText>
+              <FlexBox
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <A_Icon iconName="settings" />
+                <TitleText color="white" offsetLeft={12}>
+                  {t("common:settings")}
+                </TitleText>
               </FlexBox>
             </TouchableOpacity>
           </SingleEffectHeaderWrapper>
@@ -175,5 +177,3 @@ function ProfileScreen(props: { navigation: any; route: any }) {
     </>
   );
 }
-
-export default ProfileScreen;

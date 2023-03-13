@@ -11,7 +11,7 @@ import A_Button from "../../components/A_Button";
 const ErrorScreen = styled.View`
   background-color: ${({ theme }) => theme.appBg};
   height: 100%;
-  min-height: 675px; 
+  min-height: 675px;
   margin-bottom: 0;
   margin-top: 0;
 `;
@@ -75,12 +75,24 @@ const Error = (props: PropsT) => {
             direction="column"
           >
             <HeaderText>404</HeaderText>
-            <HeaderText style={{marginBottom: 28}}>Такой игры нет!</HeaderText>
-            <A_Icon iconName="error" fill="white"></A_Icon>
-            <SmallText style={{marginTop: 32, textAlign: "center", maxWidth: 300, marginBottom: 32}}>
-              Кажется, вы ввели неверный код! Проверьте еще раз или...
-            </SmallText>
-            <A_Button solid handleButtonClick={props.handleButtonClick}>Создать игру</A_Button>
+            <HeaderText>
+              Такой игры нет!
+            </HeaderText>
+            <A_Icon iconName="error"></A_Icon>
+            <FlexBox
+              style={{
+                marginTop: 32,
+                maxWidth: 300,
+                marginBottom: 32,
+              }}
+            >
+              <SmallText>
+                Кажется, вы ввели неверный код! Проверьте еще раз или...
+              </SmallText>
+            </FlexBox>
+            <A_Button bright handleButtonClick={props.handleButtonClick}>
+              Создать игру
+            </A_Button>
           </ErrorWrapper>
         </ErrorScreen>
       </>

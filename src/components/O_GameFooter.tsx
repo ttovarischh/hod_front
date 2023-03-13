@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, HeaderText, TitleText, SmallText } from "../common";
+import { FlexBox, TitleText } from "../common";
 import Svg, { Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
 import { Item } from "react-native-paper/lib/typescript/components/List/List";
@@ -114,12 +114,12 @@ function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): a
         onPress={() => navigation.dispatch(StackActions.popToTop())}
       >
         <Tab alignItems="center" justifyContent="center" isPrima isLeft>
-          <A_Icon iconName="exit" fill="white"></A_Icon>
+          <A_Icon iconName="exit"></A_Icon>
         </Tab>
       </TouchableOpacity>
       <Tab>
         <IncButton onPress={handleIncClick}>
-          <A_Icon iconName="inc" fill="white"></A_Icon>
+          <A_Icon iconName="inc"></A_Icon>
         </IncButton>
       </Tab>
       <TouchableOpacity

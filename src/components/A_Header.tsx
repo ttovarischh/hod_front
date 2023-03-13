@@ -1,12 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { FlexBox, NavSecondaryText, NavText } from "../common";
 import { TouchableOpacity } from "react-native";
 
 const CustomHeaderWrapper = styled(FlexBox)`
-  background-color: black;
+  background-color: ${({ theme }) => theme.nav.header_fill};
   height: 108px;
-  color: white;
   width: 100%;
   justify-content: flex-end;
 `;
@@ -14,7 +13,6 @@ const CustomHeaderWrapper = styled(FlexBox)`
 const CustomHeaderInnerWrapper = styled(FlexBox)`
   height: 60px;
   width: 100%;
-  color: blue;
   direction: row;
   justify-content: space-between;
   align-items: baseline;
@@ -24,21 +22,30 @@ const CustomHeaderInnerWrapper = styled(FlexBox)`
 `;
 
 type HeaderProps = {
-  left: string;
+  left?: string;
   center: string;
-  right: string;
-  handleRightPress(): any;
+  right?: string;
+  handleRightPress?: any;
+  handleLeftPress?: any;
 };
 
 const A_Header = (props: HeaderProps) => {
   return (
     <CustomHeaderWrapper direction="column">
       <CustomHeaderInnerWrapper>
-        <NavSecondaryText>{props.left}</NavSecondaryText>
-        <NavText>{props.center}</NavText>
-        <TouchableOpacity onPress={props.handleRightPress}>
-          <NavSecondaryText>{props.right}</NavSecondaryText>
-        </TouchableOpacity>
+        <FlexBox style={{ width: "25%" }}>
+          <TouchableOpacity onPress={props.handleLeftPress}>
+            <NavSecondaryText>{props.left}</NavSecondaryText>
+          </TouchableOpacity>
+        </FlexBox>
+        <FlexBox justifyContent="center" style={{ width: "50%" }}>
+          <NavText>{props.center}</NavText>
+        </FlexBox>
+        <FlexBox style={{ width: "25%" }}>
+          <TouchableOpacity onPress={props.handleRightPress}>
+            <NavSecondaryText>{props.right}</NavSecondaryText>
+          </TouchableOpacity>
+        </FlexBox>
       </CustomHeaderInnerWrapper>
     </CustomHeaderWrapper>
   );

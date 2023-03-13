@@ -1,7 +1,6 @@
 import createDataContext from "./createDataContext";
 import { apiUrl } from "../screens/const";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { removeItem } from "./async-storage";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -34,11 +33,10 @@ const doSignIn = async (email, password) => {
         },
       }),
     });
-    let json = await response.json(); // получаем тело ответа
+    let json = await response.json();
     console.log(json);
 
     if (typeof json["jti"] !== "undefined") {
-      // setToken(json.jti);
       AsyncStorage.setItem("@AuthData", JSON.stringify(json));
       alert('You are successfully logged in as a user "' + json.email + '"');
     } else if (typeof json["message"] !== "undefined") {
@@ -50,24 +48,9 @@ const doSignIn = async (email, password) => {
   }
 };
 
-// const signin = (dispatch) => {
-//     return (email, password) => {
-//       doSignIn(email, password);
-
-//       dispatch({
-//         type: "signin",
-//         payload: {
-//           token: "some access token here",
-//           email,
-//         },
-//       });
-//     };
-//   };
-
 const signup = (dispatch) => {
   return (email, password1, password2) => {
     doSignUp(email, password1, password2);
-    // console.log("Signup");
 
     dispatch({
       type: "signup",
@@ -78,12 +61,6 @@ const signup = (dispatch) => {
     });
   };
 };
-
-// const signup = dispatch => {
-//     return ({email, password}) => {
-//       console.log('Signup');
-//     };
-//   };
 
 const doSignUp = async (email, password1, password2) => {
   try {
@@ -103,10 +80,8 @@ const doSignUp = async (email, password1, password2) => {
     });
     const json = await response.json();
     console.log(json);
-    //   setUser(json);
 
     if (typeof json["user"] !== "undefined") {
-      // setUser(json.user);
       AsyncStorage.setItem("@AuthData", JSON.stringify(json));
       alert(
         'You are successfully signed up as a user "' + json.user.email + '"'
@@ -121,17 +96,8 @@ const doSignUp = async (email, password1, password2) => {
   }
 };
 
-// const restore = (dispatch) => {
-//     return ({ email, token }) => {
-//       console.log("Restored");
-//     };
-//   };
-
 const restore = (dispatch) => {
-  return ({ email, token }) => {
-    //   doSignIn(email, password);
-    console.log("Restored all");
-
+  return (email, token) => {
     dispatch({
       type: "restore",
       payload: {
@@ -171,8 +137,7 @@ const doSignOut = async () => {
       }),
     });
     await AsyncStorage.removeItem("@AuthData");
-    // await removeItem();
-    alert('You are successfully logged out as a user "' + json.email + '"');
+    alert('You are successfully logged out');
   } catch (error) {
     alert(error);
   } finally {

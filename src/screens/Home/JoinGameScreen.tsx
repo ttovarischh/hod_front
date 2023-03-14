@@ -14,7 +14,7 @@ const JoinScreenWrapper = styled.View`
   padding-right: 14px;
 `;
 
-function JoinGameScreen(props: { route: any; navigation: any }) {
+export default function JoinGameScreen(props: { route: any; navigation: any }) {
   const { route, navigation } = props;
   const params = route.params || {};
   const [code, setCode] = React.useState("");
@@ -57,5 +57,3 @@ function JoinGameScreen(props: { route: any; navigation: any }) {
     </JoinScreenWrapper>
   );
 }
-
-export default JoinGameScreen;

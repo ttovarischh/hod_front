@@ -41,7 +41,7 @@ const A_Header = (props: HeaderProps) => {
         <FlexBox justifyContent="center" style={{ width: "50%" }}>
           <NavText>{props.center}</NavText>
         </FlexBox>
-        <FlexBox style={{ width: "25%" }}>
+        <FlexBox style={{ width: "25%" }} justifyContent="flex-end">
           <TouchableOpacity onPress={props.handleRightPress}>
             <NavSecondaryText>{props.right}</NavSecondaryText>
           </TouchableOpacity>

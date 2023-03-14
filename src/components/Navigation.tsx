@@ -2,6 +2,7 @@
 import React, { useContext } from "react";
 import { ThemeContext, ThemeProvider } from "styled-components/native";
 import { Context as AuthContext } from "../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 // react_navigation
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -18,7 +19,7 @@ import SingleGameScreen from "../screens/Home/SingleGame";
 import HomeScreen from "../screens/Home/HomeScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 import SettingsScreen from "../screens/Profile/SettingsScreen";
-import { useTranslation } from "react-i18next";
+import PlayerConcScreen from "../screens/Home/PlayerConcScreen";
 
 const ProfileNavigator = createStackNavigator();
 function ProfileStack() {
@@ -107,6 +108,10 @@ function HomeStack(props: { route: any; navigation: any }) {
       navigation.setOptions({
         tabBarVisible: false,
       });
+    } else if (routeName === "PlayerConc") {
+      navigation.setOptions({
+        tabBarVisible: false,
+      });
     } else {
       navigation.setOptions({
         tabBarVisible: true,
@@ -139,6 +144,11 @@ function HomeStack(props: { route: any; navigation: any }) {
       <HomeNavigator.Screen
         name="SGame"
         component={SingleGameScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeNavigator.Screen
+        name="PlayerConc"
+        component={PlayerConcScreen}
         options={{ headerShown: false }}
       />
     </HomeNavigator.Navigator>

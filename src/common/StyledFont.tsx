@@ -11,6 +11,7 @@ interface TextProps {
   offsetBottom?: number;
   offsetLeft?: number;
   offsetRight?: number;
+  lineHeight?: number;
 }
 
 export const NavText = (props: TextProps) => {
@@ -64,7 +65,7 @@ export const LittleText = (props: TextProps) => {
         fontFamily: "PP",
         fontSize: 18,
         color: props.color || "white",
-        lineHeight: 27,
+        lineHeight: props.lineHeight || 27,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -85,7 +86,7 @@ export const Breadcrumb = (props: TextProps) => {
         fontFamily: "PP",
         fontSize: 16,
         color: props.color ? props.color : "white",
-        lineHeight: 24,
+        lineHeight: props.lineHeight || 24,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,

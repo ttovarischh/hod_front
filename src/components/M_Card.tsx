@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
-import { Text } from "react-native";
-import { ThemeContext } from "styled-components/native";
-import { FlexBox } from "../common";
-import styled from "styled-components/native";
+import { Text, StyleSheet } from "react-native";
+import styled, { ThemeContext } from "styled-components/native";
+import { FlexBox, NavBarText, NavSecondaryText } from "../common";
 import A_Input from "./A_Input";
-import { NavSecondaryText } from "../common";
-import { NavBarText } from "../common";
+import A_Icon from "./A_Icon";
 
 type CardProps = {
   type?: string;
+  handleImagePickerPress?: any;
   handleFirstInputChange?: any;
   handleSecondInputChange?: any;
   handleThirdInputChange?: any;
@@ -33,6 +32,8 @@ type CardProps = {
   trueVal4?: any;
   trueVal5?: any;
   children?: React.ReactNode;
+  avatar?: any;
+  imagePresent?: string;
 };
 
 const PlayerWrapper = styled(FlexBox)`
@@ -89,6 +90,46 @@ const PlayerTextareaWrapper = styled(FlexBox)`
   justify-content: center;
 `;
 
+const HeaderInputsWrapper = styled(FlexBox)`
+  width: 100%;
+`;
+
+const ImagePicker = styled.TouchableOpacity`
+  width: 120px;
+  height: 120px;
+  background-color: ${({ theme }) => theme.input.fill};
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const ImagePickerText = styled.Text`
+  font-size: 11px;
+  line-height: 11px;
+  text-align: center;
+  letter-spacing: -0.011em;
+  color: #383838;
+  width: 70%;
+`;
+
+const PlayerAvatarWrapper = styled(FlexBox)`
+  width: 116px;
+  height: 116px;
+  background-color: ${({ theme }) => theme.input.fill};
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  align-items: center;
+`;
+
+const PlayerAvatar = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 const M_Card = ({
   type,
   handleFirstInputChange,
@@ -115,25 +156,52 @@ const M_Card = ({
   trueVal4,
   trueVal5,
   children,
+  handleImagePickerPress,
+  avatar,
+  imagePresent,
   ...rest
 }: CardProps) => {
   const theme = useContext(ThemeContext);
   if (type == "ch_creation") {
     return (
       <PlayerWrapper direction="column" offsetBottom="8">
-        <A_Input
-          placeholder="Имя персонажа"
-          label="Имя персонажа"
-          handleChange={handleFirstInputChange}
-          value={val1}
-          isError={err1}
-        ></A_Input>
-        <A_Input
-          placeholder="Имя игрока"
-          label="Имя игрока"
-          value={val6}
-          handleChange={handleSixthInputChange}
-        ></A_Input>
+        <HeaderInputsWrapper>
+          <ImagePicker onPress={handleImagePickerPress}>
+            {imagePresent ? (
+              <PlayerAvatar
+                source={{
+                  uri: `${imagePresent}`,
+                }}
+              />
+            ) : (
+              <FlexBox
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <A_Icon iconName="avatarplaceholder" />
+                <ImagePickerText style={{ marginTop: 6, width: 51 }}>
+                  Выбрать аватар
+                </ImagePickerText>
+              </FlexBox>
+            )}
+          </ImagePicker>
+          <FlexBox offsetLeft="8" direction="column" style={{ flex: 1 }}>
+            <A_Input
+              placeholder="Ник игрока"
+              label="Ник игрока"
+              value={val6}
+              handleChange={handleSixthInputChange}
+            ></A_Input>
+            <A_Input
+              placeholder="Имя персонажа"
+              label="Имя персонажа"
+              handleChange={handleFirstInputChange}
+              value={val1}
+              isError={err1}
+            ></A_Input>
+          </FlexBox>
+        </HeaderInputsWrapper>
         <A_Input
           placeholder="Проницательность"
           label="Проницательность"
@@ -192,14 +260,28 @@ const M_Card = ({
     );
   } else if (type == "ch_creation_show") {
     return (
-      <PlayerWrapper direction="column" key={key}>
-        <PlayerInputWrapper offsetBottom="6">
-          <NavBarText color="#EDF2DC">{trueVal1}</NavBarText>
-        </PlayerInputWrapper>
-        <PlayerInputWrapper offsetBottom="6">
-          <NavBarText color="#EDF2DC">{trueVal2}</NavBarText>
-          <Text style={{ color: "#383838", fontSize: 11 }}>Имя игрока</Text>
-        </PlayerInputWrapper>
+      <PlayerWrapper direction="column" key={key} style={{ opacity: 0.5 }}>
+        <HeaderInputsWrapper>
+          <PlayerAvatarWrapper>
+            <PlayerAvatar
+              source={{
+                uri: `${avatar}`,
+              }}
+            />
+          </PlayerAvatarWrapper>
+          <FlexBox offsetLeft="8" direction="column" style={{ flex: 1 }}>
+            <PlayerInputWrapper offsetBottom="6">
+              <NavBarText color="#EDF2DC">{trueVal2}</NavBarText>
+              <Text style={{ color: "#383838", fontSize: 11 }}>Ник игрока</Text>
+            </PlayerInputWrapper>
+            <PlayerInputWrapper offsetBottom="6">
+              <NavBarText color="#EDF2DC">{trueVal1}</NavBarText>
+              <Text style={{ color: "#383838", fontSize: 11 }}>
+                Имя персонажа
+              </Text>
+            </PlayerInputWrapper>
+          </FlexBox>
+        </HeaderInputsWrapper>
         <PlayerInputWrapper offsetBottom="6">
           <NavBarText color="#EDF2DC">{trueVal3}</NavBarText>
           <Text style={{ color: "#383838", fontSize: 11 }}>
@@ -229,3 +311,10 @@ const M_Card = ({
 };
 
 export default M_Card;
+
+const styles = StyleSheet.create({
+  brd: {
+    borderBottomColor: "#282828",
+    borderBottomWidth: 1,
+  },
+});

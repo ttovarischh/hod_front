@@ -153,7 +153,11 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
           </ProfileInnerWrapper>
           <SingleEffectHeaderWrapper>
             <TouchableOpacity
-              onPress={() => navigation.push("Settings")}
+              onPress={() =>
+                navigation.push("Settings", {
+                  userName: usersData!["username"],
+                })
+              }
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",

@@ -28,8 +28,26 @@ const ProfileScreenWrapper = styled(FlexBox)`
   padding-right: 14px;
 `;
 
+const SettingsItem = styled(FlexBox)`
+  margin-top: 10;
+  display: flex;
+  flexdirection: row;
+  height: 36px;
+  border-bottom: 1px solid #1a1a1a;
+  width: 100%;
+`;
+
+const SettingsItemText = styled.Text`
+  font-size: 20px;
+  line-height: 20px;
+  color: white;
+  margin-right: 24;
+`;
+
 export default function SettingsScreen(props: { navigation: any; route: any }) {
   const { navigation, route } = props;
+  const params = route.params || {};
+  const { username = {} } = params;
   const [isLoading, setLoading] = useState(false);
   const [usersData, setUsersData] = useState<UserProps>();
   const { signout } = useContext(AuthContext);
@@ -58,6 +76,18 @@ export default function SettingsScreen(props: { navigation: any; route: any }) {
             left={t("common:cancel")}
           ></A_Header>
           <ProfileScreenWrapper>
+            <SettingsItem>
+              <SettingsItemText style={{ fontFamily: "PP" }}>
+                ttovarisch
+              </SettingsItemText>
+            </SettingsItem>
+            <SettingsItem>
+              <TouchableOpacity onPress={signout}>
+                <SettingsItemText style={{ fontFamily: "PP" }}>
+                  Sign out
+                </SettingsItemText>
+              </TouchableOpacity>
+            </SettingsItem>
             <Selector></Selector>
           </ProfileScreenWrapper>
         </>

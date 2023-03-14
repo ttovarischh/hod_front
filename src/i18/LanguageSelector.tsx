@@ -53,18 +53,21 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   text: {
+    fontFamily: "PP",
     fontSize: 20,
     lineHeight: 20,
     color: "white",
     marginRight: 24,
   },
   text_not: {
+    fontFamily: "PP",
     fontSize: 20,
     lineHeight: 20,
     color: "black",
     marginRight: 24,
   },
   selectedText: {
+    fontFamily: "PP",
     fontSize: 20,
     lineHeight: 20,
     fontWeight: "600",

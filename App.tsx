@@ -11,6 +11,7 @@ import { Provider as AuthProvider } from "./src/contexts/AuthContext";
 import { Context as AuthContext } from "./src/contexts/AuthContext";
 import { useFonts } from "expo-font";
 import "./src/i18/IMLocalize";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 LogBox.ignoreLogs([`to contain units`, `key`]);
 
@@ -77,7 +78,9 @@ function App() {
 export default () => {
   return (
     <AuthProvider>
-      <App />
+      <BottomSheetModalProvider>
+        <App />
+      </BottomSheetModalProvider>
     </AuthProvider>
   );
 };

@@ -1,5 +1,5 @@
 import createDataContext from "./createDataContext";
-import { apiUrl } from "../screens/const";
+import { apiUrl } from "../../screens/const";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const authReducer = (state, action) => {

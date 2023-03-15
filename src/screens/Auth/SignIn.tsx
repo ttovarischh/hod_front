@@ -1,14 +1,16 @@
 import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput, Button } from "react-native";
-import { Context as AuthContext } from "../../contexts/AuthContext";
+import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import { apiUrl } from "../const";
+import useAuth from "../../contexts/newAuthContext/useAuth";
 
 const Signin = (props: { navigation: any }) => {
   const { navigation } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { state, signin } = useContext(AuthContext);
+  // const { state, signin } = useContext(AuthContext);
+  const { login, loading, error } = useAuth();
 
   const doSignOut = async () => {
     try {
@@ -57,7 +59,8 @@ const Signin = (props: { navigation: any }) => {
         title="Login"
         onPress={() => {
           console.log("Clicked to login");
-          signin(email, password);
+          // signin(email, password);
+          login(email, password);
         }}
       />
       <Button
@@ -69,7 +72,7 @@ const Signin = (props: { navigation: any }) => {
       />
       <View style={styles.link}>
         <Text style={styles.text}>Dont have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={styles.text}>Sign up Here.</Text>
         </TouchableOpacity>
       </View>

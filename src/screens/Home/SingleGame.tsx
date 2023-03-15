@@ -19,8 +19,6 @@ import A_Loader from "../../components/A_Loader";
 import A_Header from "../../components/A_Header";
 import O_Card from "../../components/O_Card";
 import O_BottomSheet from "../../components/O_BottomSheet";
-import { apiUrl } from "../const";
-import A_Input from "../../components/A_Input";
 import A_Button from "../../components/A_Button";
 
 const CodeQrWrapper = styled(FlexBox)`
@@ -124,7 +122,7 @@ export default function SingleGameScreen(props: {
         >
           {langs &&
             langs.map((sublang: any) => (
-              <FlexBox offsetRight="8">
+              <FlexBox offsetRight="8" offsetBottom="8">
                 <View style={styles.tag}>
                   <Text style={{ fontSize: 18, color: "#EDF2DC" }}>
                     {sublang}

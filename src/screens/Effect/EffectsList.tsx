@@ -4,6 +4,7 @@ import axios from "axios";
 import { FlexBox, FigureText, HeaderText } from "../../common";
 import A_Icon from "../../components/A_Icon";
 import A_Loader from "../../components/A_Loader";
+import A_Header from "../../components/A_Header";
 
 const EffectsScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -11,7 +12,7 @@ const EffectsScreenWrapper = styled.View`
   color: white;
   padding-left: 14px;
   padding-right: 14px;
-  padding-top: 22px;
+  // padding-top: 22px;
 `;
 
 const EffectLink = styled.TouchableOpacity`
@@ -73,6 +74,7 @@ export default function EffectsList(props: { navigation: any }) {
         <A_Loader></A_Loader>
       ) : (
         <EffectsScreenWrapper>
+          <A_Header center="Эффекты" />
           <FlexBox direction="column">{list()}</FlexBox>
         </EffectsScreenWrapper>
       )}

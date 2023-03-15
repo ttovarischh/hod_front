@@ -183,6 +183,11 @@ export default function CreateGameScreen(props: {
     bottomSheetModalRef.current?.close();
   }, []);
 
+  // axios.interceptors.request.use((x) => {
+  //   console.log(x);
+  //   return x;
+  // });
+
   // main_functions
   useEffect(() => {
     console.log("Game's ready");

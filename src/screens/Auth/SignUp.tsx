@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { apiUrl } from "../const";
-import { Context as AuthContext } from "../../contexts/AuthContext";
+import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 
 function SignUpScreen(props: { route: any; navigation: any }) {
   const { navigation } = props;

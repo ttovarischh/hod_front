@@ -3,10 +3,11 @@ import { ImageBackground } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
 import { FlexBox, HeaderText } from "../../common";
-import { Context as AuthContext } from "../../contexts/AuthContext";
+import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import A_Button from "../../components/A_Button";
 import A_Icon from "../../components/A_Icon";
 import { useTranslation } from "react-i18next";
+import useAuth from "../../contexts/newAuthContext/useAuth";
 
 const HomeScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -23,7 +24,7 @@ function HomeScreen(props: { navigation: any }) {
   const { navigation } = props;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const { state } = useContext(AuthContext);
+  const { user } = useAuth();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function HomeScreen(props: { navigation: any }) {
           >
             <A_Icon iconName="bigstar"></A_Icon>
             <HeaderText center offsetTop={24}>
-              {t("common:hello")}, *{state.email}*!
+              {t("common:hello")}, *{user?.username}*!
             </HeaderText>
             <HeaderText center>{t("common:start")}</HeaderText>
           </FlexBox>
@@ -62,8 +63,11 @@ function HomeScreen(props: { navigation: any }) {
           >
             {t("common:createGame")}
           </A_Button>
-          <A_Button handleButtonClick={() => navigation.push("Join")}>
+          {/* <A_Button handleButtonClick={() => navigation.push("Join")}>
           {t("common:joinGame")}
+          </A_Button> */}
+          <A_Button handleButtonClick={() => console.log(user)}>
+            {t("common:joinGame")}
           </A_Button>
         </HomeScreenInnerWrapper>
       </ImageBackground>

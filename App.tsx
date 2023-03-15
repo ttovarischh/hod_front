@@ -5,13 +5,11 @@ import styled, { ThemeProvider } from "styled-components/native";
 import theme from "./src/common/themes/mainTheme";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigation from "./src/components/Navigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
-import { Provider as AuthProvider } from "./src/contexts/AuthContext";
-import { Context as AuthContext } from "./src/contexts/AuthContext";
 import { useFonts } from "expo-font";
 import "./src/i18/IMLocalize";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import useAuth, {AuthProvider} from "./src/contexts/newAuthContext/useAuth";
 
 LogBox.ignoreLogs([`to contain units`, `key`]);
 
@@ -27,34 +25,20 @@ function App() {
     PP: require("./assets/fonts/PPNeueMontreal-Medium.otf"),
   });
   const [appIsReady, setAppIsReady] = useState(false);
-  const { state, restore } = React.useContext(AuthContext);
+  const { user, loadingInitial } = useAuth();
+  console.log("user from context" + JSON.stringify(user));
 
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-      await retrieveData();
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setAppIsReady(true);
     }
     prepare();
   }, []);
 
-  const retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@AuthData");
-      if (value !== null) {
-        const _authData = JSON.parse(value);
-        const email = _authData.username;
-        const token = _authData.jti;
-        restore(email, token);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady && fontsLoaded) {
+    if (appIsReady && fontsLoaded && !loadingInitial) {
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);

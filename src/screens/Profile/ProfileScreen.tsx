@@ -9,11 +9,12 @@ import {
   SuperBigText,
 } from "../../common";
 import styled from "styled-components/native";
-import { Context as AuthContext } from "../../contexts/AuthContext";
+import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import A_Icon from "../../components/A_Icon";
 import A_Loader from "../../components/A_Loader";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import useAuth from "../../contexts/newAuthContext/useAuth";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -59,11 +60,14 @@ const BigAvatarWrapper = styled(FlexBox)`
 
 export default function ProfileScreen(props: { navigation: any; route: any }) {
   const { navigation, route } = props;
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [usersData, setUsersData] = useState<UserProps>();
-  const { signout } = useContext(AuthContext);
+  // const { signout } = useContext(AuthContext);
   const [gamesData, setGamesData] = useState<any[]>([]);
   const { t } = useTranslation();
+
+  const { user, loading, error, login, signUp, logout } = useAuth();
+
 
   type UserProps = {
     email: string;
@@ -72,36 +76,44 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
     created_at: any;
     updated_at: any;
     jti: any;
+    about: string;
   };
 
+  // useEffect(() => {
+  //   const asyncFunction = async () => {
+  //     try {
+  //       const firstResponse = await getData();
+  //       setLoading(false);
+  //       //@ts-ignore
+  //       if (usersData != "undefined") {
+  //         console.log(usersData?.id);
+  //         const secondResponse = await axios
+  //           .get("http://localhost:3000/api/v1/users/" + usersData?.id)
+  //           .then(({ data }) => {
+  //             setGamesData(data.games);
+  //             console.log(JSON.stringify(gamesData));
+  //           })
+  //           .catch()
+  //           .finally();
+  //       }
+  //     } catch (error) {
+  //       return error;
+  //     }
+  //   };
+  //   asyncFunction();
+  // }, []);
+
   useEffect(() => {
-    const asyncFunction = async () => {
-      try {
-        const firstResponse = await getData();
-        setLoading(false);
-        //@ts-ignore
-        if (usersData != "undefined") {
-          console.log(usersData?.id);
-          const secondResponse = await axios
-            .get("http://localhost:3000/api/v1/users/" + usersData?.id)
-            .then(({ data }) => {
-              setGamesData(data.games);
-              console.log(JSON.stringify(gamesData));
-            })
-            .catch()
-            .finally();
-        }
-      } catch (error) {
-        return error;
-      }
-    };
-    asyncFunction();
+    async function prepare() {
+      await retrieveData();
+    }
+    prepare();
   }, []);
 
   function getFeeling() {
     const myFeelings = [
       "Начала играть благодаря друзьям и теперь тоже пьет пиво...",
-      "Больше всего в D&D ценит шутки про члены",
+      "Больше всего в D&D ценит шутки про мам",
       "Всегда выбирает сексуально озабоченную расу",
       "Самый смелый на поле",
     ];
@@ -110,18 +122,38 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
     return feeling;
   }
 
-  const getData = async () => {
+  const retrieveData = async () => {
     try {
       const gotToken = await AsyncStorage.getItem("@AuthData");
-      if (gotToken !== null) {
+      console.log(gotToken);
+      if (gotToken != undefined) {
         const _authData = JSON.parse(gotToken);
         setUsersData(_authData);
-        console.log(usersData);
+        console.log("Normal");
       } else {
         console.log("AAAA SUKA");
       }
-    } catch (e) {}
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log(usersData);
+    }
   };
+
+  // useEffect(() => {
+  //   if (usersData != undefined) {
+  //     axios
+  //       .get("http://localhost:3000/api/v1/users/" + usersData?.id)
+  //       .then(({ data }) => {
+  //         setGamesData(data.games);
+  //         console.log(JSON.stringify(gamesData));
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       })
+  //       .finally(() => setLoading(false));
+  //   }
+  // }, [usersData]);
 
   return (
     <>
@@ -146,9 +178,20 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
               {usersData && usersData["email"]}
             </NavBarText>
             <FlexBox style={{ maxWidth: 285 }}>
-              <NavBarText color="#5F5F5F" center>
-                {getFeeling()}
-              </NavBarText>
+              {/* {usersData!.about && (
+                <NavBarText color="blue" center>
+                  {usersData!["about"]}
+                </NavBarText>
+              )}
+              {!usersData!.about && (
+                <NavBarText color="blue" center>
+                  {getFeeling()}
+                </NavBarText>
+              )} */}
+              {/* <NavBarText color="#5F5F5F" center>
+                {usersData!.about && usersData!["about"]}
+                {!usersData!.about && getFeeling()}
+              </NavBarText> */}
             </FlexBox>
           </ProfileInnerWrapper>
           <SingleEffectHeaderWrapper>
@@ -156,6 +199,7 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
               onPress={() =>
                 navigation.push("Settings", {
                   userName: usersData!["username"],
+                  email: usersData!["email"],
                 })
               }
               style={{

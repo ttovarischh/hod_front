@@ -9,7 +9,7 @@ import {
   SuperBigText,
 } from "../../common";
 import styled from "styled-components/native";
-import { Context as AuthContext } from "../../contexts/AuthContext";
+import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import A_Icon from "../../components/A_Icon";
 import A_Loader from "../../components/A_Loader";
 import axios from "axios";
@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import Selector from "../../i18/LanguageSelector";
 import A_Header from "../../components/A_Header";
 import { StackActions } from "@react-navigation/routers";
+import useAuth from "../../contexts/newAuthContext/useAuth";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -47,12 +48,15 @@ const SettingsItemText = styled.Text`
 export default function SettingsScreen(props: { navigation: any; route: any }) {
   const { navigation, route } = props;
   const params = route.params || {};
-  const { username = {} } = params;
+  const { email, userName } = params;
   const [isLoading, setLoading] = useState(false);
   const [usersData, setUsersData] = useState<UserProps>();
-  const { signout } = useContext(AuthContext);
+  // const { signout } = useContext(AuthContext);
   const [gamesData, setGamesData] = useState<any[]>([]);
   const { t } = useTranslation();
+
+  const { user, loading, error, login, signUp, logout } = useAuth();
+
 
   type UserProps = {
     email: string;
@@ -78,11 +82,16 @@ export default function SettingsScreen(props: { navigation: any; route: any }) {
           <ProfileScreenWrapper>
             <SettingsItem>
               <SettingsItemText style={{ fontFamily: "PP" }}>
-                ttovarisch
+                {userName}
               </SettingsItemText>
             </SettingsItem>
             <SettingsItem>
-              <TouchableOpacity onPress={signout}>
+              <SettingsItemText style={{ fontFamily: "PP" }}>
+                {email}
+              </SettingsItemText>
+            </SettingsItem>
+            <SettingsItem>
+              <TouchableOpacity onPress={() => logout("polinasot@gmail.com")}>
                 <SettingsItemText style={{ fontFamily: "PP" }}>
                   Sign out
                 </SettingsItemText>

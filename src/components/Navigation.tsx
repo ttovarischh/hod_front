@@ -1,7 +1,7 @@
 // common_stuff
 import React, { useContext } from "react";
 import { ThemeContext, ThemeProvider } from "styled-components/native";
-import { Context as AuthContext } from "../contexts/AuthContext";
+import useAuth from "../contexts/newAuthContext/useAuth";
 import { useTranslation } from "react-i18next";
 // react_navigation
 import { createStackNavigator } from "@react-navigation/stack";
@@ -68,7 +68,7 @@ function EffectsStack() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
-        headerShown: true,
+        headerShown: false,
         headerStyle: {
           backgroundColor: "black",
           height: 80,
@@ -83,7 +83,7 @@ function EffectsStack() {
         name="EffectsList"
         component={EffectsList}
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "Эффекты",
         }}
       />
@@ -91,7 +91,7 @@ function EffectsStack() {
         name="Single"
         component={SingleEffectsScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "Отдельный эффект",
         }}
       />
@@ -213,11 +213,12 @@ function AuthFlow() {
 export default function Navigation() {
   const MainStack = createStackNavigator();
   const theme = useContext(ThemeContext);
-  const { state } = React.useContext(AuthContext);
+  const { user } = useAuth();
+
   return (
     <ThemeProvider theme={theme}>
       <MainStack.Navigator>
-        {state.token === null ? (
+        {!user ? (
           <>
             <MainStack.Screen
               options={{ headerShown: false }}

@@ -329,6 +329,17 @@ const A_Icon = (props: PropsT) => {
         />
       </Svg>
     );
+  } else if (props.iconName == "navigate") {
+    return (
+      <Svg width="13" height="18" viewBox="0 0 13 18" fill="none">
+        <Path
+          d="M1 17C5 14 7 12.5 12 9C8 6 5 4 0.999999 1"
+          stroke={props.fill || "white"}
+          stroke-width="2"
+          stroke-linejoin="bevel"
+        />
+      </Svg>
+    );
   }
   return <></>;
 };

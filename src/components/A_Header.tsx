@@ -22,9 +22,9 @@ const CustomHeaderInnerWrapper = styled(FlexBox)`
 `;
 
 type HeaderProps = {
-  left?: string;
+  left?: any;
   center: string;
-  right?: string;
+  right?: any;
   handleRightPress?: any;
   handleLeftPress?: any;
 };

@@ -12,6 +12,7 @@ interface InputProps extends TextInputProps {
   label: string;
   isError?: boolean;
   value?: any;
+  secure?: boolean;
 }
 
 const FlyingLabelText = styled.Text`
@@ -50,6 +51,7 @@ const A_Input = ({
   isError,
   handleChange,
   value,
+  secure,
   ...rest
 }: InputProps) => {
   const theme = useContext(ThemeContext);
@@ -116,6 +118,7 @@ const A_Input = ({
       <InputWrapper
         placeholder={placeholder}
         value={value}
+        secureTextEntry={secure}
         placeholderTextColor="#0E0E0E"
         onChangeText={handleChange}
         onFocus={movePlaceholder}

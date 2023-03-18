@@ -1,132 +1,122 @@
-import * as React from "react";
-import { useState, useContext } from "react";
-import {
-  SafeAreaView,
-  TextInput,
-  Button,
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { apiUrl } from "../const";
-import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
+import React, { useState } from "react";
+import useAuth from "../../contexts/newAuthContext/useAuth";
+import styled from "styled-components/native";
+import { FlexBox, HeaderText, TitleText } from "../../common";
+import A_Input from "../../components/A_Input";
+import A_Button from "../../components/A_Button";
+import { ImageBackground } from "react-native";
+import { useTranslation } from "react-i18next";
 
-function SignUpScreen(props: { route: any; navigation: any }) {
+const AuthScreensWrapper = styled(FlexBox)`
+  background-color: ${({ theme }) => theme.appBg};
+  flex: 1;
+  height: 100%;
+  width: 100%;
+`;
+
+const SecondaryButton = styled.TouchableOpacity`
+  display: flex;
+  width: 100%;
+  height: 62px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  background: #edf2dc;
+  border-radius: 20px;
+  margin-bottom: 32px;
+`;
+
+export default function SignUpScreen(props: { route: any; navigation: any }) {
   const { navigation } = props;
-  const [password1, onChangePassword1] = React.useState("password3");
-  const [password2, onChangePassword2] = React.useState("password3");
-  const [email, onChangeEmail] = React.useState("advev@mail.ru");
-
-  const { state, signup } = useContext(AuthContext);
-
-  const emptyUser = {
+  const { signUp } = useAuth();
+  const [newUser, setNewUser] = useState({
     email: "",
     password: "",
     password_confirmation: "",
-  };
-  const [user, setUser] = useState(emptyUser);
+    username: "",
+  });
+  const { t } = useTranslation();
 
-  // function signUp() {
-  //   signOut();
-  //   doSignUp();
-  // }
-
-  // function signOut() {
-  //   setUser(emptyUser);
-  // }
-
-  const doSignUp = async () => {
-    try {
-      const response = await fetch(apiUrl + "signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user: {
-            email: "email@gmail.com",
-            password: "password12",
-            password_confirmation: "password12",
-          },
-        }),
-      });
-      const json = await response.json();
-      console.log(json);
-      setUser(json);
-
-      if (typeof json["user"] !== "undefined") {
-        setUser(json.user);
-
-        alert(
-          'You are successfully signed up as a user "' + json.user.email + '"'
-        );
-      } else if (typeof json["message"] !== "undefined") {
-        alert(json.message);
-      } else console.log(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
+  const handleType = (key: any, value: any) => {
+    setNewUser((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+    console.log(newUser);
   };
 
   return (
-    <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeEmail}
-        value={email}
-        placeholder="Enter email"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangePassword1}
-        value={password1}
-        placeholder="Enter password"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangePassword2}
-        value={password2}
-        placeholder="Enter password again"
-      />
-      {/* <Button
-        onPress={signUp}
-        title="Sign up"
-        color="#841584"
-        accessibilityLabel="Learn more"
-      /> */}
-      <Button
-        title="Sign UUPP"
-        onPress={() => {
-          console.log("Clicked to sign up");
-          signup(email, password1, password2);
-          // doSignUp();
-          // () => navigation.navigate('Signin')
-        }}
-      />
-      <View style={styles.text}>
-        <Text>
-          {" "}
-          {user.password === "" ? "" : "User password: " + user.password}{" "}
-        </Text>
-        <Text> {user.email === "" ? "" : "User email: " + user.email} </Text>
-      </View>
-    </SafeAreaView>
+    <AuthScreensWrapper>
+      <ImageBackground
+        style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
+        source={require("../../../assets/images/authbg.png")}
+      >
+        <FlexBox style={{ paddingLeft: 12, paddingRight: 12 }}>
+          <FlexBox
+            justifyContent="center"
+            style={{ width: "100%" }}
+            offsetTop="168"
+            offsetBottom="183"
+          >
+            <HeaderText offsetBottom={18} center>
+              {t("common:register")}
+            </HeaderText>
+            <A_Input
+              value={newUser.email}
+              handleChange={(text: any) => handleType("email", text)}
+              placeholder={t("common:email")}
+              label={t("common:email")}
+            />
+            <A_Input
+              value={newUser.password}
+              handleChange={(text: any) => handleType("password", text)}
+              placeholder={t("common:password")}
+              label={t("common:password")}
+              secure
+            />
+            <A_Input
+              value={newUser.password_confirmation}
+              handleChange={(text: any) =>
+                handleType("password_confirmation", text)
+              }
+              placeholder={t("common:repeatPassword")}
+              label={t("common:repeatPassword")}
+              secure
+            />
+            <A_Input
+              value={newUser.username}
+              handleChange={(text: any) => handleType("username", text)}
+              placeholder={t("common:nick")}
+              label={t("common:nick")}
+            />
+            <A_Button
+              offsetTop={4}
+              disabled={
+                newUser.email == "" ||
+                newUser.username == "" ||
+                newUser.password.trim().length < 6 ||
+                newUser.password_confirmation.trim().length < 6
+              }
+              handleButtonClick={() => {
+                console.log("Clicked to sign UP");
+                signUp(
+                  newUser.email,
+                  newUser.password,
+                  newUser.password_confirmation,
+                  newUser.username
+                );
+              }}
+            >
+              {t("common:signUp")}
+            </A_Button>
+          </FlexBox>
+          <SecondaryButton onPress={() => navigation.navigate("Signin")}>
+            <TitleText color="black" center offsetLeft={12}>
+              {t("common:doLogin")}
+            </TitleText>
+          </SecondaryButton>
+        </FlexBox>
+      </ImageBackground>
+    </AuthScreensWrapper>
   );
 }
-
-export default SignUpScreen;
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  text: {
-    margin: 12,
-  },
-});

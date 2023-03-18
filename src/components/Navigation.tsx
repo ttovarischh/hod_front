@@ -20,6 +20,7 @@ import HomeScreen from "../screens/Home/HomeScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 import SettingsScreen from "../screens/Profile/SettingsScreen";
 import PlayerConcScreen from "../screens/Home/PlayerConcScreen";
+import ChangeEmailScreen from "../screens/Profile/ChangeEmailScreen";
 
 const ProfileNavigator = createStackNavigator();
 function ProfileStack() {
@@ -29,7 +30,7 @@ function ProfileStack() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
-        headerShown: true,
+        headerShown: false,
         headerStyle: {
           backgroundColor: "black",
           height: 80,
@@ -40,22 +41,11 @@ function ProfileStack() {
       }}
       initialRouteName="EffectsList"
     >
+      <ProfileNavigator.Screen name="Profile" component={ProfileScreen} />
+      <ProfileNavigator.Screen name="Settings" component={SettingsScreen} />
       <ProfileNavigator.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-          title: "Профиль",
-        }}
-      />
-      <ProfileNavigator.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          headerShown: false,
-          //@ts-ignore
-          title: t("common:settings"),
-        }}
+        name="ChangeEmail"
+        component={ChangeEmailScreen}
       />
     </ProfileNavigator.Navigator>
   );

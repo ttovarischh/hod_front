@@ -22,9 +22,11 @@ const Selector = () => {
         return (
           <Pressable
             key={language.code}
-            style={styles.buttonContainer}
+            style={[styles.buttonContainer, { marginBottom: 14 }]}
             disabled={selectedLanguage}
-            onPress={() => setLanguage(language.code)}
+            onPress={() => {
+              setLanguage(language.code);
+            }}
           >
             <Text
               style={[selectedLanguage ? styles.selectedText : styles.text_not]}
@@ -42,6 +44,7 @@ const Selector = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    marginBottom: 48,
   },
   buttonContainer: {
     marginTop: 10,

@@ -1,35 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  Button,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
-import axios from "axios";
 import { FlexBox, TitleText } from "../common";
-import Svg, { Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
-import { Item } from "react-native-paper/lib/typescript/components/List/List";
 import { StackActions } from "@react-navigation/native";
-import { NavigationContext } from "@react-navigation/native";
 import A_Icon from "./A_Icon";
-import A_Button from "./A_Button";
-
-const EffectScreenWrapper = styled.View`
-  background-color: ${({ theme }) => theme.appBg};
-  height: 100%;
-  color: white;
-`;
-
-const SingleEffectHeaderWrapper = styled(FlexBox)`
-  position: relative;
-  width: 100%;
-  height: 350px;
-  padding: 13px 13px 19px 13px;
-`;
 
 const IncButton = styled.TouchableOpacity`
   width: 60px;
@@ -46,16 +21,6 @@ const IncButton = styled.TouchableOpacity`
 
 const BottomTitleText = styled(TitleText)`
   color: white;
-`;
-
-const Img = styled.Image`
-  position: absolute;
-  opacity: 0.5;
-  width: 100%;
-  height: 400px;
-  min-width: 390px;
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
 `;
 
 const FooterWrapper = styled(FlexBox)`
@@ -92,17 +57,14 @@ const Tab = styled(FlexBox)`
   position: relative;
 `;
 
-function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): any, handleIncClick(): any}) {
+function O_GameFooter(props: {
+  route: any;
+  navigation: any;
+  handleCodeClick(): any;
+  handleIncClick(): any;
+}) {
   const { route, navigation, handleCodeClick, handleIncClick } = props;
   const params = route.params || {};
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = React.useState<any>([]);
-
-  interface IGame {
-    name: any;
-    id: any;
-    code: any;
-  }
 
   return (
     <FooterWrapper
@@ -122,9 +84,7 @@ function O_GameFooter(props: { route: any; navigation: any, handleCodeClick(): a
           <A_Icon iconName="inc"></A_Icon>
         </IncButton>
       </Tab>
-      <TouchableOpacity
-        onPress={handleCodeClick}
-      >
+      <TouchableOpacity onPress={handleCodeClick}>
         <Tab alignItems="center" justifyContent="center" isPrima isRight>
           <BottomTitleText>KR984</BottomTitleText>
         </Tab>

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   FlexBox,
   NavBarText,
@@ -9,7 +8,6 @@ import {
   SuperBigText,
 } from "../../common";
 import styled from "styled-components/native";
-import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import A_Icon from "../../components/A_Icon";
 import A_Loader from "../../components/A_Loader";
 import axios from "axios";
@@ -61,54 +59,10 @@ const BigAvatarWrapper = styled(FlexBox)`
 export default function ProfileScreen(props: { navigation: any; route: any }) {
   const { navigation, route } = props;
   const [isLoading, setLoading] = useState(false);
-  const [usersData, setUsersData] = useState<UserProps>();
-  // const { signout } = useContext(AuthContext);
+  const [usersData, setUsersData] = useState<any[]>([]);
   const [gamesData, setGamesData] = useState<any[]>([]);
   const { t } = useTranslation();
-
-  const { user, loading, error, login, signUp, logout } = useAuth();
-
-
-  type UserProps = {
-    email: string;
-    id: number;
-    username: string;
-    created_at: any;
-    updated_at: any;
-    jti: any;
-    about: string;
-  };
-
-  // useEffect(() => {
-  //   const asyncFunction = async () => {
-  //     try {
-  //       const firstResponse = await getData();
-  //       setLoading(false);
-  //       //@ts-ignore
-  //       if (usersData != "undefined") {
-  //         console.log(usersData?.id);
-  //         const secondResponse = await axios
-  //           .get("http://localhost:3000/api/v1/users/" + usersData?.id)
-  //           .then(({ data }) => {
-  //             setGamesData(data.games);
-  //             console.log(JSON.stringify(gamesData));
-  //           })
-  //           .catch()
-  //           .finally();
-  //       }
-  //     } catch (error) {
-  //       return error;
-  //     }
-  //   };
-  //   asyncFunction();
-  // }, []);
-
-  useEffect(() => {
-    async function prepare() {
-      await retrieveData();
-    }
-    prepare();
-  }, []);
+  const { user } = useAuth();
 
   function getFeeling() {
     const myFeelings = [
@@ -122,38 +76,36 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
     return feeling;
   }
 
-  const retrieveData = async () => {
-    try {
-      const gotToken = await AsyncStorage.getItem("@AuthData");
-      console.log(gotToken);
-      if (gotToken != undefined) {
-        const _authData = JSON.parse(gotToken);
-        setUsersData(_authData);
-        console.log("Normal");
-      } else {
-        console.log("AAAA SUKA");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log(usersData);
-    }
-  };
+  useEffect(() => {
+    const focusHandler = navigation.addListener("focus", () => {
+      axios
+        .get("http://localhost:3000/api/v1/users/" + user?.id)
+        .then(({ data }) => {
+          setUsersData(data);
+          setGamesData(data.games);
+          console.log(JSON.stringify(gamesData));
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => setLoading(false));
+    });
+    return focusHandler;
+  }, [navigation]);
 
-  // useEffect(() => {
-  //   if (usersData != undefined) {
-  //     axios
-  //       .get("http://localhost:3000/api/v1/users/" + usersData?.id)
-  //       .then(({ data }) => {
-  //         setGamesData(data.games);
-  //         console.log(JSON.stringify(gamesData));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       })
-  //       .finally(() => setLoading(false));
-  //   }
-  // }, [usersData]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/users/" + user?.id)
+      .then(({ data }) => {
+        setUsersData(data);
+        setGamesData(data.games);
+        console.log(JSON.stringify(gamesData));
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <>
@@ -165,41 +117,45 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
           <ProfileInnerWrapper>
             <BigAvatarWrapper>
               <NavBarText offsetTop={30} color="white">
-                {t("common:doneGames")}
+                {
+                  // @ts-ignore
+                  usersData?.show == "count"
+                    ? t("common:doneGames")
+                    : t("common:hours")
+                }
               </NavBarText>
               <SuperBigText>
-                {gamesData.length != 0 ? gamesData.length : "68"}
+                {
+                  // @ts-ignore
+                  usersData?.show == "count"
+                    ? gamesData.length
+                    : gamesData.length * 3
+                }
               </SuperBigText>
             </BigAvatarWrapper>
             <HugeText offsetBottom={4}>
-              {usersData && usersData["username"]}
+              {
+                //@ts-ignore
+                usersData!.username
+              }
             </HugeText>
-            <NavBarText offsetBottom={26}>
-              {usersData && usersData["email"]}
-            </NavBarText>
+            <NavBarText offsetBottom={26}>{user?.email}</NavBarText>
             <FlexBox style={{ maxWidth: 285 }}>
-              {/* {usersData!.about && (
-                <NavBarText color="blue" center>
-                  {usersData!["about"]}
-                </NavBarText>
-              )}
-              {!usersData!.about && (
-                <NavBarText color="blue" center>
-                  {getFeeling()}
-                </NavBarText>
-              )} */}
-              {/* <NavBarText color="#5F5F5F" center>
-                {usersData!.about && usersData!["about"]}
-                {!usersData!.about && getFeeling()}
-              </NavBarText> */}
+              <NavBarText color="#5F5F5F" center>
+                {
+                  // @ts-ignore
+                  usersData?.about ? usersData?.about : getFeeling()
+                }
+              </NavBarText>
             </FlexBox>
           </ProfileInnerWrapper>
           <SingleEffectHeaderWrapper>
             <TouchableOpacity
               onPress={() =>
                 navigation.push("Settings", {
-                  userName: usersData!["username"],
-                  email: usersData!["email"],
+                  userName: user?.username,
+                  email: user?.email,
+                  about: user?.about,
                 })
               }
               style={{

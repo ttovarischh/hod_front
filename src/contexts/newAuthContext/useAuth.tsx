@@ -16,6 +16,9 @@ export interface User {
   updated_at: any;
   jti: any;
   username: string;
+  about?: string;
+  sex?: string;
+  show?: any;
 }
 
 interface AuthContextType {
@@ -31,6 +34,8 @@ interface AuthContextType {
   ) => void;
   logout: (email: string) => void;
   about?: any;
+  sex?: string;
+  show?: any;
   loadingInitial: boolean;
 }
 

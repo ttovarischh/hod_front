@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { ImageBackground } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
 import { FlexBox, HeaderText } from "../../common";
-import { Context as AuthContext } from "../../contexts/deprecatedContext/AuthContext";
 import A_Button from "../../components/A_Button";
 import A_Icon from "../../components/A_Icon";
 import { useTranslation } from "react-i18next";
@@ -63,10 +62,7 @@ function HomeScreen(props: { navigation: any }) {
           >
             {t("common:createGame")}
           </A_Button>
-          {/* <A_Button handleButtonClick={() => navigation.push("Join")}>
-          {t("common:joinGame")}
-          </A_Button> */}
-          <A_Button handleButtonClick={() => console.log(user)}>
+          <A_Button handleButtonClick={() => navigation.push("Join")}>
             {t("common:joinGame")}
           </A_Button>
         </HomeScreenInnerWrapper>

@@ -3,6 +3,8 @@ import { ScrollView } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { FlexBox, HeaderText, FigureText, NavBarText } from "../../common";
 import A_Icon from "../../components/A_Icon";
+import A_Header from "../../components/A_Header";
+import { StackActions } from "@react-navigation/native";
 
 const EffectScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -53,19 +55,22 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
   };
 
   return (
-    <EffectScreenWrapper>
-      <ScrollView>
-        <SingleEffectHeaderWrapper direction="row" offsetTop="22">
-          <A_Icon iconName={effect.image}></A_Icon>
-          <FlexBox
-            style={{ marginBottom: 0, marginTop: "auto", marginLeft: 18 }}
-          >
-            <HeaderText>{effect.name}</HeaderText>
-          </FlexBox>
-        </SingleEffectHeaderWrapper>
-        <DescrWrapper direction="column">{supersplit()}</DescrWrapper>
-      </ScrollView>
-    </EffectScreenWrapper>
+    <>
+      <A_Header left="Назад" center="Эффект" handleLeftPress={() => navigation.dispatch(StackActions.popToTop())} />
+      <EffectScreenWrapper>
+        <ScrollView>
+          <SingleEffectHeaderWrapper direction="row">
+            <A_Icon iconName={effect.image}></A_Icon>
+            <FlexBox
+              style={{ marginBottom: 0, marginTop: "auto", marginLeft: 18 }}
+            >
+              <HeaderText>{effect.name}</HeaderText>
+            </FlexBox>
+          </SingleEffectHeaderWrapper>
+          <DescrWrapper direction="column">{supersplit()}</DescrWrapper>
+        </ScrollView>
+      </EffectScreenWrapper>
+    </>
   );
 }
 

@@ -64,7 +64,7 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
             </NavBarText>
           )}
         </FlexBox>
-        <FlexBox>{props.children}</FlexBox>
+        <FlexBox style={{height: 400}}>{props.children}</FlexBox>
         <BottomSheetButton
           onPress={props.handleButtonClick}
           style={styles.shadowProp}

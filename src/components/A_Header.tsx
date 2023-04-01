@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { FlexBox, NavSecondaryText, NavText } from "../common";
+import { FlexBox, NavSecondaryText, TitleText } from "../common";
 import { TouchableOpacity } from "react-native";
 
 const CustomHeaderWrapper = styled(FlexBox)`
@@ -39,7 +39,7 @@ const A_Header = (props: HeaderProps) => {
           </TouchableOpacity>
         </FlexBox>
         <FlexBox justifyContent="center" style={{ width: "50%" }}>
-          <NavText>{props.center}</NavText>
+          <TitleText color="white">{props.center}</TitleText>
         </FlexBox>
         <FlexBox style={{ width: "25%" }} justifyContent="flex-end">
           <TouchableOpacity onPress={props.handleRightPress}>

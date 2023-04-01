@@ -165,14 +165,14 @@ const O_Card = ({
           <LittleText color="#717171">Языки</LittleText>
           <FlexBox offsetTop="9">{children}</FlexBox>
         </CardRow>
-        {condition && (
+        {/* {condition && (
           <A_Input
             placeholder="Инициатива"
             label="Инициатива"
             handleChange={handleInitiativeChange}
             value={initiative}
           ></A_Input>
-        )}
+        )} */}
       </CardWrapper>
     );
   } else if (type == "user") {
@@ -228,12 +228,12 @@ const O_Card = ({
             <LittleText color="#717171">Языки</LittleText>
             <FlexBox offsetTop="9">{children}</FlexBox>
           </CardRow>
-          <CifWrapper justifyContent="center">
+          {/* <CifWrapper justifyContent="center">
             <FlexBox offsetRight="8">
               <A_Icon iconName="eye" fill="#EDF2DC" />
             </FlexBox>
             <BigText color="white">{initiativeVal}</BigText>
-          </CifWrapper>
+          </CifWrapper> */}
           {condition && (
             <A_Input
               placeholder="Инициатива"
@@ -298,12 +298,12 @@ const O_Card = ({
             <LittleText color="#717171">Языки</LittleText>
             <FlexBox offsetTop="9">{children}</FlexBox>
           </CardRow>
-          <CifWrapper justifyContent="center">
+          {/* <CifWrapper justifyContent="center">
             <FlexBox offsetRight="8">
               <A_Icon iconName="eye" fill="#EDF2DC" />
             </FlexBox>
             <BigText color="white">{initiativeVal}</BigText>
-          </CifWrapper>
+          </CifWrapper> */}
           {condition && (
             <A_Input
               placeholder="Инициатива"

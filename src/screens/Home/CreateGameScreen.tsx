@@ -95,51 +95,68 @@ export default function CreateGameScreen(props: {
   const DATA = [
     {
       id: "1",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/img.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/dwarf1.png",
     },
     {
       id: "2",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/1hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/dwarf2.png",
     },
     {
       id: "3",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/2hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf1.png",
     },
     {
       id: "4",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/3hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf2.png",
     },
     {
       id: "5",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/4hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf3.png",
     },
     {
       id: "6",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/img.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf4.png",
     },
     {
       id: "7",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/1hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling1.png",
     },
     {
       id: "8",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/2hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling2.png",
     },
     {
       id: "9",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/3hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling3.png",
     },
     {
       id: "10",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/4hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/human1.png",
     },
     {
       id: "11",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/3hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/human2.png",
     },
     {
       id: "12",
-      imageString: "https://ttovarischh.github.io/WikiMEDIUMM/images/4hod.png",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/orc1.png",
+    },
+    {
+      id: "13",
+      imageString:
+        "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/orc2.png",
     },
   ];
 

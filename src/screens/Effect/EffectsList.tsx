@@ -12,7 +12,6 @@ const EffectsScreenWrapper = styled.View`
   color: white;
   padding-left: 14px;
   padding-right: 14px;
-  // padding-top: 22px;
 `;
 
 const EffectLink = styled.TouchableOpacity`

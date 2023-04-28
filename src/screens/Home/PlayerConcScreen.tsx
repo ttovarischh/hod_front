@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
-import { FlexBox, Breadcrumb, LittleText, BigText } from "../../common";
-import A_Icon from "../../components/A_Icon";
-import A_Header from "../../components/A_Header";
+import { FlexBox, F_Text, E_Text, A_Text } from "../../common";
+import A_Icon from "../../components/Atoms/A_Icon";
+import O_Header from "../../components/Organisms/O_Header";
 
 const EffectScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -121,25 +121,25 @@ export default function PlayerConcScreen(props: {
 
   return (
     <>
-      <A_Header
+      <O_Header
         center={`Персонаж#${player.id}`}
         left="Назад"
         handleLeftPress={() => navigation.goBack()}
-      ></A_Header>
+      ></O_Header>
       <EffectScreenWrapper direction="column">
         <CardWrapper direction="column">
           <CardHalfRowWrapper direction="row" style={styles.brd}>
             <CardHalfRow direction="column" justifyContent="center">
-              <LittleText lineHeight={20} color="white">
+              <E_Text lineHeight={20} color="white">
                 {player.name}
-              </LittleText>
-              <Breadcrumb lineHeight={16} color="#5D5D5D">
+              </E_Text>
+              <F_Text lineHeight={16} color="#5D5D5D">
                 {player.username ? player.username : "no username"}
-              </Breadcrumb>
+              </F_Text>
             </CardHalfRow>
           </CardHalfRowWrapper>
           <CardRow>
-            <LittleText color="#717171">Состояния</LittleText>
+            <E_Text color="#717171">Состояния</E_Text>
             <FlexBox direction="row" offsetTop="9">
               <PlayerWrapper offsetRight="6">
                 <A_Icon fill="#1A1A1A" iconName="plus"></A_Icon>
@@ -151,23 +151,23 @@ export default function PlayerConcScreen(props: {
               <FlexBox offsetRight="8">
                 <A_Icon iconName="eye" fill="#EDF2DC" />
               </FlexBox>
-              <BigText color="white">{player.inv}</BigText>
+              <A_Text color="white">{player.inv}</A_Text>
             </CifWrapper>
             <CifWrapper justifyContent="center">
               <FlexBox offsetRight="8">
                 <A_Icon iconName="eye" fill="#EDF2DC" />
               </FlexBox>
-              <BigText color="white">{player.ins}</BigText>
+              <A_Text color="white">{player.ins}</A_Text>
             </CifWrapper>
             <CifWrapper justifyContent="center">
               <FlexBox offsetRight="8">
                 <A_Icon iconName="eye" fill="#EDF2DC" />
               </FlexBox>
-              <BigText color="white">{player.perc}</BigText>
+              <A_Text color="white">{player.perc}</A_Text>
             </CifWrapper>
           </FlexBox>
           <CardRow offsetBottom="34">
-            <LittleText color="#717171">Языки</LittleText>
+            <E_Text color="#717171">Языки</E_Text>
             <FlexBox offsetTop="9">
               <FlexBox offsetRight="8">{list()}</FlexBox>
             </FlexBox>

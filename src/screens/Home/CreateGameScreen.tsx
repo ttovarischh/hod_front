@@ -9,14 +9,15 @@ import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
 import { FlexBox } from "../../common";
 import styled from "styled-components/native";
 import axios from "axios";
-import A_Loader from "../../components/A_Loader";
-import A_Button from "../../components/A_Button";
-import A_Header from "../../components/A_Header";
-import M_Card from "../../components/M_Card";
-import O_BottomSheet from "../../components/O_BottomSheet";
+import A_Loader from "../../components/Atoms/A_Loader";
+import A_Button from "../../components/Atoms/A_Button";
+import O_Header from "../../components/Organisms/O_Header";
+import M_Card from "../../components/Molecules/M_Card";
+import O_BottomSheet from "../../components/Organisms/O_BottomSheet";
 import { StackActions } from "@react-navigation/native";
-import { apiUrl } from "../const";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import useAuth from "../../contexts/newAuthContext/useAuth";
+import M_Portrait from "../../components/Molecules/M_Portrait";
 
 const HomeScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -25,20 +26,6 @@ const HomeScreenWrapper = styled.View`
   color: white;
   padding-left: 12px;
   padding-right: 12px;
-`;
-
-const PlayerAvatar = styled.Image`
-  width: 129px;
-  height: 129px;
-`;
-
-const PlayerAvatarWrapper = styled.TouchableOpacity`
-  background: #0e0e0e;
-  width: 129px;
-  height: 129px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 8px;
 `;
 
 export default function CreateGameScreen(props: {
@@ -72,91 +59,86 @@ export default function CreateGameScreen(props: {
     username: "",
     imagestring: "",
   });
-
-  const Item = ({ imageString }: any) => (
-    <PlayerAvatarWrapper
-      onPress={() => {
-        setPlayer((prevState) => ({
-          ...prevState,
-          imagestring: imageString,
-        }));
-        console.log(player);
-        handleCloseModalPress();
-      }}
-    >
-      <PlayerAvatar
-        source={{
-          uri: `${imageString}`,
-        }}
-      />
-    </PlayerAvatarWrapper>
-  );
+  const { user } = useAuth();
 
   const DATA = [
     {
       id: "1",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/dwarf1.png",
+      src: require("../../../assets/images/portraits/dwarf1.png"),
     },
     {
       id: "2",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/dwarf2.png",
+      src: require("../../../assets/images/portraits/dwarf2.png"),
     },
     {
       id: "3",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf1.png",
+      src: require("../../../assets/images/portraits/elf1.png"),
     },
     {
       id: "4",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf2.png",
+      src: require("../../../assets/images/portraits/elf2.png"),
     },
     {
       id: "5",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf3.png",
+      src: require("../../../assets/images/portraits/elf3.png"),
     },
     {
       id: "6",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/elf4.png",
+      src: require("../../../assets/images/portraits/elf4.png"),
     },
     {
       id: "7",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling1.png",
+      src: require("../../../assets/images/portraits/halfling1.png"),
     },
     {
       id: "8",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling2.png",
+      src: require("../../../assets/images/portraits/halfling2.png"),
     },
     {
       id: "9",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/halfling3.png",
+      src: require("../../../assets/images/portraits/dwarf1.png"),
     },
     {
       id: "10",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/human1.png",
+      src: require("../../../assets/images/portraits/human1.png"),
     },
     {
       id: "11",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/human2.png",
+      src: require("../../../assets/images/portraits/human2.png"),
     },
     {
       id: "12",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/orc1.png",
+      src: require("../../../assets/images/portraits/orc1.png"),
     },
     {
       id: "13",
       imageString:
         "https://ttovarischh.github.io/WikiMEDIUMM/images/hod/orc2.png",
+      src: require("../../../assets/images/portraits/orc2.png"),
     },
   ];
 
@@ -200,45 +182,43 @@ export default function CreateGameScreen(props: {
     bottomSheetModalRef.current?.close();
   }, []);
 
-  // axios.interceptors.request.use((x) => {
-  //   console.log(x);
-  //   return x;
-  // });
+  const handleSubmit = async () => {
+    if (!user!.jwt) {
+      console.log("Error: missing token");
+      return;
+    }
 
-  // main_functions
-  useEffect(() => {
-    console.log("Game's ready");
-    axios
-      .post(apiUrl + "/games", {
-        game: {
-          name: dateTime,
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/games", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user!.jwt}`,
+          jti: `${user!.jti}`,
+          "Authorization-Session": `Bearer ${user!.jwt}`,
         },
-      })
-      .then(function (response) {
-        console.log(response.data.code);
-        setCode(response.data.code);
-        console.log(code);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+        body: JSON.stringify({
+          game: {
+            name: dateTime,
+          },
+          session: user!.jwt,
+        }),
+      });
+      const data = await response.json();
+      console.log(`Game with a name ${dateTime} created successfully!`);
+      console.log(data);
+      setCode(data.code);
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // for test
-  // useEffect(() => {
-  //   console.log("ready");
-  //   axios
-  //     .get("http://localhost:3000/api/v1/games/" + code + "/players")
-  //     .then(({ data }) => {
-  //       setGameData(data);
-  //     })
-  //     .catch((error) => console.error(error))
-  //     .finally(() => {
-  //       console.log("Done get");
-  //       console.log(gameData);
-  //     });
-  // }, []);
+  useEffect(() => {
+    handleSubmit();
+  }, []);
 
   const handleType = (key: any, value: any) => {
     console.log(player);
@@ -296,98 +276,99 @@ export default function CreateGameScreen(props: {
     }
   };
 
+  if (isLoading) {
+    return <A_Loader />;
+  }
+
   return (
     <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <>
-          <A_Header
-            left="Отмена"
-            center="Создание игроков"
-            handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
-          />
-          <ScrollView
-            style={{ flex: 1 }}
-            bounces={false}
-            ref={scrollViewRef}
-            onContentSizeChange={() =>
-              scrollViewRef.current?.scrollToEnd({ animated: true })
-            }
-          >
-            <HomeScreenWrapper>
-              <>
-                <FlexBox direction="column">{createdPlayersList()}</FlexBox>
-                <M_Card
-                  type="ch_creation"
-                  handleImagePickerPress={handlePresentModalPress}
-                  handleFirstInputChange={(text: any) =>
-                    handleType("playerName", text)
-                  }
-                  handleSecondInputChange={(text: any) =>
-                    handleType("ins", text)
-                  }
-                  handleThirdInputChange={(text: any) =>
-                    handleType("inv", text)
-                  }
-                  handleFourthInputChange={(text: any) =>
-                    handleType("perc", text)
-                  }
-                  handleFifthInputChange={(text: any) =>
-                    handleType("lang", text)
-                  }
-                  handleSixthInputChange={(text: any) =>
-                    handleType("username", text)
-                  }
-                  handleClear={handleClear}
-                  val1={player.playerName}
-                  val2={player.ins}
-                  val3={player.inv}
-                  val4={player.perc}
-                  val5={player.lang}
-                  val6={player.username}
-                  err1={empty && player.playerName == ""}
-                  err2={empty && player.ins == ""}
-                  err3={empty && player.inv == ""}
-                  err4={empty && player.perc == ""}
-                  imagePresent={player.imagestring}
-                ></M_Card>
-                <A_Button
-                  handleButtonClick={handlePostPlayerClick}
-                  offsetBottom={8}
-                >
-                  Сохранить игрока
-                </A_Button>
-                <A_Button
-                  bright
-                  offsetBottom={107}
-                  handleButtonClick={() =>
-                    navigation.push("SGame", { code: code })
-                  }
-                >
-                  Начать игру
-                </A_Button>
-              </>
-            </HomeScreenWrapper>
-          </ScrollView>
-          <O_BottomSheet
-            mainHeader="Выбери аватарку персонажа"
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            handleButtonClick={handleCloseModalPress}
-          >
-            <FlatList
-              style={{ width: "100%" }}
-              columnWrapperStyle={styles.tagView}
-              data={DATA}
-              numColumns={3}
-              renderItem={({ item }) => <Item imageString={item.imageString} />}
-              keyExtractor={(item) => item.id}
-            />
-          </O_BottomSheet>
-        </>
-      )}
+      <O_Header
+        left="Отмена"
+        center="Создание игроков"
+        handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
+      />
+      <ScrollView
+        style={{ flex: 1 }}
+        bounces={false}
+        ref={scrollViewRef}
+        onContentSizeChange={() =>
+          scrollViewRef.current?.scrollToEnd({ animated: true })
+        }
+      >
+        <HomeScreenWrapper>
+          <>
+            <FlexBox direction="column">{createdPlayersList()}</FlexBox>
+            <M_Card
+              type="ch_creation"
+              handleImagePickerPress={handlePresentModalPress}
+              handleFirstInputChange={(text: any) =>
+                handleType("playerName", text)
+              }
+              handleSecondInputChange={(text: any) => handleType("ins", text)}
+              handleThirdInputChange={(text: any) => handleType("inv", text)}
+              handleFourthInputChange={(text: any) => handleType("perc", text)}
+              handleFifthInputChange={(text: any) => handleType("lang", text)}
+              handleSixthInputChange={(text: any) =>
+                handleType("username", text)
+              }
+              handleClear={handleClear}
+              val1={player.playerName}
+              val2={player.ins}
+              val3={player.inv}
+              val4={player.perc}
+              val5={player.lang}
+              val6={player.username}
+              err1={empty && player.playerName == ""}
+              err2={empty && player.ins == ""}
+              err3={empty && player.inv == ""}
+              err4={empty && player.perc == ""}
+              imagePresent={player.imagestring}
+            ></M_Card>
+            <A_Button
+              handleButtonClick={handlePostPlayerClick}
+              offsetBottom={8}
+            >
+              Сохранить игрока
+            </A_Button>
+            <A_Button
+              bright
+              offsetBottom={107}
+              handleButtonClick={() => navigation.push("SGame", { code: code })}
+            >
+              Начать игру
+            </A_Button>
+          </>
+        </HomeScreenWrapper>
+      </ScrollView>
+      <O_BottomSheet
+        mainHeader="Выбери аватарку персонажа"
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        handleButtonClick={handleCloseModalPress}
+      >
+        <FlatList
+          style={{ width: "100%" }}
+          columnWrapperStyle={styles.tagView}
+          data={DATA}
+          numColumns={3}
+          renderItem={({ item }) => (
+            <M_Portrait
+              type="BottomSheet"
+              src={item.src}
+              onPress={() => {
+                setPlayer((prevState) => ({
+                  ...prevState,
+                  imagestring: item.imageString,
+                }));
+                console.log(player);
+                handleCloseModalPress();
+              }}
+            ></M_Portrait>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </O_BottomSheet>
     </>
   );
 }

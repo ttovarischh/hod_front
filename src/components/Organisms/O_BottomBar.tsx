@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import styled from "styled-components/native";
 import { BlurView } from "expo-blur";
-import A_Icon from "./A_Icon";
-import { FlexBox } from "../common";
+import A_Icon from "../Atoms/A_Icon";
+import { FlexBox } from "../../common";
 
 const BottomBarContainer = styled(FlexBox)`
   width: 100%;

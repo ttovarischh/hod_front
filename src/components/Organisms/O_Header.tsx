@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { FlexBox, NavSecondaryText, TitleText } from "../common";
+import { FlexBox, D_Text, F_Text } from "../../common";
 import { TouchableOpacity } from "react-native";
 
 const CustomHeaderWrapper = styled(FlexBox)`
@@ -27,23 +27,30 @@ type HeaderProps = {
   right?: any;
   handleRightPress?: any;
   handleLeftPress?: any;
+  turn?: any;
 };
 
-const A_Header = (props: HeaderProps) => {
+const O_Header = (props: HeaderProps) => {
   return (
     <CustomHeaderWrapper direction="column">
       <CustomHeaderInnerWrapper>
         <FlexBox style={{ width: "25%" }}>
           <TouchableOpacity onPress={props.handleLeftPress}>
-            <NavSecondaryText>{props.left}</NavSecondaryText>
+            <F_Text color="#373737">{props.left}</F_Text>
           </TouchableOpacity>
         </FlexBox>
-        <FlexBox justifyContent="center" style={{ width: "50%" }}>
-          <TitleText color="white">{props.center}</TitleText>
+        <FlexBox
+          justifyContent="center"
+          style={{ width: "50%", position: "relative" }}
+        >
+          <FlexBox style={{ position: "absolute", top: -25 }}>
+            <F_Text center color="#373737">{props.turn}</F_Text>
+          </FlexBox>
+          <D_Text color="white">{props.center}</D_Text>
         </FlexBox>
         <FlexBox style={{ width: "25%" }} justifyContent="flex-end">
           <TouchableOpacity onPress={props.handleRightPress}>
-            <NavSecondaryText>{props.right}</NavSecondaryText>
+            <F_Text color="#373737">{props.right}</F_Text>
           </TouchableOpacity>
         </FlexBox>
       </CustomHeaderInnerWrapper>
@@ -51,4 +58,4 @@ const A_Header = (props: HeaderProps) => {
   );
 };
 
-export default A_Header;
+export default O_Header;

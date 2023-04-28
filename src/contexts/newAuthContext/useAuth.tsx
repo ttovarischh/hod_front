@@ -19,6 +19,7 @@ export interface User {
   about?: string;
   sex?: string;
   show?: any;
+  jwt: any;
 }
 
 interface AuthContextType {

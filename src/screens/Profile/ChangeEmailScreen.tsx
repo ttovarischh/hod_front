@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FlexBox, LittleText } from "../../common";
+import { FlexBox, E_Text } from "../../common";
 import styled from "styled-components/native";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import A_Header from "../../components/A_Header";
+import O_Header from "../../components/Organisms/O_Header";
 import useAuth from "../../contexts/newAuthContext/useAuth";
-import A_Input from "../../components/A_Input";
+import A_Input from "../../components/Atoms/A_Input";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -55,19 +55,19 @@ export default function ChangeEmailScreen(props: {
 
   return (
     <>
-      <A_Header
+      <O_Header
         center="Изменить почту"
         handleLeftPress={() => navigation.navigate("Settings")}
         left={t("common:cancel")}
         right={newEmail !== email && newEmail !== "" ? t("common:done") : ""}
         handleRightPress={patchUserUpdate}
-      ></A_Header>
+      ></O_Header>
       <ProfileScreenWrapper>
         <FlexBox style={{ width: 285 }} offsetBottom="16" offsetTop="50">
-          <LittleText center>
+          <E_Text center>
             Введи адрес новой электронной почты, чтобы получить письмо
             с подтверждением
-          </LittleText>
+          </E_Text>
         </FlexBox>
         <A_Input
           value={newEmail}

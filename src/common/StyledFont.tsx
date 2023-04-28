@@ -12,17 +12,20 @@ interface TextProps {
   offsetLeft?: number;
   offsetRight?: number;
   lineHeight?: number;
+  size?: number;
 }
 
-export const NavText = (props: TextProps) => {
+export const A_Text = (props: TextProps) => {
   const theme = useContext(ThemeContext);
   return (
     <Text
+      numberOfLines={1}
       style={{
         fontFamily: "PP",
-        fontSize: 24,
+        fontSize: props.size || 48,
+        lineHeight: props.lineHeight || 35,
+        letterSpacing: -0.05,
         color: props.color || theme.nav.header,
-        lineHeight: 24,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -36,15 +39,15 @@ export const NavText = (props: TextProps) => {
   );
 };
 
-export const NavSecondaryText = (props: TextProps) => {
+export const B_Text = (props: TextProps) => {
   const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 16,
-        lineHeight: 19,
-        color: props.color || theme.nav.header_button,
+        fontSize: props.size || 28,
+        lineHeight: props.lineHeight || 34,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -58,14 +61,15 @@ export const NavSecondaryText = (props: TextProps) => {
   );
 };
 
-export const LittleText = (props: TextProps) => {
+export const C_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 18,
-        color: props.color || "white",
-        lineHeight: props.lineHeight || 27,
+        fontSize: props.size || 24,
+        lineHeight: props.lineHeight || 29,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -79,14 +83,15 @@ export const LittleText = (props: TextProps) => {
   );
 };
 
-export const Breadcrumb = (props: TextProps) => {
+export const D_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 16,
-        color: props.color ? props.color : "white",
+        fontSize: props.size || 20,
         lineHeight: props.lineHeight || 24,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -100,15 +105,15 @@ export const Breadcrumb = (props: TextProps) => {
   );
 };
 
-export const BigText = (props: TextProps) => {
+export const E_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 48,
-        color: props.color || "white",
-        lineHeight: 48,
-        paddingTop: 8,
+        fontSize: props.size || 18,
+        lineHeight: props.lineHeight || 22,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -122,14 +127,15 @@ export const BigText = (props: TextProps) => {
   );
 };
 
-export const FigureText = (props: TextProps) => {
+export const F_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 14,
-        color: props.color || "white",
-        lineHeight: 17,
+        fontSize: props.size || 16,
+        lineHeight: props.lineHeight || 24,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -143,13 +149,15 @@ export const FigureText = (props: TextProps) => {
   );
 };
 
-export const SmallText = (props: TextProps) => {
+export const G_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 16,
-        color: props.color || "white",
+        fontSize: props.size || 14,
+        lineHeight: props.lineHeight || 21,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,
@@ -163,57 +171,15 @@ export const SmallText = (props: TextProps) => {
   );
 };
 
-export const HeaderText = (props: TextProps) => {
+export const H_Text = (props: TextProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <Text
       style={{
         fontFamily: "PP",
-        fontSize: 28,
-        lineHeight: 33,
-        color: props.color || "white",
-        textAlign: props.center ? "center" : "left",
-        marginTop: props.offsetTop ? props.offsetTop : 0,
-        marginBottom: props.offsetBottom ? props.offsetBottom : 0,
-        marginLeft: props.offsetLeft ? props.offsetLeft : 0,
-        marginRight: props.offsetRight ? props.offsetRight : 0,
-        textTransform: props.uppercase ? "uppercase" : "none",
-      }}
-    >
-      {props.children}
-    </Text>
-  );
-};
-
-export const TitleText = (props: TextProps) => {
-  return (
-    <Text
-      style={{
-        fontFamily: "PP",
-        fontSize: 20,
-        lineHeight: 33,
-        letterSpacing: 0.36,
-        color: props.color || "#989899",
-        textAlign: props.center ? "center" : "left",
-        marginTop: props.offsetTop ? props.offsetTop : 0,
-        marginBottom: props.offsetBottom ? props.offsetBottom : 0,
-        marginLeft: props.offsetLeft ? props.offsetLeft : 0,
-        marginRight: props.offsetRight ? props.offsetRight : 0,
-        textTransform: props.uppercase ? "uppercase" : "none",
-      }}
-    >
-      {props.children}
-    </Text>
-  );
-};
-
-export const NavBarText = (props: TextProps) => {
-  return (
-    <Text
-      style={{
-        fontFamily: "PP",
-        fontSize: 18,
-        lineHeight: 22,
-        color: props.color || "#ffffff",
+        fontSize: props.size || 11,
+        lineHeight: props.lineHeight || 13,
+        color: props.color || theme.nav.header,
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,

@@ -1,34 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled, { ThemeContext } from "styled-components/native";
 import axios from "axios";
-import { FlexBox, FigureText, HeaderText } from "../../common";
-import A_Icon from "../../components/A_Icon";
-import A_Loader from "../../components/A_Loader";
-import A_Header from "../../components/A_Header";
+import A_Loader from "../../components/Atoms/A_Loader";
+import O_Header from "../../components/Organisms/O_Header";
+import { FlatList } from "react-native";
+import { consumer } from "../../constants";
+import { FlexBox } from "../../common";
+import A_Effect from "../../components/Atoms/A_Effect";
 
 const EffectsScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
   height: 100%;
+  flex: 1;
   color: white;
   padding-left: 14px;
   padding-right: 14px;
-`;
-
-const EffectLink = styled.TouchableOpacity`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const EffectInfoWrapper = styled(FlexBox)`
-  margin-left: 18px;
-`;
-
-const CardWrapper = styled(FlexBox)`
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 12px;
 `;
 
 export default function EffectsList(props: { navigation: any }) {
@@ -44,39 +30,42 @@ export default function EffectsList(props: { navigation: any }) {
         setEffectsData(data);
       })
       .catch((error) => console.error(error))
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
+    const subscription = consumer.subscriptions.create(
+      { channel: "EffectsChannel" },
+      {
+        received(data) {
+          setEffectsData((messages) => messages.concat(data));
+        },
+      }
+    );
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const list = () => {
-    return effectsData.map((effect) => {
-      return (
-        <CardWrapper direction="column" key={effect.id}>
-          <EffectLink
-            onPress={() => navigation.push("Single", { effect: effect })}
-          >
-            <A_Icon iconName={effect.image}></A_Icon>
-            <EffectInfoWrapper direction="row">
-              <HeaderText offsetRight={1}>{effect.name}</HeaderText>
-              <FigureText>&#40;{effect.id}&#41;</FigureText>
-            </EffectInfoWrapper>
-          </EffectLink>
-        </CardWrapper>
-      );
-    });
-  };
+  if (isLoading) {
+    return <A_Loader />;
+  }
 
   return (
     <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <EffectsScreenWrapper>
-          <A_Header center="Эффекты" />
-          <FlexBox direction="column">{list()}</FlexBox>
-        </EffectsScreenWrapper>
-      )}
+      <EffectsScreenWrapper>
+        <O_Header center="Эффекты" />
+        <FlexBox direction="column" offsetBottom="200">
+          <FlatList
+            data={effectsData}
+            keyExtractor={(item) => item.id}
+            style={{ height: "100%" }}
+            renderItem={({ item }) => (
+              <A_Effect
+                item={item}
+                onPress={() => navigation.push("Single", { effect: item })}
+              />
+            )}
+          />
+        </FlexBox>
+      </EffectsScreenWrapper>
     </>
   );
 }

@@ -1,10 +1,10 @@
 import React from "react";
-import { FlexBox, NavBarText } from "../../common";
+import { FlexBox, E_Text } from "../../common";
 import styled from "styled-components/native";
-import A_Button from "../../components/A_Button";
+import A_Button from "../../components/Atoms/A_Button";
 import { StackActions } from "@react-navigation/native";
-import A_Header from "../../components/A_Header";
-import A_Input from "../../components/A_Input";
+import O_Header from "../../components/Organisms/O_Header";
+import A_Input from "../../components/Atoms/A_Input";
 
 const JoinScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -12,6 +12,12 @@ const JoinScreenWrapper = styled.View`
   color: white;
   padding-left: 14px;
   padding-right: 14px;
+`;
+
+const Ornament = styled.Image`
+  width: 290.38px;
+  height: 224.15px;
+  position: absolute;
 `;
 
 export default function JoinGameScreen(props: { route: any; navigation: any }) {
@@ -27,24 +33,37 @@ export default function JoinGameScreen(props: { route: any; navigation: any }) {
 
   return (
     <JoinScreenWrapper>
-      <A_Header
+      <O_Header
         left="Назад"
         center="Войти в игру"
         handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
       />
-      <FlexBox direction="column" alignItems="center" offsetTop="48">
-        <FlexBox style={{ maxWidth: "70%", marginBottom: 16 }}>
-          <NavBarText center>
-            Введи код, который дал тебе ДМ или отсканируй QR-код для того, чтобы
-            войти в игру
-          </NavBarText>
+      <Ornament
+        style={{ resizeMode: "contain", left: 160, top: 112 }}
+        source={require("../../../assets/images/JoinOrnament.png")}
+      />
+      <Ornament
+        style={{ resizeMode: "contain", left: -30, bottom: -30 }}
+        source={require("../../../assets/images/JoinOrnament.png")}
+      />
+      <FlexBox
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ flex: 1, paddingBottom: 100 }}
+      >
+        <FlexBox style={{ maxWidth: "92%", marginBottom: 16 }}>
+          <E_Text center>
+            Попроси у мастера код приглашения и введи его в поле ниже.
+            Ты также можешь отсканировать QR-код с утройства ведущего!
+          </E_Text>
         </FlexBox>
         <A_Input
           value={code}
           maxLength={5}
           handleChange={handleType}
-          placeholder={"Код"}
-          label={"Код"}
+          placeholder={"Код игры"}
+          label={"Код игры"}
         />
         <A_Button
           bright

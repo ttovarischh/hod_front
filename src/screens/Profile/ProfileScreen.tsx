@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import {
-  FlexBox,
-  NavBarText,
-  HugeText,
-  TitleText,
-  SuperBigText,
-} from "../../common";
+import { FlexBox, HugeText, E_Text, D_Text } from "../../common";
 import styled from "styled-components/native";
-import A_Icon from "../../components/A_Icon";
-import A_Loader from "../../components/A_Loader";
+import A_Icon from "../../components/Atoms/A_Icon";
+import A_Loader from "../../components/Atoms/A_Loader";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import useAuth from "../../contexts/newAuthContext/useAuth";
+import A_UserProfileAvatar from "../../components/Atoms/A_UserProfileAvatar";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -42,18 +37,6 @@ const Cover = styled.Image`
   height: 256px;
   position: absolute;
   top: 0;
-`;
-
-const BigAvatarWrapper = styled(FlexBox)`
-  border-radius: 1000%;
-  background: #1a1a1a;
-  width: 404px;
-  height: 404px;
-  margin-bottom: 30px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
 `;
 
 export default function ProfileScreen(props: { navigation: any; route: any }) {
@@ -115,38 +98,29 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
         <ProfileScreenWrapper>
           <Cover source={require("../../../assets/images/cover.png")} />
           <ProfileInnerWrapper>
-            <BigAvatarWrapper>
-              <NavBarText offsetTop={30} color="white">
-                {
-                  // @ts-ignore
-                  usersData?.show == "count"
-                    ? t("common:doneGames")
-                    : t("common:hours")
-                }
-              </NavBarText>
-              <SuperBigText>
-                {
-                  // @ts-ignore
-                  usersData?.show == "count"
-                    ? gamesData.length
-                    : gamesData.length * 3
-                }
-              </SuperBigText>
-            </BigAvatarWrapper>
-            <HugeText offsetBottom={4}>
-              {
-                //@ts-ignore
-                usersData!.username
+            <A_UserProfileAvatar
+              upperString={
+                // @ts-ignore
+                usersData?.show == "count"
+                  ? t("common:doneGames")
+                  : t("common:hours")
               }
-            </HugeText>
-            <NavBarText offsetBottom={26}>{user?.email}</NavBarText>
+              downString={
+                // @ts-ignore
+                usersData?.show == "count"
+                  ? gamesData.length
+                  : gamesData.length * 3
+              }
+            ></A_UserProfileAvatar>
+            <HugeText offsetBottom={4}>{user?.username}</HugeText>
+            <E_Text offsetBottom={26}>{user?.email}</E_Text>
             <FlexBox style={{ maxWidth: 285 }}>
-              <NavBarText color="#5F5F5F" center>
+              <E_Text color="#5F5F5F" center>
                 {
                   // @ts-ignore
                   usersData?.about ? usersData?.about : getFeeling()
                 }
-              </NavBarText>
+              </E_Text>
             </FlexBox>
           </ProfileInnerWrapper>
           <SingleEffectHeaderWrapper>
@@ -170,9 +144,9 @@ export default function ProfileScreen(props: { navigation: any; route: any }) {
                 alignItems="center"
               >
                 <A_Icon iconName="settings" />
-                <TitleText color="white" offsetLeft={12}>
+                <D_Text color="white" offsetLeft={12}>
                   {t("common:settings")}
-                </TitleText>
+                </D_Text>
               </FlexBox>
             </TouchableOpacity>
           </SingleEffectHeaderWrapper>

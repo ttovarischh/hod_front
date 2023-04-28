@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
+import { C_Text } from "../../common";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ type ButtonProps = {
   disabled?: boolean;
   offsetTop?: number;
   offsetBottom?: number;
+  secondary?: boolean;
 };
 
 const A_ButtonWrapper = styled.TouchableOpacity`

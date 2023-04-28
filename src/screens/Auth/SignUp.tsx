@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import useAuth from "../../contexts/newAuthContext/useAuth";
 import styled from "styled-components/native";
-import { FlexBox, HeaderText, TitleText } from "../../common";
-import A_Input from "../../components/A_Input";
-import A_Button from "../../components/A_Button";
+import { FlexBox, B_Text, D_Text } from "../../common";
+import A_Input from "../../components/Atoms/A_Input";
+import A_Button from "../../components/Atoms/A_Button";
 import { ImageBackground } from "react-native";
 import { useTranslation } from "react-i18next";
 
@@ -58,9 +58,9 @@ export default function SignUpScreen(props: { route: any; navigation: any }) {
             offsetTop="168"
             offsetBottom="183"
           >
-            <HeaderText offsetBottom={18} center>
+            <B_Text offsetBottom={18} center>
               {t("common:register")}
-            </HeaderText>
+            </B_Text>
             <A_Input
               value={newUser.email}
               handleChange={(text: any) => handleType("email", text)}
@@ -111,9 +111,9 @@ export default function SignUpScreen(props: { route: any; navigation: any }) {
             </A_Button>
           </FlexBox>
           <SecondaryButton onPress={() => navigation.navigate("Signin")}>
-            <TitleText color="black" center offsetLeft={12}>
+            <D_Text color="black" center offsetLeft={12}>
               {t("common:doLogin")}
-            </TitleText>
+            </D_Text>
           </SecondaryButton>
         </FlexBox>
       </ImageBackground>

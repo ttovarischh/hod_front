@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, HeaderText, TitleText, SmallText } from "../../common";
+import { FlexBox, B_Text, D_Text, F_Text } from "../../common";
 import Svg, { Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
-import A_Icon from "../../components/A_Icon";
-import A_Button from "../../components/A_Button";
+import A_Icon from "../../components/Atoms/A_Icon";
+import A_Button from "../../components/Atoms/A_Button";
 
 const ErrorScreen = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -74,10 +74,10 @@ const Error = (props: PropsT) => {
             alignItems="center"
             direction="column"
           >
-            <HeaderText>404</HeaderText>
-            <HeaderText>
+            <B_Text>404</B_Text>
+            <B_Text>
               Такой игры нет!
-            </HeaderText>
+            </B_Text>
             <A_Icon iconName="error"></A_Icon>
             <FlexBox
               style={{
@@ -86,9 +86,9 @@ const Error = (props: PropsT) => {
                 marginBottom: 32,
               }}
             >
-              <SmallText>
+              <F_Text>
                 Кажется, вы ввели неверный код! Проверьте еще раз или...
-              </SmallText>
+              </F_Text>
             </FlexBox>
             <A_Button bright handleButtonClick={props.handleButtonClick}>
               Создать игру
@@ -98,7 +98,7 @@ const Error = (props: PropsT) => {
       </>
     );
   } else if (props.errorid == "505") {
-    return <TitleText>505</TitleText>;
+    return <D_Text>505</D_Text>;
   }
   return <></>;
 };

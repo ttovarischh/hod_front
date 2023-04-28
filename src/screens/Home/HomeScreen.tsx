@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ImageBackground } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, HeaderText } from "../../common";
-import A_Button from "../../components/A_Button";
-import A_Icon from "../../components/A_Icon";
+import { FlexBox, B_Text } from "../../common";
+import A_Button from "../../components/Atoms/A_Button";
+import A_Icon from "../../components/Atoms/A_Icon";
 import { useTranslation } from "react-i18next";
 import useAuth from "../../contexts/newAuthContext/useAuth";
 
@@ -51,10 +51,10 @@ function HomeScreen(props: { navigation: any }) {
             style={{ alignContent: "center" }}
           >
             <A_Icon iconName="bigstar"></A_Icon>
-            <HeaderText center offsetTop={24}>
+            <B_Text center offsetTop={24}>
               {t("common:hello")}, *{user?.username}*!
-            </HeaderText>
-            <HeaderText center>{t("common:start")}</HeaderText>
+            </B_Text>
+            <B_Text center>{t("common:start")}</B_Text>
           </FlexBox>
           <A_Button
             bright

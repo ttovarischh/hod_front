@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import { FlexBox, TitleText, LittleText } from "../../common";
+import { ScrollView } from "react-native";
+import { FlexBox, F_Text, D_Text, E_Text } from "../../common";
 import styled from "styled-components/native";
-import A_Loader from "../../components/A_Loader";
+import A_Loader from "../../components/Atoms/A_Loader";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Selector from "../../i18/LanguageSelector";
-import A_Header from "../../components/A_Header";
+import O_Header from "../../components/Organisms/O_Header";
 import { StackActions } from "@react-navigation/routers";
 import useAuth from "../../contexts/newAuthContext/useAuth";
-import A_Icon from "../../components/A_Icon";
-import A_Selector from "../../components/A_Selector";
+import A_Selector from "../../components/Atoms/A_Selector";
+import A_SettingsItem from "../../components/Atoms/A_SettingsItem";
+import A_Button from "../../components/Atoms/A_Button";
 
 const ProfileScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -20,50 +21,6 @@ const ProfileScreenWrapper = styled(FlexBox)`
   position: relative;
   padding-left: 12px;
   padding-right: 12px;
-`;
-
-const SettingsItem = styled(FlexBox)`
-  margin-bottom: 24;
-  display: flex;
-  flex-direction: row;
-  height: 36px;
-  border-bottom: 1px solid #1a1a1a;
-  width: 100%;
-`;
-
-const SettingsItemText = styled.Text`
-  font-size: 20px;
-  line-height: 20px;
-  color: white;
-  margin-right: 24;
-`;
-
-const SettingsItemLink = styled.TouchableOpacity`
-  display: flex;
-  width: 100%;
-  flex: 1;
-  flex-wrap: no-wrap;
-  margin-bottom: 24;
-  flex-direction: row;
-  height: 36px;
-  justify-content: space-between;
-`;
-
-const SecondaryButton = styled(FlexBox)`
-  width: 406px;
-  height: 72px;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background: #1a1a1a;
-  border-radius: 20px;
-  margin-bottom: 32px;
-`;
-
-const SettingsTextArea = styled.TextInput`
-  font-size: 20px;
-  line-height: 20px;
-  margin-right: 24;
 `;
 
 export default function SettingsScreen(props: { navigation: any; route: any }) {
@@ -177,191 +134,134 @@ export default function SettingsScreen(props: { navigation: any; route: any }) {
     console.log(userSettings);
   };
 
+  if (isLoading) {
+    return <A_Loader />;
+  }
+
   return (
     <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <>
-          <A_Header
-            center={t("common:settings")}
-            handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
-            left={
-              userSettings.sex !== initialState.sex ||
-              userSettings.showed !== initialState.showed ||
-              userSettings.about !== initialState.about ||
-              userSettings.username !== initialState.username
-                ? t("common:cancel")
-                : t("common:done")
+      <O_Header
+        center={t("common:settings")}
+        handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
+        left={
+          userSettings.sex !== initialState.sex ||
+          userSettings.showed !== initialState.showed ||
+          userSettings.about !== initialState.about ||
+          userSettings.username !== initialState.username
+            ? t("common:cancel")
+            : t("common:done")
+        }
+        right={
+          userSettings.sex !== initialState.sex ||
+          userSettings.showed !== initialState.showed ||
+          userSettings.about !== initialState.about ||
+          userSettings.username !== initialState.username
+            ? t("common:done")
+            : ""
+        }
+        handleRightPress={patchUserUpdate}
+      ></O_Header>
+      <ProfileScreenWrapper>
+        <ScrollView>
+          <A_SettingsItem
+            onPress={(text: any) => handleType("username", text)}
+            type="UsernameInput"
+            colorCondition={userSettings.username == initialState.username}
+            valueCondition={
+              userSettings.username == initialState.username
+                ? ""
+                : userSettings.username
             }
-            right={
-              userSettings.sex !== initialState.sex ||
-              userSettings.showed !== initialState.showed ||
-              userSettings.about !== initialState.about ||
-              userSettings.username !== initialState.username
-                ? t("common:done")
-                : ""
+            placeholder={usersData?.username}
+          />
+          <A_SettingsItem
+            type="Link"
+            placeholder={email}
+            onPress={() =>
+              navigation.push("ChangeEmail", {
+                email: usersData?.email,
+              })
             }
-            handleRightPress={patchUserUpdate}
-          ></A_Header>
-          <ProfileScreenWrapper>
-            <ScrollView>
-              <SettingsItem offsetTop="40" style={styles.buttonContainer}>
-                <SettingsTextArea
-                  autoCapitalize={"none"}
-                  multiline={true}
-                  placeholderTextColor="#404040"
-                  style={{
-                    color:
-                      userSettings.username == initialState.username
-                        ? "#404040"
-                        : "white",
-                    fontFamily: "PP",
-                  }}
-                  numberOfLines={4}
-                  onChangeText={(text: any) => handleType("username", text)}
-                  placeholder={usersData?.username}
-                  value={
-                    userSettings.username == initialState.username
-                      ? ""
-                      : userSettings.username
-                  }
-                />
-              </SettingsItem>
-              <SettingsItemLink
-                style={[
-                  styles.buttonContainer,
-                  { display: "flex", width: "100%" },
-                ]}
-                onPress={() =>
-                  navigation.push("ChangeEmail", {
-                    email: usersData?.email,
-                  })
-                }
-              >
-                <SettingsItemText
-                  style={{
-                    fontFamily: "PP",
-                    marginRight: 0,
-                  }}
-                >
-                  {email}
-                </SettingsItemText>
-                <A_Icon iconName="navigate" />
-              </SettingsItemLink>
-              <SettingsItem style={styles.buttonContainer}>
-                <SettingsTextArea
-                  multiline={true}
-                  placeholderTextColor="#404040"
-                  style={{
-                    color:
-                      userSettings.about == initialState.about
-                        ? "#404040"
-                        : "white",
-                    fontFamily: "PP",
-                  }}
-                  numberOfLines={4}
-                  onChangeText={(text: any) => handleType("about", text)}
-                  placeholder={
-                    usersData?.about ? usersData?.about : t("common:about")
-                  }
-                  value={
-                    userSettings.about == initialState.about
-                      ? ""
-                      : userSettings.about
-                  }
-                />
-              </SettingsItem>
-              <FlexBox style={{ width: 290 }}>
-                <LittleText
-                  lineHeight={19}
-                  color="#404040"
-                  offsetTop={38}
-                  offsetBottom={16}
-                >
-                  {t("common:chooseInfo")}
-                </LittleText>
-              </FlexBox>
-              <FlexBox offsetBottom="24">
-                <A_Selector
-                  arraymap={SHOWS}
-                  selectedCondition={userSettings.showed}
-                  setState={setUserSettings}
-                  toSet={"showed"}
-                />
-              </FlexBox>
-              <FlexBox offsetBottom="24">
-                <A_Selector
-                  arraymap={SEXES}
-                  selectedCondition={userSettings.sex}
-                  setState={setUserSettings}
-                  toSet={"sex"}
-                />
-              </FlexBox>
-              <Selector></Selector>
-              <SecondaryButton>
-                <TitleText color="white" center offsetLeft={12}>
-                  {t("common:changePassword")}
-                </TitleText>
-              </SecondaryButton>
-              <FlexBox
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                style={{ width: "100%", alignContent: "center" }}
-              >
-                <TouchableOpacity onPress={() => logout("polinasot@gmail.com")}>
-                  <SettingsItemText
-                    style={{
-                      fontFamily: "PP",
-                      textAlign: "center",
-                      width: "100%",
-                      marginRight: 0,
-                    }}
-                  >
-                    {t("common:logout")}
-                  </SettingsItemText>
-                </TouchableOpacity>
-                <TitleText
-                  color="#D64141"
-                  center
-                  offsetLeft={12}
-                  offsetTop={22}
-                  offsetBottom={118}
-                >
-                  {t("common:deleteAccount")}
-                </TitleText>
-              </FlexBox>
-
-              <FlexBox
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                offsetBottom="160"
-                style={{ width: "100%", alignContent: "center" }}
-              >
-                <LittleText center color="#5F5F5F" offsetBottom={12}>
-                  FAQ
-                </LittleText>
-                <LittleText center color="#5F5F5F">
-                  {t("common:pp")}
-                </LittleText>
-              </FlexBox>
-            </ScrollView>
-          </ProfileScreenWrapper>
-        </>
-      )}
+          />
+          <A_SettingsItem
+            onPress={(text: any) => handleType("about", text)}
+            type="AboutInput"
+            colorCondition={userSettings.about == initialState.about}
+            valueCondition={
+              userSettings.about == initialState.about ? "" : userSettings.about
+            }
+            placeholder={
+              usersData?.about ? usersData?.about : t("common:about")
+            }
+          />
+          <FlexBox style={{ width: 290 }}>
+            <F_Text
+              lineHeight={19}
+              color="#404040"
+              offsetTop={38}
+              offsetBottom={16}
+            >
+              {t("common:chooseInfo")}
+            </F_Text>
+          </FlexBox>
+          <FlexBox offsetBottom="24">
+            <A_Selector
+              arraymap={SHOWS}
+              selectedCondition={userSettings.showed}
+              setState={setUserSettings}
+              toSet={"showed"}
+            />
+          </FlexBox>
+          <FlexBox offsetBottom="24">
+            <A_Selector
+              arraymap={SEXES}
+              selectedCondition={userSettings.sex}
+              setState={setUserSettings}
+              toSet={"sex"}
+            />
+          </FlexBox>
+          <Selector />
+          <A_Button bright handleButtonClick={() => console.log("Prank")}>
+            {t("common:changePassword")}
+          </A_Button>
+          <A_Button
+            offsetBottom={32}
+            handleButtonClick={() => logout("polinasot@gmail.com")}
+          >
+            {t("common:logout")}
+          </A_Button>
+          <FlexBox
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            style={{ width: "100%", alignContent: "center" }}
+          >
+            <D_Text
+              color="#D64141"
+              center
+              offsetLeft={12}
+              offsetTop={22}
+              offsetBottom={118}
+            >
+              {t("common:deleteAccount")}
+            </D_Text>
+          </FlexBox>
+          <FlexBox
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            offsetBottom="160"
+            style={{ width: "100%", alignContent: "center" }}
+          >
+            <E_Text center color="#5F5F5F" offsetBottom={12}>
+              FAQ
+            </E_Text>
+            <E_Text center color="#5F5F5F">
+              {t("common:pp")}
+            </E_Text>
+          </FlexBox>
+        </ScrollView>
+      </ProfileScreenWrapper>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    height: 36,
-    borderBottomWidth: 1,
-    borderBottomColor: "#1A1A1A",
-    width: "100%",
-  },
-});

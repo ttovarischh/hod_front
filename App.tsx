@@ -1,17 +1,17 @@
 import * as React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { StatusBar, LogBox } from "react-native";
 import styled, { ThemeProvider } from "styled-components/native";
 import theme from "./src/common/themes/mainTheme";
 import { NavigationContainer } from "@react-navigation/native";
-import Navigation from "./src/components/Navigation";
+import Navigation from "./src/common/Navigation";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import "./src/i18/IMLocalize";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import useAuth, {AuthProvider} from "./src/contexts/newAuthContext/useAuth";
-
 LogBox.ignoreLogs([`to contain units`, `key`]);
+
 
 const MainAppContainer = styled.View`
   position: relative;

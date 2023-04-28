@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { StyleSheet, View } from "react-native";
 import styled from "styled-components/native";
-import { FlexBox, HeaderText, NavBarText } from "../common";
+import { FlexBox, B_Text, E_Text } from "../../common";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 type CardProps = {
@@ -54,14 +54,14 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
         justifyContent="space-between"
       >
         <FlexBox direction="column" justifyContent="center" alignItems="center">
-          <HeaderText offsetLeft={20} offsetRight={20} center>
+          <B_Text offsetLeft={20} offsetRight={20} center>
             {props.mainHeader}
-          </HeaderText>
+          </B_Text>
           {props.subHeader && (
-            <NavBarText center offsetTop={18} color="#545454">
+            <E_Text center offsetTop={18} color="#545454">
               Покажи этот QR-код своим друзьям, чтобы они могли присоединиться
               к игре, или воспользуйтесь кодом сессии
-            </NavBarText>
+            </E_Text>
           )}
         </FlexBox>
         <FlexBox style={{height: 400}}>{props.children}</FlexBox>
@@ -69,9 +69,9 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
           onPress={props.handleButtonClick}
           style={styles.shadowProp}
         >
-          <HeaderText center color="#000000">
+          <B_Text center color="#000000">
             Готово
-          </HeaderText>
+          </B_Text>
         </BottomSheetButton>
       </BottomSheetContentWrapper>
     </BottomSheetModal>

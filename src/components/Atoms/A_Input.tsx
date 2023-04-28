@@ -1,7 +1,7 @@
 import React, { useRef, useContext } from "react";
 import { ThemeContext } from "styled-components/native";
 import styled from "styled-components/native";
-import { FlexBox } from "../common";
+import { FlexBox } from "../../common";
 import { Animated } from "react-native";
 import { StyleSheet } from "react-native";
 import { TextInputProps } from "react-native";

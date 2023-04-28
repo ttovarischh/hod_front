@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator } from "react-native-paper";
-import { FlexBox } from "../common";
+import { FlexBox } from "../../common";
 import styled from "styled-components";
 
 const LoaderWrapper = styled(FlexBox)`

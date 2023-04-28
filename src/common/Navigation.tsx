@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import M_BottomBar from "./M_BottomBar";
+import M_BottomBar from "../components/Organisms/O_BottomBar";
 // screens
 import Signin from "../screens/Auth/SignIn";
 import SignUpScreen from "../screens/Auth/SignUp";
@@ -99,6 +99,10 @@ function HomeStack(props: { route: any; navigation: any }) {
         tabBarVisible: false,
       });
     } else if (routeName === "PlayerConc") {
+      navigation.setOptions({
+        tabBarVisible: false,
+      });
+    } else if (routeName === "Join") {
       navigation.setOptions({
         tabBarVisible: false,
       });

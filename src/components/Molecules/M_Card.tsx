@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { Text, StyleSheet } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
-import { FlexBox, NavBarText, NavSecondaryText } from "../common";
-import A_Input from "./A_Input";
-import A_Icon from "./A_Icon";
+import { FlexBox, F_Text, E_Text } from "../../common";
+import A_Input from "../Atoms/A_Input";
+import A_Icon from "../Atoms/A_Icon";
+import M_Portrait from "./M_Portrait";
 
 type CardProps = {
   type?: string;
@@ -168,11 +169,7 @@ const M_Card = ({
         <HeaderInputsWrapper>
           <ImagePicker onPress={handleImagePickerPress}>
             {imagePresent ? (
-              <PlayerAvatar
-                source={{
-                  uri: `${imagePresent}`,
-                }}
-              />
+              <M_Portrait type="Medium" src={imagePresent} />
             ) : (
               <FlexBox
                 direction="column"
@@ -252,9 +249,9 @@ const M_Card = ({
           />
         </TextAreaFlexBox>
         <ClearButton onPress={handleClear}>
-          <NavSecondaryText color="#383838" center>
+          <F_Text color="#383838" center>
             Удалить
-          </NavSecondaryText>
+          </F_Text>
         </ClearButton>
       </PlayerWrapper>
     );
@@ -262,20 +259,14 @@ const M_Card = ({
     return (
       <PlayerWrapper direction="column" key={key} style={{ opacity: 0.5 }}>
         <HeaderInputsWrapper>
-          <PlayerAvatarWrapper>
-            <PlayerAvatar
-              source={{
-                uri: `${avatar}`,
-              }}
-            />
-          </PlayerAvatarWrapper>
+          <M_Portrait src={avatar} type="Medium" />
           <FlexBox offsetLeft="8" direction="column" style={{ flex: 1 }}>
             <PlayerInputWrapper offsetBottom="6">
-              <NavBarText color="#EDF2DC">{trueVal2}</NavBarText>
+              <E_Text color="#EDF2DC">{trueVal2}</E_Text>
               <Text style={{ color: "#383838", fontSize: 11 }}>Ник игрока</Text>
             </PlayerInputWrapper>
             <PlayerInputWrapper offsetBottom="6">
-              <NavBarText color="#EDF2DC">{trueVal1}</NavBarText>
+              <E_Text color="#EDF2DC">{trueVal1}</E_Text>
               <Text style={{ color: "#383838", fontSize: 11 }}>
                 Имя персонажа
               </Text>
@@ -283,24 +274,24 @@ const M_Card = ({
           </FlexBox>
         </HeaderInputsWrapper>
         <PlayerInputWrapper offsetBottom="6">
-          <NavBarText color="#EDF2DC">{trueVal3}</NavBarText>
+          <E_Text color="#EDF2DC">{trueVal3}</E_Text>
           <Text style={{ color: "#383838", fontSize: 11 }}>
             Проницательность
           </Text>
         </PlayerInputWrapper>
         <PlayerInputWrapper offsetBottom="6">
-          <NavBarText color="#EDF2DC">{trueVal4}</NavBarText>
+          <E_Text color="#EDF2DC">{trueVal4}</E_Text>
           <Text style={{ color: "#383838", fontSize: 11 }}>Расследование</Text>
         </PlayerInputWrapper>
         <PlayerInputWrapper offsetBottom="6">
-          <NavBarText color="#EDF2DC">{trueVal5}</NavBarText>
+          <E_Text color="#EDF2DC">{trueVal5}</E_Text>
           <Text style={{ color: "#383838", fontSize: 11 }}>Восприятие</Text>
         </PlayerInputWrapper>
         <PlayerTextareaWrapper>
           <FlexBox style={{ marginBottom: 12 }}>
-            <NavBarText color="#717171">Языки</NavBarText>
+            <E_Text color="#717171">Языки</E_Text>
           </FlexBox>
-          <NavBarText>{children}</NavBarText>
+          <E_Text>{children}</E_Text>
         </PlayerTextareaWrapper>
       </PlayerWrapper>
     );
@@ -311,10 +302,3 @@ const M_Card = ({
 };
 
 export default M_Card;
-
-const styles = StyleSheet.create({
-  brd: {
-    borderBottomColor: "#282828",
-    borderBottomWidth: 1,
-  },
-});

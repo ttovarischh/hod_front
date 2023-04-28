@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { ScrollView } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
-import { FlexBox, HeaderText, FigureText, NavBarText } from "../../common";
-import A_Icon from "../../components/A_Icon";
-import A_Header from "../../components/A_Header";
+import { FlexBox, G_Text, E_Text } from "../../common";
+import O_Header from "../../components/Organisms/O_Header";
 import { StackActions } from "@react-navigation/native";
+import A_Effect from "../../components/Atoms/A_Effect";
 
 const EffectScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -35,7 +35,6 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
   const { route, navigation } = props;
   const params = route.params || {};
   const { effect = {} } = params;
-  const theme = useContext(ThemeContext);
 
   const supersplit = () => {
     let text = effect.descr;
@@ -43,11 +42,11 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
     return descrArray.map((descrOne: string, index: any) => {
       return (
         <DescrItemWrapper key={effect.id}>
-          <FigureText offsetTop={2} offsetRight={64}>
+          <G_Text offsetTop={2} offsetRight={64}>
             ({index + 1})
-          </FigureText>
+          </G_Text>
           <FlexBox style={{ maxWidth: 320 }}>
-            <NavBarText>{descrOne}.</NavBarText>
+            <E_Text>{descrOne}.</E_Text>
           </FlexBox>
         </DescrItemWrapper>
       );
@@ -56,16 +55,15 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
 
   return (
     <>
-      <A_Header left="Назад" center="Эффект" handleLeftPress={() => navigation.dispatch(StackActions.popToTop())} />
+      <O_Header
+        left="Назад"
+        center="Эффект"
+        handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
+      />
       <EffectScreenWrapper>
         <ScrollView>
           <SingleEffectHeaderWrapper direction="row">
-            <A_Icon iconName={effect.image}></A_Icon>
-            <FlexBox
-              style={{ marginBottom: 0, marginTop: "auto", marginLeft: 18 }}
-            >
-              <HeaderText>{effect.name}</HeaderText>
-            </FlexBox>
+            <A_Effect item={effect} />
           </SingleEffectHeaderWrapper>
           <DescrWrapper direction="column">{supersplit()}</DescrWrapper>
         </ScrollView>

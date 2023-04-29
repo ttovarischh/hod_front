@@ -21,6 +21,7 @@ import ProfileScreen from "../screens/Profile/ProfileScreen";
 import SettingsScreen from "../screens/Profile/SettingsScreen";
 import PlayerConcScreen from "../screens/Home/PlayerConcScreen";
 import ChangeEmailScreen from "../screens/Profile/ChangeEmailScreen";
+import CreateMonstersScreen from "../screens/Home/CreateMonstersScreen";
 
 const ProfileNavigator = createStackNavigator();
 function ProfileStack() {
@@ -106,6 +107,10 @@ function HomeStack(props: { route: any; navigation: any }) {
       navigation.setOptions({
         tabBarVisible: false,
       });
+    } else if (routeName === "CreateMonsters") {
+      navigation.setOptions({
+        tabBarVisible: false,
+      });
     } else {
       navigation.setOptions({
         tabBarVisible: true,
@@ -145,6 +150,12 @@ function HomeStack(props: { route: any; navigation: any }) {
         component={PlayerConcScreen}
         options={{ headerShown: false }}
       />
+      <HomeNavigator.Screen
+        name="CreateMonsters"
+        component={CreateMonstersScreen}
+        options={{ headerShown: false }}
+      />
+      {/* CreateMonstersScreen.tsx */}
     </HomeNavigator.Navigator>
   );
 }

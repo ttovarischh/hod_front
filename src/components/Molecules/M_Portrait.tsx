@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "styled-components/native";
+import React from "react";
 import styled from "styled-components/native";
 import { FlexBox } from "../../common";
-import { B_Text, G_Text } from "../../common";
 
 type Props = {
   onPress?: any;
@@ -11,23 +9,6 @@ type Props = {
   src?: any;
   player_id?: any;
 };
-
-const EffectLink = styled.TouchableOpacity`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const EffectInfoWrapper = styled(FlexBox)`
-  margin-left: 18px;
-`;
-
-const CardWrapper = styled(FlexBox)`
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 12px;
-`;
 
 const PlayerAvatar = styled.Image`
   width: 129px;
@@ -97,6 +78,14 @@ const Ornament = styled.Image`
   height: 161px;
 `;
 
+const MonsterLargeAvatar = styled.Image`
+  width: 246px;
+  height: 217px;
+  position: absolute;
+  bottom: -1px;
+  left: 0px;
+`;
+
 const M_Portrait = ({ onPress, imageString, src, type, player_id }: Props) => {
   if (type === "BottomSheet") {
     return (
@@ -151,6 +140,25 @@ const M_Portrait = ({ onPress, imageString, src, type, player_id }: Props) => {
           source={{
             uri: `${src}`,
           }}
+        />
+      </PlayerLargeAvatarWrapper>
+    );
+  }
+  if (type === "LargeMonster") {
+    return (
+      <PlayerLargeAvatarWrapper>
+        <Ornament
+          style={{
+            resizeMode: "contain",
+            bottom: 0,
+            right: 0,
+            position: "absolute",
+          }}
+          source={require("../../../assets/images/A_Graphic.png")}
+        />
+        <MonsterLargeAvatar
+          style={{ resizeMode: "contain" }}
+          source={require("../../../assets/images/MP.png")}
         />
       </PlayerLargeAvatarWrapper>
     );

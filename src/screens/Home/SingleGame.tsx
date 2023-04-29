@@ -12,17 +12,15 @@ import { FlexBox, B_Text, D_Text } from "../../common";
 import Error from "../Errors/Error";
 import { StackActions } from "@react-navigation/native";
 import A_QrCode from "../../components/Atoms/A_QrCode";
-import A_Icon from "../../components/Atoms/A_Icon";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import A_Loader from "../../components/Atoms/A_Loader";
 import O_Header from "../../components/Organisms/O_Header";
 import O_Card from "../../components/Organisms/O_Card";
 import O_BottomSheet from "../../components/Organisms/O_BottomSheet";
 import useAuth from "../../contexts/newAuthContext/useAuth";
 import { consumer } from "../../constants";
-import A_Tag from "../../components/Atoms/A_Tag";
 import O_GameFooter from "../../components/Organisms/O_GameFooter";
+import M_Card from "../../components/Molecules/M_Card";
 
 const CodeQrWrapper = styled(FlexBox)`
   width: 100%;
@@ -43,21 +41,6 @@ const SingleGameWrapper = styled.View`
   color: white;
 `;
 
-const CardWrapper = styled(FlexBox)`
-  background-color: ${({ theme }) => theme.card.bg};
-  width: 100%;
-  margin-bottom: 8px;
-  border-radius: 20px;
-  padding: 15px;
-`;
-
-const PlayersWrapper = styled(FlexBox)`
-  background-color: #151516;
-  border-radius: 12px;
-  padding: 14px;
-  width: 100%;
-`;
-
 export default function SingleGameScreen(props: {
   route: any;
   navigation: any;
@@ -66,16 +49,6 @@ export default function SingleGameScreen(props: {
   const { route, navigation } = props;
   const params = route.params || {};
   const { code = {} } = params;
-  const [isInc, setIsInc] = useState(false);
-  const [authData, setAuthData] = useState<UserProps>();
-  type UserProps = {
-    email: string;
-    id: number;
-    username: string;
-    created_at: any;
-    updated_at: any;
-    jti: any;
-  };
   const value = `http://localhost:3000/api/v1/games/${code}`;
   const [productQRref, setProductQRref] = useState();
   const [isLoading, setLoading] = useState(true);
@@ -84,40 +57,8 @@ export default function SingleGameScreen(props: {
   const [initiative, setInitiative] = useState("");
   const { user } = useAuth();
   const [playerEffects, setPlayerEffects] = useState({});
-  const [expanded, setExpanded] = useState(false);
-
-  const newNew = () => {
-    const new_array = data.players.sort(
-      (a: any, b: any) => b.initiative - a.initiative
-    );
-    return new_array.map((player: any, i: any) => {
-      let langs: any[] = [];
-      if (player.language) {
-        langs = player.language.split(" ");
-      }
-      return (
-        <O_Card
-          type={data.user_id === user?.id ? "user" : "noInitiative"}
-          avatar={player.imagestring}
-          name={player.name}
-          username={player.username}
-          inv={player.inv}
-          ins={player.ins}
-          perc={player.perc}
-          onCardPress={() => navigation.push("PlayerConc", { player: player })}
-          condition={data.fight}
-          handleInitiativeChange={(int: any) => {
-            setInitiative(int);
-            console.log("UR INITIATIVE" + initiative);
-          }}
-          initiative={initiative}
-          initiativeVal={player.initiative}
-        >
-          {langs && langs.map((sublang: any) => <A_Tag sublang={sublang} />)}
-        </O_Card>
-      );
-    });
-  };
+  const [monsterEffects, setMonsterEffects] = useState({});
+  const [newInitiative, setNewInitiative] = useState<any>([]);
 
   const list = () => {
     return data.players?.map((player: any, i: any) => {
@@ -127,7 +68,7 @@ export default function SingleGameScreen(props: {
       }
       return (
         <O_Card
-          type="noInitiative"
+          type={data.fight ? "Initiative" : "noInitiative"}
           avatar={player.imagestring}
           name={player.name}
           player_id={player.id}
@@ -140,15 +81,18 @@ export default function SingleGameScreen(props: {
           thisUser={data.user_id}
           author={user?.id}
           master={user?.id === data.user_id}
-          handleInitiativeChange={(int: any) => {
-            setInitiative(int);
-            console.log("UR INITIATIVE" + initiative);
+          handleInitiativeChange={(text: any) => {
+            setNewInitiative(text);
+            console.log("UR INITIATIVE" + newInitiative);
           }}
           initiative={initiative}
           initiativeVal={player.initiative}
           data={effectsData}
           code={code}
           playerEffects={playerEffects}
+          fight={data.fight}
+          onSubmitEditing={() => onSubmitInitiativeEditing(player.id)}
+          newInitiative={newInitiative}
         >
           {langs &&
             langs.map((sublang: any) => (
@@ -165,6 +109,39 @@ export default function SingleGameScreen(props: {
     });
   };
 
+  const monsterList = () => {
+    return data.monsters?.map((player: any, i: any) => {
+      return (
+        <O_Card
+          type="monster"
+          avatar={player.imagestring}
+          name={player.name}
+          monster_id={player.id}
+          username={player.username}
+          inv={player.inv}
+          ins={player.ins}
+          perc={player.perc}
+          onCardPress={() => navigation.push("PlayerConc", { player: player })}
+          condition={data.fight}
+          thisUser={data.user_id}
+          author={user?.id}
+          master={user?.id === data.user_id}
+          handleInitiativeChange={(event: any) => {
+            setNewInitiative(event.value);
+            console.log("UR INITIATIVE" + newInitiative);
+          }}
+          initiative={initiative}
+          initiativeVal={player.initiative}
+          hp={player.hp}
+          arm={player.initiative}
+          data={effectsData}
+          code={code}
+          monsterEffects={monsterEffects}
+        ></O_Card>
+      );
+    });
+  };
+
   // bottomsheet_related
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["23%", "92%"], []);
@@ -175,14 +152,23 @@ export default function SingleGameScreen(props: {
     bottomSheetModalRef.current?.close();
   }, []);
 
-  // main_functions
-  const handleInc = () => {
-    setIsInc(true);
+  const onSubmitInitiativeEditing = (playerId: any) => {
+    console.log(playerId);
+    console.log(newInitiative);
+    axios
+      .patch(`http://localhost:3000/api/v1/games/${code}/players/${playerId}`, {
+        player: {
+          initiative: newInitiative,
+        },
+      })
+      .then((response) => {
+        setNewInitiative(null);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        getUpdatedInfo();
+      });
   };
-
-  useEffect(() => {
-    // console.log(playerEffects);
-  }, [playerEffects]);
 
   useEffect(() => {
     axios
@@ -198,8 +184,16 @@ export default function SingleGameScreen(props: {
             },
             {}
           );
-
           setPlayerEffects(playerEffectsObject);
+
+          const monsterEffectsObject = data.monsters.reduce(
+            (acc: any, monster: any) => {
+              acc[monster.id] = monster.effects;
+              return acc;
+            },
+            {}
+          );
+          setMonsterEffects(monsterEffectsObject);
         }
       })
       .catch((error) => console.error(error))
@@ -247,8 +241,38 @@ export default function SingleGameScreen(props: {
       }
     );
 
+    const monsterSubscription = consumer.subscriptions.create(
+      { channel: "MonsterEffectsChannel" },
+      {
+        received(data: any) {
+          const { type, payload } = data;
+          if (type === "ADD_EFFECT") {
+            const { monster_id, effect } = payload;
+            setMonsterEffects((prevState: any) => {
+              return {
+                ...prevState,
+                [monster_id]: [...prevState[monster_id], effect],
+              };
+            });
+          } else if (type === "REMOVE_EFFECT") {
+            const { monster_id, effect } = payload;
+            setMonsterEffects((prevState: any) => {
+              const updatedPlayerEffects = prevState[monster_id].filter(
+                (e: any) => e.id !== effect.id
+              );
+              return {
+                ...prevState,
+                [monster_id]: updatedPlayerEffects,
+              };
+            });
+          }
+        },
+      }
+    );
+
     return () => {
       subscription.unsubscribe();
+      monsterSubscription.unsubscribe();
     };
   }, []);
 
@@ -275,7 +299,7 @@ export default function SingleGameScreen(props: {
           },
         })
         .then((response) => {
-          // Code
+          // setIsInc(false);
         })
         .catch((error) => console.error(error))
         .finally(() => {
@@ -289,7 +313,7 @@ export default function SingleGameScreen(props: {
           },
         })
         .then((response) => {
-          // Code
+          // setIsInc(true);
         })
         .catch((error) => console.error(error))
         .finally(() => {
@@ -322,33 +346,19 @@ export default function SingleGameScreen(props: {
         turn={data.fight ? `${data.turn} раунд` : ""}
       />
       {data.user_id === user?.id && (
-        <O_GameFooter fight={data.fight} handleConcClick={handleConcClick} />
+        <O_GameFooter
+          fight={data.fight}
+          handleConcClick={handleConcClick}
+          handleNextClick={() =>
+            navigation.push("CreateMonsters", { code: code })
+          }
+        />
       )}
       <SingleGameWrapper>
         <ScrollView>
           <>
-            {data.fight ? newNew() : list()}
-            {isInc && (
-              <>
-                {data.monsters?.map((monster: any, i: any) => (
-                  <CardWrapper direction="column">
-                    <D_Text color="#B04141">{monster.name}</D_Text>
-                    <PlayersWrapper
-                      offsetBottom="15"
-                      offsetTop="14"
-                      justifyContent="center"
-                    >
-                      <FlexBox justifyContent="center" alignItems="center">
-                        <A_Icon iconName="heart" />
-                        <FlexBox style={{ marginLeft: 8 }}>
-                          <B_Text>{monster.hp}</B_Text>
-                        </FlexBox>
-                      </FlexBox>
-                    </PlayersWrapper>
-                  </CardWrapper>
-                ))}
-              </>
-            )}
+            {list()}
+            {monsterList()}
             <FlexBox style={{ height: 250 }}></FlexBox>
           </>
         </ScrollView>

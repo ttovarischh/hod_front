@@ -5,6 +5,7 @@ import { FlexBox } from "../../common";
 import { Animated } from "react-native";
 import { StyleSheet } from "react-native";
 import { TextInputProps } from "react-native";
+import A_Icon from "./A_Icon";
 
 interface InputProps extends TextInputProps {
   handleChange: any;
@@ -13,6 +14,10 @@ interface InputProps extends TextInputProps {
   isError?: boolean;
   value?: any;
   secure?: boolean;
+  iconName?: string;
+  iconWidth?: any;
+  iconHeight?: any;
+  onSubmitEditing?: any;
 }
 
 const FlyingLabelText = styled.Text`
@@ -26,7 +31,7 @@ const FlyingLabelText = styled.Text`
 
 const InputWrapper = styled.TextInput`
   background-color: ${({ theme }) => theme.input.fill};
-  border: none;
+  border: 1px solid #373737;
   outline: none;
   padding-bottom: 18px;
   padding-left: 16px;
@@ -45,6 +50,12 @@ const InputFlexBox = styled(FlexBox)`
   margin-bottom: 6px;
 `;
 
+const IconWrapper = styled(FlexBox)`
+  position: absolute;
+  right: 20px;
+  top: 28%;
+`;
+
 const A_Input = ({
   placeholder,
   label,
@@ -52,6 +63,10 @@ const A_Input = ({
   handleChange,
   value,
   secure,
+  iconName,
+  iconWidth,
+  iconHeight,
+  onSubmitEditing,
   ...rest
 }: InputProps) => {
   const theme = useContext(ThemeContext);
@@ -119,7 +134,7 @@ const A_Input = ({
         placeholder={placeholder}
         value={value}
         secureTextEntry={secure}
-        placeholderTextColor="#0E0E0E"
+        placeholderTextColor="#262626"
         onChangeText={handleChange}
         onFocus={movePlaceholder}
         onBlur={onBlurHandler}
@@ -127,6 +142,7 @@ const A_Input = ({
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
+        onSubmitEditing={onSubmitEditing}
         {...rest}
       ></InputWrapper>
       <Animated.View style={[styles.animatedStyle, animStyle]}>
@@ -136,6 +152,17 @@ const A_Input = ({
           {label}
         </FlyingLabelText>
       </Animated.View>
+      {iconName && (
+        <IconWrapper>
+          <A_Icon
+            iconName={iconName}
+            width={iconWidth || 20}
+            height={iconHeight || 27}
+            fill="#EDF2DC"
+            strokeWidth={1.5}
+          />
+        </IconWrapper>
+      )}
     </InputFlexBox>
   );
 };

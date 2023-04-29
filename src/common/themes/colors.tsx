@@ -20,9 +20,11 @@ export var Colors = {
   ui_black: "#000000",
   dark_star: "#0E0E0E",
   gentle_repose: "#EDF2DC",
-  fire_storm: "#E50000",
+  fire_storm: "#FF4040",
   word_of_recall: "#A4A4AC",
   dream_of_the_blue_veil: "#2520FF",
   dull_grey: "#383838",
   tabbar_grey: "#2A2A2A",
+  teleport: "#262626",
+  wet_sand: "#C8CEB3",
 };

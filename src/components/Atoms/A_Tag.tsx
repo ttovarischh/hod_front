@@ -4,13 +4,14 @@ import styled from "styled-components/native";
 import { FlexBox } from "../../common";
 import { F_Text } from "../../common";
 import A_Icon from "./A_Icon";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 type TagProps = {
   children?: React.ReactNode;
   type?: string;
   key?: any;
   sublang?: any;
+  handleCrossPress?: any;
 };
 
 const PlayerWrapper = styled(FlexBox)`
@@ -30,7 +31,26 @@ const AddEffectWrapper = styled(FlexBox)`
   margin-bottom: 6px;
 `;
 
-const A_Tag = ({ children, type, key, sublang, ...rest }: TagProps) => {
+const LanguageTagWrapper = styled(FlexBox)`
+  flex-direction: row;
+  background-color: #383838;
+  padding: 0;
+  padding-left: 12;
+  padding-right: 12;
+  border-radius: 10;
+  align-items: center;
+  height: 30px;
+  flex-wrap: no-wrap;
+`;
+
+const A_Tag = ({
+  children,
+  type,
+  key,
+  sublang,
+  handleCrossPress,
+  ...rest
+}: TagProps) => {
   const theme = useContext(ThemeContext);
 
   if (type == "Effect") {
@@ -62,9 +82,22 @@ const A_Tag = ({ children, type, key, sublang, ...rest }: TagProps) => {
     return (
       <FlexBox offsetRight="8" offsetBottom="8">
         <View style={styles.tag}>
-          <F_Text color="#EDF2DC">{sublang}</F_Text>
+          <F_Text lineHeight={30} color="#EDF2DC">
+            {sublang}
+          </F_Text>
         </View>
       </FlexBox>
+    );
+  } else if (type == "LanguageCreate") {
+    return (
+      <LanguageTagWrapper offsetRight="8" offsetBottom="8">
+        <F_Text lineHeight={30} color="#EDF2DC" offsetRight={5}>
+          {sublang}
+        </F_Text>
+        <TouchableOpacity onPress={handleCrossPress}>
+          <A_Icon iconName="TagCross" />
+        </TouchableOpacity>
+      </LanguageTagWrapper>
     );
   }
   return <></>;
@@ -77,10 +110,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-start",
     backgroundColor: "#383838",
-    padding: 8,
+    padding: 0,
     paddingLeft: 12,
     paddingRight: 12,
     borderRadius: 10,
     alignItems: "baseline",
+    height: 30,
   },
 });

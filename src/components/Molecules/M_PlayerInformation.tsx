@@ -3,12 +3,17 @@ import styled from "styled-components/native";
 import { FlexBox, G_Text, A_Text, H_Text, E_Text } from "../../common";
 import { Animated, TouchableOpacity } from "react-native";
 import A_Icon from "../Atoms/A_Icon";
+import A_MicroStat from "../Atoms/A_MicroStat";
 
 type AnimatedViewProps = {
-  a: any;
-  b: any;
-  c: any;
+  a?: any;
+  b?: any;
+  c?: any;
   expanded?: any;
+  monster?: any;
+  d?: any;
+  e?: any;
+  f?: any;
 };
 
 const StatWrapper = styled(Animated.View)`
@@ -21,7 +26,16 @@ const StatWrapper = styled(Animated.View)`
   height: 57px;
 `;
 
-const M_PlayerInformation = ({ a, b, c, expanded }: AnimatedViewProps) => {
+const M_PlayerInformation = ({
+  a,
+  b,
+  c,
+  expanded,
+  monster,
+  d,
+  e,
+  f,
+}: AnimatedViewProps) => {
   const [isAExpanded, setIsAExpanded] = useState(false);
   const [isBExpanded, setIsBExpanded] = useState(false);
   const [isCExpanded, setIsCExpanded] = useState(true);
@@ -199,21 +213,23 @@ const M_PlayerInformation = ({ a, b, c, expanded }: AnimatedViewProps) => {
   if (!expanded) {
     return (
       <FlexBox offsetTop="6">
-        <FlexBox offsetRight="16" alignItems="center">
-          <A_Icon iconName="SmallInc" />
-          <E_Text offsetLeft={6}>{a}</E_Text>
-        </FlexBox>
-        <FlexBox offsetRight="16" alignItems="center">
-          <A_Icon iconName="SmallInv" />
-          <E_Text offsetLeft={6}>{b}</E_Text>
-        </FlexBox>
-        <FlexBox alignItems="center">
-          <A_Icon iconName="SmallPerc" />
-          <E_Text offsetLeft={6}>{c}</E_Text>
-        </FlexBox>
+        {!monster && (
+          <>
+            <A_MicroStat type="SmallInc" text={a} />
+            <A_MicroStat type="SmallInv" text={b} />
+            <A_MicroStat type="SmallPerc" text={c} />
+          </>
+        )}
+        {monster && (
+          <>
+            <A_MicroStat type="SmallArmor" text={d} />
+            <A_MicroStat type="SmallHealth" text={e} />
+            <A_MicroStat type="SmallClocks" text={f} />
+          </>
+        )}
       </FlexBox>
     );
-  } else {
+  } else if (expanded && !monster) {
     return (
       <>
         <TouchableOpacity onPress={handleAPress}>
@@ -276,7 +292,6 @@ const M_PlayerInformation = ({ a, b, c, expanded }: AnimatedViewProps) => {
             </FlexBox>
           </StatWrapper>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={handleBPress}>
           <StatWrapper
             style={{
@@ -391,6 +406,7 @@ const M_PlayerInformation = ({ a, b, c, expanded }: AnimatedViewProps) => {
       </>
     );
   }
+  return <></>;
 };
 
 export default M_PlayerInformation;

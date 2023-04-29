@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { FlexBox, F_Text, E_Text } from "../../common";
 import A_Input from "../Atoms/A_Input";
 import A_Icon from "../Atoms/A_Icon";
 import M_Portrait from "./M_Portrait";
+import A_Button from "../Atoms/A_Button";
+import M_Languages from "./M_Languages";
 
 type CardProps = {
   type?: string;
@@ -35,6 +37,17 @@ type CardProps = {
   children?: React.ReactNode;
   avatar?: any;
   imagePresent?: string;
+
+  npcName?: any;
+  npcArmor?: any;
+  npcHealth?: any;
+  disabled?: any;
+  // langs_input
+  inputValue?: any;
+  handleTextChange?: any;
+  handleKeyPress?: any;
+  tags?: any;
+  removeTag?: any;
 };
 
 const PlayerWrapper = styled(FlexBox)`
@@ -115,22 +128,6 @@ const ImagePickerText = styled.Text`
   width: 70%;
 `;
 
-const PlayerAvatarWrapper = styled(FlexBox)`
-  width: 116px;
-  height: 116px;
-  background-color: ${({ theme }) => theme.input.fill};
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  align-items: center;
-`;
-
-const PlayerAvatar = styled.Image`
-  width: 100%;
-  height: 100%;
-`;
-
 const M_Card = ({
   type,
   handleFirstInputChange,
@@ -160,6 +157,18 @@ const M_Card = ({
   handleImagePickerPress,
   avatar,
   imagePresent,
+
+  npcName,
+  npcArmor,
+  npcHealth,
+  disabled,
+
+  // langs_input
+  inputValue,
+  handleTextChange,
+  handleKeyPress,
+  tags,
+  removeTag,
   ...rest
 }: CardProps) => {
   const theme = useContext(ThemeContext);
@@ -226,7 +235,7 @@ const M_Card = ({
           keyboardType="numeric"
           maxLength={2}
         ></A_Input>
-        <TextAreaFlexBox>
+        {/* <TextAreaFlexBox>
           <Text
             style={{
               fontSize: 18,
@@ -247,7 +256,14 @@ const M_Card = ({
             autoComplete="off"
             autoCorrect={false}
           />
-        </TextAreaFlexBox>
+        </TextAreaFlexBox> */}
+        <M_Languages
+          val5={inputValue}
+          handleFifthInputChange={handleTextChange}
+          handleKeyPress={handleKeyPress}
+          tags={tags}
+          handleCrossPress={removeTag}
+        />
         <ClearButton onPress={handleClear}>
           <F_Text color="#383838" center>
             Удалить
@@ -295,8 +311,39 @@ const M_Card = ({
         </PlayerTextareaWrapper>
       </PlayerWrapper>
     );
-  } else {
-    <Text style={{ color: "white" }}>aya yay yayya </Text>;
+  }
+  if (type == "NpcCreation") {
+    return (
+      <PlayerWrapper direction="column" offsetBottom="8">
+        <A_Input
+          placeholder="Имя монстра"
+          label="Имя монстра"
+          value={npcName}
+          handleChange={handleSixthInputChange}
+        ></A_Input>
+        <A_Input
+          placeholder="Здоровье"
+          label="Здоровье"
+          value={npcHealth}
+          handleChange={handleSixthInputChange}
+          iconName="SmallHealth"
+        ></A_Input>
+        <A_Input
+          placeholder="Броня"
+          label="Броня"
+          value={npcArmor}
+          handleChange={handleSixthInputChange}
+          iconName="SmallArmor"
+        ></A_Input>
+        <A_Button
+          secondary
+          handleButtonClick={() => console.log("Clicked")}
+          disabled={disabled}
+        >
+          Сохранить
+        </A_Button>
+      </PlayerWrapper>
+    );
   }
   return <></>;
 };

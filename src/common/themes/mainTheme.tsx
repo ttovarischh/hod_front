@@ -32,6 +32,9 @@ export const dark = {
     dull_hover: Colors.dullest,
     disabled_fill: Colors.dark_star,
     disabled_text: Colors.dull,
+    secondary_fill: Colors.gentle_repose,
+    secondary_disabled: Colors.dark_star,
+    error_fill: Colors.fire_storm,
   },
   nav: {
     header: Colors.beacon_of_hope,
@@ -40,7 +43,7 @@ export const dark = {
     tabbar_fill: Colors.tabbar_grey,
   },
   input: {
-    fill: Colors.dark_star,
+    fill: Colors.teleport,
     placeholder: Colors.shadow_of_moil,
     text: Colors.gentle_repose,
     simple_border: Colors.acid_arrow,
@@ -80,6 +83,9 @@ export const light: ThemeType = {
     dull_hover: Colors.dullest,
     disabled_fill: Colors.dark_star,
     disabled_text: Colors.dull,
+    secondary_fill: Colors.gentle_repose,
+    secondary_disabled: Colors.dark_star,
+    error_fill: Colors.fire_storm,
   },
   nav: {
     header: Colors.beacon_of_hope,

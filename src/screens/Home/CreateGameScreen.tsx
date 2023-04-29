@@ -16,7 +16,6 @@ import M_Card from "../../components/Molecules/M_Card";
 import O_BottomSheet from "../../components/Organisms/O_BottomSheet";
 import { StackActions } from "@react-navigation/native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import useAuth from "../../contexts/newAuthContext/useAuth";
 import M_Portrait from "../../components/Molecules/M_Portrait";
 
 const HomeScreenWrapper = styled.View`
@@ -37,8 +36,7 @@ export default function CreateGameScreen(props: {
   const params = route.params || {};
   const scrollViewRef = useRef<ScrollView>(null);
   const [empty, setEmpty] = useState(false);
-  const dateTime = new Date().toJSON();
-  const [code, setCode] = useState("QE731");
+  const [code, setCode] = useState();
   const [gameData, setGameData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState({
@@ -59,7 +57,6 @@ export default function CreateGameScreen(props: {
     username: "",
     imagestring: "",
   });
-  const { user } = useAuth();
 
   const DATA = [
     {
@@ -181,44 +178,16 @@ export default function CreateGameScreen(props: {
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
-
-  const handleSubmit = async () => {
-    if (!user!.jwt) {
-      console.log("Error: missing token");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/api/v1/games", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user!.jwt}`,
-          jti: `${user!.jti}`,
-          "Authorization-Session": `Bearer ${user!.jwt}`,
-        },
-        body: JSON.stringify({
-          game: {
-            name: dateTime,
-          },
-          session: user!.jwt,
-        }),
-      });
-      const data = await response.json();
-      console.log(`Game with a name ${dateTime} created successfully!`);
-      console.log(data);
-      setCode(data.code);
-    } catch (error) {
-      console.log(`Error: ${error}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { newCode } = route.params;
 
   useEffect(() => {
-    handleSubmit();
-  }, []);
+    console.log(newCode);
+    setCode(newCode);
+  }, [newCode]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [code]);
 
   const handleType = (key: any, value: any) => {
     console.log(player);
@@ -247,6 +216,7 @@ export default function CreateGameScreen(props: {
   }
 
   const handlePostPlayerClick = () => {
+    const tagsString = tags.join(" ");
     if ((player.ins || player.inv || player.perc || player.playerName) == "") {
       setEmpty(true);
       console.log("smth is wrong");
@@ -255,7 +225,7 @@ export default function CreateGameScreen(props: {
         .post("http://localhost:3000/api/v1/games/" + code + "/players", {
           player: {
             name: player.playerName,
-            language: player.lang,
+            language: tagsString,
             inv: player.inv,
             ins: player.ins,
             perc: player.perc,
@@ -272,9 +242,47 @@ export default function CreateGameScreen(props: {
         .finally(() => {
           handleGetPlayers();
           setPlayer(initialState);
+          setTags([]);
         });
     }
   };
+
+  //langs
+
+  const [tags, setTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleTextChange = (text: string) => {
+    if (!text.endsWith(" ")) {
+      setInputValue(text);
+      console.log(inputValue);
+      console.log(tags);
+    }
+  };
+
+  const handleKeyPress = (event: any) => {
+    if (event.nativeEvent.key === " ") {
+      event.preventDefault();
+      addTag();
+    }
+  };
+
+  const addTag = () => {
+    if (inputValue.trim() !== "") {
+      setTags([...tags, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  const removeTag = (index: number) => {
+    const newTags = [...tags];
+    newTags.splice(index, 1);
+    setTags(newTags);
+  };
+
+  if (!newCode) {
+    return <A_Loader />;
+  }
 
   if (isLoading) {
     return <A_Loader />;
@@ -323,6 +331,12 @@ export default function CreateGameScreen(props: {
               err3={empty && player.inv == ""}
               err4={empty && player.perc == ""}
               imagePresent={player.imagestring}
+              // langs
+              inputValue={inputValue}
+              handleTextChange={handleTextChange}
+              handleKeyPress={handleKeyPress}
+              tags={tags}
+              removeTag={removeTag}
             ></M_Card>
             <A_Button
               handleButtonClick={handlePostPlayerClick}

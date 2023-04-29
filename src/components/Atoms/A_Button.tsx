@@ -52,6 +52,19 @@ const A_HollowButtonText = styled.Text`
       : props.theme.button.dull_text};
 `;
 
+const A_SecondaryButtonWrapper = styled.TouchableOpacity`
+  width: 100%;
+  height: 62px;
+  background: ${(props) =>
+    props.disabled
+      ? props.theme.button.secondary_disabled
+      : props.theme.button.secondary_fill};
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const A_Button = (props: ButtonProps) => {
   if (props.bright) {
     return (
@@ -68,26 +81,39 @@ const A_Button = (props: ButtonProps) => {
         </A_ButtonText>
       </A_ButtonWrapper>
     );
-  } else {
+  } else if (props.secondary) {
     return (
-      <A_HollowButtonWrapper
+      <A_SecondaryButtonWrapper
         onPress={props.disabled ? undefined : props.handleButtonClick}
         disabled={props.disabled}
         style={{
-          marginBottom: props.offsetBottom || 0,
+          marginBottom: props.offsetBottom || 8,
           marginTop: props.offsetTop || 0,
         }}
       >
-        <A_HollowButtonText
-          style={{ fontFamily: "PP" }}
-          disabled={props.disabled}
-        >
+        <A_ButtonText style={{ fontFamily: "PP" }} disabled={props.disabled}>
           {props.children}
-        </A_HollowButtonText>
-      </A_HollowButtonWrapper>
+        </A_ButtonText>
+      </A_SecondaryButtonWrapper>
     );
   }
-  return <></>;
+  return (
+    <A_HollowButtonWrapper
+      onPress={props.disabled ? undefined : props.handleButtonClick}
+      disabled={props.disabled}
+      style={{
+        marginBottom: props.offsetBottom || 0,
+        marginTop: props.offsetTop || 0,
+      }}
+    >
+      <A_HollowButtonText
+        style={{ fontFamily: "PP" }}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </A_HollowButtonText>
+    </A_HollowButtonWrapper>
+  );
 };
 
 export default A_Button;

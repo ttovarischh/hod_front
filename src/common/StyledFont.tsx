@@ -47,7 +47,7 @@ export const B_Text = (props: TextProps) => {
         fontFamily: "PP",
         fontSize: props.size || 28,
         lineHeight: props.lineHeight || 34,
-        color: props.color || theme.nav.header,
+        color: props.color || "white",
         textAlign: props.center ? "center" : "left",
         marginTop: props.offsetTop ? props.offsetTop : 0,
         marginBottom: props.offsetBottom ? props.offsetBottom : 0,

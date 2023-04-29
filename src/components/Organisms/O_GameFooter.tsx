@@ -31,7 +31,11 @@ const SmallGameButton = styled.TouchableOpacity`
   top: -54px;
 `;
 
-function O_GameFooter(props: { fight?: boolean; handleConcClick?: any }) {
+function O_GameFooter(props: {
+  fight?: boolean;
+  handleConcClick?: any;
+  handleNextClick?: any;
+}) {
   return (
     <View style={styles.bottomPart}>
       <FlexBox
@@ -87,7 +91,7 @@ function O_GameFooter(props: { fight?: boolean; handleConcClick?: any }) {
           </SmallGameButton>
         )}
         {props.fight && (
-          <GameButton onPress={() => console.log("Arrow clicked")}>
+          <GameButton onPress={props.handleNextClick}>
             <FlexBox
               style={{
                 height: "100%",

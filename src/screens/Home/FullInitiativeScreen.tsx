@@ -41,7 +41,7 @@ const SingleGameWrapper = styled.View`
   color: white;
 `;
 
-export default function SingleGameScreen(props: {
+export default function FullInitiativeScreen(props: {
   route: any;
   navigation: any;
 }) {
@@ -58,107 +58,100 @@ export default function SingleGameScreen(props: {
   const { user } = useAuth();
   const [playerEffects, setPlayerEffects] = useState({});
   const [monsterEffects, setMonsterEffects] = useState({});
-  const [newInitiative, setNewInitiative] = useState<any>([]);
   const { t } = useTranslation();
-  const [allPlayersHaveInitiative, setAllPlayersHaveInitiative] =
-    useState(true);
 
-  useEffect(() => {
-    if (data && data.players) {
-      const haveInitiative = data.players.every(
-        (player: any) => player.initiative > 0
-      );
-      setAllPlayersHaveInitiative(haveInitiative);
-    }
-  }, [data]);
+  const [sortedList, setSortedList] = useState<any>([]);
+  const [activePlayerIndex, setActivePlayerIndex] = useState<null | number>(
+    null
+  );
+  const scrollViewRef = useRef<ScrollView>(null);
+  const activePlayerRef = useRef<View>(null);
 
-  const list = () => {
-    return data.players?.map((player: any, i: any) => {
-      let langs: any[] = [];
-      if (player.language) {
-        langs = player.language.split(" ");
+  const mixedList = () => {
+    return sortedList.map((item: any, i: any) => {
+      if (item.armor) {
+        return (
+          <FlexBox
+            style={{ opacity: item.active ? 1 : 0.6 }}
+            ref={i === activePlayerIndex ? activePlayerRef : null}
+          >
+            <O_Card
+              type="monster"
+              avatar={item.imagestring}
+              name={item.name}
+              monster_id={item.id}
+              username={item.username}
+              inv={item.inv}
+              ins={item.ins}
+              perc={item.perc}
+              condition={data.fight}
+              thisUser={data.user_id}
+              author={user?.id}
+              master={user?.id === data.user_id}
+              initiative={initiative}
+              initiativeVal={item.initiative}
+              hp={item.hp}
+              arm={item.initiative}
+              data={effectsData}
+              code={code}
+              monsterEffects={monsterEffects}
+            />
+          </FlexBox>
+        );
+      } else {
+        let langs = [];
+        if (item.language) {
+          langs = item.language.split(" ");
+        }
+        return (
+          <FlexBox
+            style={{ opacity: item.active ? 1 : 0.6 }}
+            ref={i === activePlayerIndex ? activePlayerRef : null}
+          >
+            <O_Card
+              type="noInitiative"
+              fullinit
+              avatar={item.imagestring}
+              name={item.name}
+              player_id={item.id}
+              username={item.username}
+              inv={item.inv}
+              ins={item.ins}
+              perc={item.perc}
+              condition={data.fight}
+              thisUser={data.user_id}
+              author={user?.id}
+              master={user?.id === data.user_id}
+              initiative={initiative}
+              initiativeVal={item.initiative}
+              data={effectsData}
+              code={code}
+              playerEffects={playerEffects}
+              fight={data.fight}
+            >
+              {langs.map((sublang: any) => (
+                <FlexBox offsetRight="8" offsetBottom="8">
+                  <View style={styles.tag}>
+                    <Text style={{ fontSize: 18, color: "#EDF2DC" }}>
+                      {sublang}
+                    </Text>
+                  </View>
+                </FlexBox>
+              ))}
+            </O_Card>
+          </FlexBox>
+        );
       }
-      return (
-        <O_Card
-          type={data.fight ? "Initiative" : "noInitiative"}
-          avatar={player.imagestring}
-          name={player.name}
-          player_id={player.id}
-          username={player.username}
-          inv={player.inv}
-          ins={player.ins}
-          perc={player.perc}
-          condition={data.fight}
-          thisUser={data.user_id}
-          author={user?.id}
-          master={user?.id === data.user_id}
-          handleInitiativeChange={(text: any) => {
-            setNewInitiative(text);
-            console.log("UR INITIATIVE" + newInitiative);
-          }}
-          initiative={initiative}
-          initiativeVal={player.initiative}
-          data={effectsData}
-          code={code}
-          playerEffects={playerEffects}
-          fight={data.fight}
-          onSubmitEditing={() => onSubmitInitiativeEditing(player.id)}
-          newInitiative={newInitiative}
-        >
-          {langs &&
-            langs.map((sublang: any) => (
-              <FlexBox offsetRight="8" offsetBottom="8">
-                <View style={styles.tag}>
-                  <Text style={{ fontSize: 18, color: "#EDF2DC" }}>
-                    {sublang}
-                  </Text>
-                </View>
-              </FlexBox>
-            ))}
-        </O_Card>
-      );
-    });
-  };
-
-  const monsterList = () => {
-    return data.monsters?.map((player: any, i: any) => {
-      return (
-        <FlexBox style={{ opacity: 0.6 }}>
-          <O_Card
-            type="monster"
-            avatar={player.imagestring}
-            name={player.name}
-            monster_id={player.id}
-            username={player.username}
-            inv={player.inv}
-            ins={player.ins}
-            perc={player.perc}
-            condition={data.fight}
-            thisUser={data.user_id}
-            author={user?.id}
-            master={user?.id === data.user_id}
-            handleInitiativeChange={(event: any) => {
-              setNewInitiative(event.value);
-              console.log("UR INITIATIVE" + newInitiative);
-            }}
-            initiative={initiative}
-            initiativeVal={player.initiative}
-            hp={player.hp}
-            arm={player.armor}
-            data={effectsData}
-            code={code}
-            monsterEffects={monsterEffects}
-          ></O_Card>
-        </FlexBox>
-      );
     });
   };
 
   // bottomsheet_related
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const bottomSheetModalRef2 = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef3 = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["23%", "93%"], []);
   const snapPoints2 = useMemo(() => ["23%", "93%"], []);
+  const snapPoints3 = useMemo(() => ["23%", "93%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -171,23 +164,20 @@ export default function SingleGameScreen(props: {
   const handleCloseModalPress2 = useCallback(() => {
     bottomSheetModalRef2.current?.close();
   }, []);
+  const handlePresentModalPress3 = useCallback(() => {
+    bottomSheetModalRef3.current?.present();
+  }, []);
+  const handleCloseModalPress3 = useCallback(() => {
+    bottomSheetModalRef3.current?.close();
+  }, []);
 
-  const onSubmitInitiativeEditing = (playerId: any) => {
-    console.log(playerId);
-    console.log(newInitiative);
-    axios
-      .patch(`http://localhost:3000/api/v1/games/${code}/players/${playerId}`, {
-        player: {
-          initiative: newInitiative,
-        },
-      })
-      .then((response) => {
-        setNewInitiative(null);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        // getUpdatedInfo();
+  const scrollToActivePlayer = () => {
+    if (scrollViewRef.current && activePlayerRef.current) {
+      activePlayerRef.current.measure((x, y, width, height, pageX, pageY) => {
+        // @ts-ignore
+        scrollViewRef.current.scrollTo({ y: pageY, animated: true });
       });
+    }
   };
 
   useEffect(() => {
@@ -196,6 +186,39 @@ export default function SingleGameScreen(props: {
       .then(({ data }) => {
         if (data != null) {
           setData(data);
+          const players = data.players || [];
+          const monsters = data.monsters || [];
+          const combinedList = [...players, ...monsters];
+          const sortedList = combinedList.sort(
+            (a, b) => b.initiative - a.initiative
+          );
+          setSortedList(sortedList);
+
+          const activeIndex = sortedList.findIndex(
+            (item) => item.active === true
+          );
+          if (activeIndex >= 0) {
+            setActivePlayerIndex(activeIndex);
+          } else {
+            const firstItem = sortedList[0];
+            const patchUrl = firstItem.armor
+              ? `http://localhost:3000/api/v1/games/${code}/monsters/${firstItem.id}`
+              : `http://localhost:3000/api/v1/games/${code}/players/${firstItem.id}`;
+            axios
+              .patch(patchUrl, {
+                [firstItem.armor ? "monster" : "player"]: {
+                  active: true,
+                },
+              })
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => console.error(error))
+              .finally(() => {
+                setActivePlayerIndex(0);
+              });
+          }
+          //
           const playerEffectsObject = data.players.reduce(
             (acc: any, player: any) => {
               acc[player.id] = player.effects;
@@ -204,7 +227,6 @@ export default function SingleGameScreen(props: {
             {}
           );
           setPlayerEffects(playerEffectsObject);
-
           const monsterEffectsObject = data.monsters.reduce(
             (acc: any, monster: any) => {
               acc[monster.id] = monster.effects;
@@ -295,6 +317,20 @@ export default function SingleGameScreen(props: {
         received(data: any) {
           if (data.code === code) {
             setData(data);
+            const players = data.players || [];
+            const monsters = data.monsters || [];
+            const combinedList = [...players, ...monsters];
+            const sortedList = combinedList.sort(
+              (a, b) => b.initiative - a.initiative
+            );
+            setSortedList(sortedList);
+
+            const activeIndex = sortedList.findIndex(
+              (item) => item.active === true
+            );
+            if (activeIndex >= 0) {
+              setActivePlayerIndex(activeIndex);
+            }
           }
         },
       }
@@ -306,6 +342,85 @@ export default function SingleGameScreen(props: {
       gameSubscription.unsubscribe();
     };
   }, []);
+
+  const handleNextPlayer = () => {
+    const activePlayer = sortedList[activePlayerIndex!];
+    let nextPlayerIndex = activePlayerIndex! + 1;
+    if (nextPlayerIndex >= sortedList.length) {
+      nextPlayerIndex = 0;
+    }
+    const nextPlayer = sortedList[nextPlayerIndex];
+    let url = `http://localhost:3000/api/v1/games/${code}/players/${activePlayer.id}`;
+    if (activePlayer.armor) {
+      url = `http://localhost:3000/api/v1/games/${code}/monsters/${activePlayer.id}`;
+    }
+
+    axios
+      .patch(url, {
+        [activePlayer.armor ? "monster" : "player"]: {
+          active: false,
+        },
+      })
+      .then((response1) => {
+        console.log(response1);
+        let url = `http://localhost:3000/api/v1/games/${code}/players/${nextPlayer.id}`;
+        if (nextPlayer.armor) {
+          url = `http://localhost:3000/api/v1/games/${code}/monsters/${nextPlayer.id}`;
+        }
+        axios
+          .patch(url, {
+            [nextPlayer.armor ? "monster" : "player"]: {
+              active: true,
+            },
+          })
+          .then((response2) => {
+            console.log(response2);
+            setActivePlayerIndex(nextPlayerIndex);
+            if (
+              nextPlayerIndex === 0 &&
+              activePlayerIndex === sortedList.length - 1
+            ) {
+              // If the last item was deactivated and the first activated, update the turn in the game
+              axios
+                .patch(`http://localhost:3000/api/v1/games/${code}`, {
+                  game: {
+                    turn: data.turn + 1,
+                  },
+                })
+                .then((response3) => {
+                  console.log(response3);
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    if (data.turn < 1) {
+      axios
+        .patch(`http://localhost:3000/api/v1/games/${code}`, {
+          game: {
+            turn: 1,
+          },
+        })
+        .then((response) => {})
+        .catch((error) => console.error(error))
+        .finally(() => {});
+    }
+  }, [data]);
+
+  useEffect(() => {
+    scrollToActivePlayer();
+  }, [isLoading]);
 
   const getUpdatedInfo = () => {
     axios
@@ -331,7 +446,9 @@ export default function SingleGameScreen(props: {
         })
         .then((response) => {})
         .catch((error) => console.error(error))
-        .finally(() => {});
+        .finally(() => {
+          navigation.push("SGame", { code: code });
+        });
     } else {
       axios
         .patch(`http://localhost:3000/api/v1/games/${code}`, {
@@ -341,7 +458,9 @@ export default function SingleGameScreen(props: {
         })
         .then((response) => {})
         .catch((error) => console.error(error))
-        .finally(() => {});
+        .finally(() => {
+          navigation.push("SGame", { code: code });
+        });
     }
   };
 
@@ -354,7 +473,6 @@ export default function SingleGameScreen(props: {
       <Error
         errorid="404"
         handleButtonClick={() => navigation.dispatch(StackActions.popToTop())}
-        code={code}
       ></Error>
     );
   }
@@ -382,22 +500,16 @@ export default function SingleGameScreen(props: {
       {data.user_id === user?.id && (
         <O_GameFooter
           fight={data.fight}
-          handleConcClick={handleConcClick}
-          nextDisabled={!allPlayersHaveInitiative}
-          handlePlusClick={() =>
-            navigation.push("CreateMonsters", { code: code })
-          }
-          handleNextClick={() =>
-            navigation.push("FullInitiative", { code: code })
-          }
-          prevEnabled={data.turn > 1}
+          handleConcClick={handlePresentModalPress3}
+          handleNextClick={handleNextPlayer}
+          plusDisabled={true}
+          prevEnabled={true}
         />
       )}
       <SingleGameWrapper>
-        <ScrollView>
+        <ScrollView ref={scrollViewRef} style={{ height: "auto" }}>
           <>
-            {list()}
-            {monsterList()}
+            {mixedList()}
             <FlexBox style={{ height: 250 }}></FlexBox>
           </>
         </ScrollView>
@@ -434,6 +546,18 @@ export default function SingleGameScreen(props: {
             navigation.dispatch(StackActions.popToTop())
           }
           b={t("common:finish")}
+          a={t("common:cancel")}
+        />
+        <O_BottomSheet
+          mainHeader={t("common:uSure")}
+          subHeader={t("common:leavefight")}
+          ref={bottomSheetModalRef3}
+          index={1}
+          snapPoints={snapPoints3}
+          handleButtonClick={handleCloseModalPress3}
+          twoButtons={true}
+          handleSecondButtonClick={handleConcClick}
+          b={t("common:finishInc")}
           a={t("common:cancel")}
         />
       </SingleGameWrapper>

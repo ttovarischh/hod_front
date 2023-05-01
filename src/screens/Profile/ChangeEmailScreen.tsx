@@ -56,7 +56,7 @@ export default function ChangeEmailScreen(props: {
   return (
     <>
       <O_Header
-        center="Изменить почту"
+        center={t("common:changeEmail")}
         handleLeftPress={() => navigation.navigate("Settings")}
         left={t("common:cancel")}
         right={newEmail !== email && newEmail !== "" ? t("common:done") : ""}
@@ -64,16 +64,13 @@ export default function ChangeEmailScreen(props: {
       ></O_Header>
       <ProfileScreenWrapper>
         <FlexBox style={{ width: 285 }} offsetBottom="16" offsetTop="50">
-          <E_Text center>
-            Введи адрес новой электронной почты, чтобы получить письмо
-            с подтверждением
-          </E_Text>
+          <E_Text center>{t("common:typeEmail")}</E_Text>
         </FlexBox>
         <A_Input
           value={newEmail}
           handleChange={(text: any) => setNewEmail(text)}
           placeholder={"New email"}
-          label={newEmail !== email ? "Электронная почта" : email}
+          label={newEmail !== email ? t("common:eemail") : email}
         />
       </ProfileScreenWrapper>
     </>

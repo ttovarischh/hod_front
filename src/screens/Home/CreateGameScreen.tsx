@@ -17,6 +17,8 @@ import O_BottomSheet from "../../components/Organisms/O_BottomSheet";
 import { StackActions } from "@react-navigation/native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import M_Portrait from "../../components/Molecules/M_Portrait";
+import { consumer } from "../../constants";
+import { useTranslation } from "react-i18next";
 
 const HomeScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -37,7 +39,8 @@ export default function CreateGameScreen(props: {
   const scrollViewRef = useRef<ScrollView>(null);
   const [empty, setEmpty] = useState(false);
   const [code, setCode] = useState();
-  const [gameData, setGameData] = useState<any[]>([]);
+  const [gameData, setGameData] = useState<any>([]);
+  const { t } = useTranslation();
   const [isLoading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState({
     playerName: "",
@@ -140,7 +143,7 @@ export default function CreateGameScreen(props: {
   ];
 
   const createdPlayersList = () => {
-    return gameData.map((player: any) => {
+    return gameData.players.map((player: any) => {
       let langs = player.language.split(" ");
       return (
         <>
@@ -187,6 +190,19 @@ export default function CreateGameScreen(props: {
 
   useEffect(() => {
     setLoading(false);
+    const gameSubscription = consumer.subscriptions.create(
+      { channel: "GamesChannel" },
+      {
+        received(data: any) {
+          if (data.code === code) {
+            setGameData(data);
+          }
+        },
+      }
+    );
+    return () => {
+      gameSubscription.unsubscribe();
+    };
   }, [code]);
 
   const handleType = (key: any, value: any) => {
@@ -201,19 +217,6 @@ export default function CreateGameScreen(props: {
   const handleClear = (key: any, value: any) => {
     setPlayer(initialState);
   };
-
-  function handleGetPlayers() {
-    axios
-      .get("http://localhost:3000/api/v1/games/" + code + "/players")
-      .then(({ data }) => {
-        setGameData(data);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        console.log("Done get");
-        console.log(gameData);
-      });
-  }
 
   const handlePostPlayerClick = () => {
     const tagsString = tags.join(" ");
@@ -240,7 +243,7 @@ export default function CreateGameScreen(props: {
           console.log(error);
         })
         .finally(() => {
-          handleGetPlayers();
+          // handleGetPlayers();
           setPlayer(initialState);
           setTags([]);
         });
@@ -291,8 +294,8 @@ export default function CreateGameScreen(props: {
   return (
     <>
       <O_Header
-        left="Отмена"
-        center="Создание игроков"
+        left={t("common:cancel")}
+        center={t("common:playerCreate")}
         handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
       />
       <ScrollView
@@ -305,7 +308,9 @@ export default function CreateGameScreen(props: {
       >
         <HomeScreenWrapper>
           <>
-            <FlexBox direction="column">{createdPlayersList()}</FlexBox>
+            <FlexBox direction="column">
+              {gameData.players && createdPlayersList()}
+            </FlexBox>
             <M_Card
               type="ch_creation"
               handleImagePickerPress={handlePresentModalPress}
@@ -342,20 +347,20 @@ export default function CreateGameScreen(props: {
               handleButtonClick={handlePostPlayerClick}
               offsetBottom={8}
             >
-              Сохранить игрока
+              {t("common:savePlayer")}
             </A_Button>
             <A_Button
               bright
               offsetBottom={107}
               handleButtonClick={() => navigation.push("SGame", { code: code })}
             >
-              Начать игру
+              {t("common:beginGame")}
             </A_Button>
           </>
         </HomeScreenWrapper>
       </ScrollView>
       <O_BottomSheet
-        mainHeader="Выбери аватарку персонажа"
+        mainHeader={t("common:chooseAvatar")}
         ref={bottomSheetModalRef}
         index={1}
         snapPoints={snapPoints}

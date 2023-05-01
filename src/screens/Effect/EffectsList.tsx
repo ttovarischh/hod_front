@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import styled, { ThemeContext } from "styled-components/native";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components/native";
 import axios from "axios";
 import A_Loader from "../../components/Atoms/A_Loader";
 import O_Header from "../../components/Organisms/O_Header";
@@ -7,6 +7,7 @@ import { FlatList } from "react-native";
 import { consumer } from "../../constants";
 import { FlexBox } from "../../common";
 import A_Effect from "../../components/Atoms/A_Effect";
+import { useTranslation } from "react-i18next";
 
 const EffectsScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -21,7 +22,7 @@ export default function EffectsList(props: { navigation: any }) {
   const { navigation } = props;
   const [isLoading, setLoading] = useState(true);
   const [effectsData, setEffectsData] = useState<any[]>([]);
-  const theme = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -51,7 +52,7 @@ export default function EffectsList(props: { navigation: any }) {
   return (
     <>
       <EffectsScreenWrapper>
-        <O_Header center="Эффекты" />
+        <O_Header center={t("common:effects")} />
         <FlexBox direction="column" offsetBottom="200">
           <FlatList
             data={effectsData}

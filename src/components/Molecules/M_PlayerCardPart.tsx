@@ -23,6 +23,7 @@ type Props = {
   expanded?: any;
   player_id?: any;
   initiativeVal?: any;
+  fullinit?: boolean;
 };
 
 const CardRow = styled(FlexBox)`
@@ -68,6 +69,7 @@ const M_PlayerCardPart = ({
   expanded,
   player_id,
   initiativeVal,
+  fullinit,
 }: Props) => {
   if (type === "UpperRow") {
     return (
@@ -105,7 +107,14 @@ const M_PlayerCardPart = ({
     return (
       <FlexBox direction="column">
         <FlexBox style={{ width: "100%", flexWrap: "nowrap" }}>
-          <M_PlayerInformation expanded={expanded} a={a} b={b} c={c} />
+          <M_PlayerInformation
+            expanded={expanded}
+            fullinit={fullinit}
+            a={a}
+            b={b}
+            c={c}
+            f={f}
+          />
         </FlexBox>
         {!expanded && (
           <M_Portrait type="Large" src={avatar} player_id={player_id} />

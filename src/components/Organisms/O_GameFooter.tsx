@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import styled from "styled-components/native";
 import { FlexBox, F_Text } from "../../common";
@@ -35,6 +35,10 @@ function O_GameFooter(props: {
   fight?: boolean;
   handleConcClick?: any;
   handleNextClick?: any;
+  handlePlusClick?: any;
+  plusDisabled?: boolean;
+  nextDisabled?: boolean;
+  prevEnabled?: boolean;
 }) {
   return (
     <View style={styles.bottomPart}>
@@ -45,7 +49,12 @@ function O_GameFooter(props: {
         }}
       >
         {props.fight && (
-          <GameButton onPress={() => console.log("Plus clicked")}>
+          <GameButton
+            onPress={props.plusDisabled ? undefined : props.handlePlusClick}
+            style={{
+              backgroundColor: props.plusDisabled ? "#1B1B1B" : "#313131",
+            }}
+          >
             <FlexBox
               style={{
                 height: "100%",
@@ -55,7 +64,10 @@ function O_GameFooter(props: {
               alignItems="center"
               justifyContent="center"
             >
-              <A_Icon iconName="plusBig" />
+              <A_Icon
+                iconName="plusBig"
+                fill={props.plusDisabled ? "#3D3D3D" : "#FFFFFF"}
+              />
             </FlexBox>
           </GameButton>
         )}
@@ -75,7 +87,7 @@ function O_GameFooter(props: {
             ></A_Icon>
           </FlexBox>
         </GameButton>
-        {props.fight && (
+        {(props.fight && props.prevEnabled) && (
           <SmallGameButton onPress={() => console.log("Back clicked")}>
             <FlexBox
               style={{
@@ -91,7 +103,12 @@ function O_GameFooter(props: {
           </SmallGameButton>
         )}
         {props.fight && (
-          <GameButton onPress={props.handleNextClick}>
+          <GameButton
+            onPress={props.nextDisabled ? undefined : props.handleNextClick}
+            style={{
+              backgroundColor: props.nextDisabled ? "#1B1B1B" : "#313131",
+            }}
+          >
             <FlexBox
               style={{
                 height: "100%",
@@ -101,7 +118,10 @@ function O_GameFooter(props: {
               alignItems="center"
               justifyContent="center"
             >
-              <A_Icon iconName="arrow" />
+              <A_Icon
+                iconName="arrow"
+                fill={props.nextDisabled ? "#3D3D3D" : "#FFFFFF"}
+              />
             </FlexBox>
           </GameButton>
         )}

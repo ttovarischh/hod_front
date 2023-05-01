@@ -4,6 +4,7 @@ import styled, { ThemeContext } from "styled-components/native";
 import { FlexBox, F_Text, E_Text, A_Text } from "../../common";
 import A_Icon from "../../components/Atoms/A_Icon";
 import O_Header from "../../components/Organisms/O_Header";
+import { useTranslation } from "react-i18next";
 
 const EffectScreenWrapper = styled(FlexBox)`
   background-color: ${({ theme }) => theme.appBg};
@@ -107,6 +108,7 @@ export default function PlayerConcScreen(props: {
   const params = route.params || {};
   const { player = {} } = params;
   const theme = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   const langs = player.language.split(" ");
   const list = () => {
@@ -123,7 +125,7 @@ export default function PlayerConcScreen(props: {
     <>
       <O_Header
         center={`Персонаж#${player.id}`}
-        left="Назад"
+        left={t("common:back")}
         handleLeftPress={() => navigation.goBack()}
       ></O_Header>
       <EffectScreenWrapper direction="column">

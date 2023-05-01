@@ -63,6 +63,8 @@ const Signin = (props: { navigation: any }) => {
               secure
             />
             <A_Button
+              bright
+              disabled={email == "" || password.trim().length < 6}
               offsetTop={4}
               handleButtonClick={() => {
                 console.log("Clicked to login");

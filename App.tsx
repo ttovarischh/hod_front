@@ -9,9 +9,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import "./src/i18/IMLocalize";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import useAuth, {AuthProvider} from "./src/contexts/newAuthContext/useAuth";
+import useAuth, { AuthProvider } from "./src/contexts/newAuthContext/useAuth";
 LogBox.ignoreLogs([`to contain units`, `key`]);
-
 
 const MainAppContainer = styled.View`
   position: relative;
@@ -25,8 +24,9 @@ function App() {
     PP: require("./assets/fonts/PPNeueMontreal-Medium.otf"),
   });
   const [appIsReady, setAppIsReady] = useState(false);
-  const { user, loadingInitial } = useAuth();
+  const { user, loadingInitial, onboardingCompleted } = useAuth();
   console.log("user from context" + JSON.stringify(user));
+  // console.log("oc" + JSON.stringify(onboardingCompleted));
 
   useEffect(() => {
     async function prepare() {

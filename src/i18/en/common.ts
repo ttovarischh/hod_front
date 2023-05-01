@@ -27,4 +27,57 @@ export default {
   repeatPassword: "Repeat password",
   nick: "Username",
   doLogin: "Sign In",
+  effects: "Effects",
+  effect: "Effect",
+  back: "Back",
+  addNpc: "Adding npc",
+  continue: "Continue",
+  continueGame: "Continue game",
+  gameCode: "Game code",
+  askCode:
+    "Ask the master for an invitation code and enter it in the field below. You can also scan the QR code from the presenter's device!",
+  repeat: "Please repeat your password to confirm it and avoid an error.",
+  regDone: "Registration is finished",
+  canAuth: "Now you can login to your account. Welcome to the Hod!",
+  wow: "Sakes alive!",
+  wrongCode:
+    "It seems like someone gave you the wrong connection code. There is no such game in our databases. Try again.",
+  congrats: "Congratulations!",
+  finishedSession:
+    "This session has been completed by the master. We hope you had a good time destroying as many orcs as possible!",
+  playerCreate: "Player creation",
+  savePlayer: "Save player",
+  beginGame: "Begin game",
+  chooseAvatar: "Choose player avatar",
+  round: "round",
+  saveNpc: "Save monster",
+  uSure: "Are you sure?",
+  unsavedGame: "You have unsaved data and you are about to leave the page.",
+  leave: "Leave",
+  session: "Session",
+  share: "Share",
+  invite: "Invite friends",
+  shareQr:
+    "Show this QR code to your friends so they can join the game, or use the session code.",
+  danger: "Be careful!",
+  uAreAbout:
+    "You are about to end the current session. All characters and game progress will be reset.",
+  leavefight:
+    "You are about to exit initiative mode. All monsters will be removed and combat progress will be reset.",
+  finish: "Finish game",
+  finishInc: "Finish initiative",
+  changeEmail: "Change email",
+  typeEmail: "Enter a new email address to receive a confirmation email",
+  eemail: "Email",
+  moreTime: "More time for fantasy",
+  thinkLess:
+    "Hod helps you to think less about numbers and immerse yourself in stories and tactics",
+  forAll: "The game's course for everyone",
+  canShare:
+    "Players can connect to a session to monitor changes in states and situations on the battlefield",
+  uNeed: "What you need when you need it",
+  langs:
+    "Languages spoken by heroes for social play and concentration for combat",
+  allClear: "All clear",
+  skip: "Skip",
 };

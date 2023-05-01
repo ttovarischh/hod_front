@@ -3,17 +3,20 @@ import { StyleSheet, View } from "react-native";
 import styled from "styled-components/native";
 import { FlexBox, B_Text, E_Text } from "../../common";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import A_Button from "../Atoms/A_Button";
 import { BlurView } from "expo-blur";
 
 type CardProps = {
   children?: React.ReactNode;
-  mainHeader?: string;
-  subHeader?: string;
+  mainHeader?: any;
+  subHeader?: any;
   index?: any;
   snapPoints?: any;
   handleButtonClick?: any;
   twoButtons?: boolean;
+  handleSecondButtonClick?: any;
+  a?: any;
+  b?: any;
+  oneButton?: boolean;
 };
 
 const BottomSheetContentWrapper = styled(FlexBox)`
@@ -37,7 +40,6 @@ const BottomSheetButton = styled.TouchableOpacity`
 `;
 
 const BottomSheetHollowButton = styled.TouchableOpacity`
-  // background: blue;
   border: 1px solid #262626;
   width: 100%;
   height: 125px;
@@ -85,8 +87,8 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
             </B_Text>
             {props.subHeader && (
               <E_Text center offsetTop={18} color="#545454">
-                Покажи этот QR-код своим друзьям, чтобы они могли присоединиться
-                к игре, или воспользуйтесь кодом сессии
+                {props.subHeader ||
+                  "Покажи этот QR-код своим друзьям, чтобы они могли присоединиться к игре, или воспользуйтесь кодом сессии"}
               </E_Text>
             )}
           </FlexBox>
@@ -96,7 +98,7 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
             style={styles.shadowProp}
           >
             <B_Text center color="#000000">
-              Готово
+              {props.a || "Готово"}
             </B_Text>
           </BottomSheetButton>
         </BottomSheetContentWrapper>
@@ -170,35 +172,37 @@ const O_BottomSheet = forwardRef<Ref, CardProps>((props, ref) => (
               </E_Text>
             )}
           </FlexBox>
-          <FlexBox offsetTop="120">
+          <FlexBox offsetTop={props.oneButton ? "240" : "120"}>
             <BottomSheetButton
               onPress={props.handleButtonClick}
               style={styles.shadowProp}
             >
               <B_Text center color="#000000">
-                Отмена
+                {props.a || "Отмена"}
               </B_Text>
             </BottomSheetButton>
-            <BottomSheetHollowButton
-              onPress={props.handleButtonClick}
-              style={styles.shadowBProp}
-            >
-              <BlurView
-                intensity={40}
-                tint="dark"
-                style={{
-                  width: "101%",
-                  height: "101%",
-                  borderRadius: 20,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
+            {!props.oneButton && (
+              <BottomSheetHollowButton
+                onPress={props.handleSecondButtonClick}
+                style={styles.shadowBProp}
               >
-                <B_Text center color="#FFFFFF">
-                  Покинуть
-                </B_Text>
-              </BlurView>
-            </BottomSheetHollowButton>
+                <BlurView
+                  intensity={40}
+                  tint="dark"
+                  style={{
+                    width: "101%",
+                    height: "101%",
+                    borderRadius: 20,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <B_Text center color="#FFFFFF">
+                    {props.b || "Покинуть"}
+                  </B_Text>
+                </BlurView>
+              </BottomSheetHollowButton>
+            )}
           </FlexBox>
         </BottomSheetContentWrapper>
       </BottomSheetModal>

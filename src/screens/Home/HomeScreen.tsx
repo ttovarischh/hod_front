@@ -20,22 +20,10 @@ const HomeScreenInnerWrapper = styled(FlexBox)`
 
 function HomeScreen(props: { navigation: any }) {
   const { navigation } = props;
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const { user } = useAuth();
   const dateTime = new Date().toJSON();
   const { t } = useTranslation();
   const [code, setCode] = useState("");
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3000/api/v1/games")
-  //     .then(({ data }) => {
-  //       setData(data);
-  //     })
-  //     .catch((error) => console.error(error))
-  //     .finally(() => setLoading(false));
-  // }, []);
 
   const handleSubmit = async () => {
     if (!user?.jwt) {

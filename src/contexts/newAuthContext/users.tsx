@@ -8,6 +8,13 @@ export async function getCurrentUser() {
   return JSON.parse(value);
 }
 
+export async function getOnboardingCompleted() {
+  const value = await AsyncStorage.getItem("@OnboardingCompleted");
+  console.log(value);
+  // @ts-ignore
+  return JSON.parse(value);
+}
+
 export async function signUp(params: {
   email: string;
   password: string;
@@ -34,9 +41,6 @@ export async function signUp(params: {
     console.log(json);
     if (typeof json["user"] !== "undefined") {
       AsyncStorage.setItem("@AuthData", JSON.stringify(json));
-      alert(
-        'You are successfully signed up as a user "' + json.user.email + '"'
-      );
     } else if (typeof json["message"] !== "undefined") {
       alert(json.message);
     } else console.log(json);

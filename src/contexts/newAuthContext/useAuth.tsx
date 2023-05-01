@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import * as sessionsApi from "./sessions";
 import * as usersApi from "./users";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface User {
   id: string;
@@ -38,6 +39,9 @@ interface AuthContextType {
   sex?: string;
   show?: any;
   loadingInitial: boolean;
+  onboardingCompleted?: any;
+  toggleOnboardingCompleted?: any;
+  offOnboardingCompleted?: any;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -51,8 +55,16 @@ export function AuthProvider({
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
+  const [onboardingCompleted, setOnboardingCompleted] = useState<any>();
 
   useEffect(() => {
+    usersApi
+      .getOnboardingCompleted()
+      .then((value) => {
+        setOnboardingCompleted(value);
+      })
+      .catch((_error) => {})
+      .finally(() => {});
     usersApi
       .getCurrentUser()
       .then((value) => {
@@ -64,6 +76,16 @@ export function AuthProvider({
         setLoadingInitial(false);
       });
   }, []);
+
+  function toggleOnboardingCompleted() {
+    AsyncStorage.setItem("@OnboardingCompleted", JSON.stringify(true));
+    setOnboardingCompleted(true);
+  }
+
+  function offOnboardingCompleted() {
+    AsyncStorage.setItem("@OnboardingCompleted", JSON.stringify(false));
+    setOnboardingCompleted(false);
+  }
 
   function login(email: string, password: string) {
     setLoading(true);
@@ -87,7 +109,9 @@ export function AuthProvider({
 
     usersApi
       .signUp({ email, password, password_confirmation, username })
-      .then((user) => {})
+      .then((user) => {
+        offOnboardingCompleted();
+      })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }
@@ -105,8 +129,11 @@ export function AuthProvider({
       login,
       signUp,
       logout,
+      onboardingCompleted,
+      toggleOnboardingCompleted,
+      offOnboardingCompleted,
     }),
-    [user, loading, error, loadingInitial]
+    [user, loading, error, loadingInitial, onboardingCompleted]
   );
 
   return (

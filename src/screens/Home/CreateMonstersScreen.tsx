@@ -5,22 +5,20 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { FlexBox, B_Text, D_Text } from "../../common";
+import { FlexBox } from "../../common";
 import Error from "../Errors/Error";
 import { StackActions } from "@react-navigation/native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import A_Loader from "../../components/Atoms/A_Loader";
 import O_Header from "../../components/Organisms/O_Header";
 import O_Card from "../../components/Organisms/O_Card";
 import O_BottomSheet from "../../components/Organisms/O_BottomSheet";
-import useAuth from "../../contexts/newAuthContext/useAuth";
-import { consumer } from "../../constants";
 import M_Card from "../../components/Molecules/M_Card";
 import A_Button from "../../components/Atoms/A_Button";
+import { useTranslation } from "react-i18next";
 
 const SingleGameWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -38,58 +36,42 @@ export default function CreateMonstersScreen(props: {
   const { code = {} } = params;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = React.useState<any>([]);
-  const [effectsData, setEffectsData] = React.useState<any>([]);
-  const [initiative, setInitiative] = useState("");
-  const { user } = useAuth();
-  const [playerEffects, setPlayerEffects] = useState({});
   const [empty, setEmpty] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { t } = useTranslation();
   const [initialState, setInitialState] = useState({
-    playerName: "",
-    lang: "",
-    ins: "",
-    perc: "",
-    inv: "",
-    username: "",
-    imagestring: "",
+    name: "",
+    initiative: "",
+    hp: "",
+    armor: "",
   });
   const [player, setPlayer] = useState({
-    playerName: "",
-    lang: "",
-    ins: "",
-    perc: "",
-    inv: "",
-    username: "",
-    imagestring: "",
+    name: "",
+    initiative: "",
+    hp: "",
+    armor: "",
   });
+
+  const handleType = (key: any, value: any) => {
+    console.log(player);
+    setEmpty(false);
+    setPlayer((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
   const monsterList = () => {
     return data.monsters?.map((player: any, i: any) => {
       return (
         <O_Card
-          type="monster"
-          avatar={player.imagestring}
+          type="ExpandedMonster"
           name={player.name}
           player_id={player.id}
-          username={player.username}
-          inv={player.inv}
-          ins={player.ins}
-          perc={player.perc}
-          onCardPress={() => navigation.push("PlayerConc", { player: player })}
-          condition={data.fight}
-          thisUser={data.user_id}
-          author={user?.id}
-          master={user?.id === data.user_id}
-          handleInitiativeChange={(int: any) => {
-            setInitiative(int);
-            console.log("UR INITIATIVE" + initiative);
-          }}
-          initiative={initiative}
-          initiativeVal={player.initiative}
+          arm={player.armor}
           hp={player.hp}
-          arm={player.initiative}
-          // data={effectsData}
-          code={code}
-          playerEffects={playerEffects}
+          initiativeVal={player.initiative}
+          key={player.id}
         ></O_Card>
       );
     });
@@ -110,35 +92,13 @@ export default function CreateMonstersScreen(props: {
     axios
       .get(`http://localhost:3000/api/v1/games/${code}`)
       .then(({ data }) => {
-        // console.log(JSON.stringify(data));
         if (data != null) {
           setData(data);
-          const playerEffectsObject = data.players.reduce(
-            (acc: any, player: any) => {
-              acc[player.id] = player.effects;
-              return acc;
-            },
-            {}
-          );
-
-          setPlayerEffects(playerEffectsObject);
-        }
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {});
-    axios
-      .get(`http://localhost:3000/api/v1/effects`)
-      .then(({ data }) => {
-        // console.log(JSON.stringify(data));
-        if (data != null) {
-          setEffectsData(data);
         }
       })
       .catch((error) => console.error(error))
       .finally(() => {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       });
   }, []);
 
@@ -157,20 +117,17 @@ export default function CreateMonstersScreen(props: {
   };
 
   const handlePostPlayerClick = () => {
-    if ((player.ins || player.inv || player.perc || player.playerName) == "") {
+    if ((player.name || player.hp || player.armor || player.initiative) == "") {
       setEmpty(true);
       console.log("smth is wrong");
     } else {
       axios
-        .post("http://localhost:3000/api/v1/games/" + code + "/players", {
-          player: {
-            name: player.playerName,
-            language: player.lang,
-            inv: player.inv,
-            ins: player.ins,
-            perc: player.perc,
-            username: player.username,
-            imagestring: player.imagestring,
+        .post("http://localhost:3000/api/v1/games/" + code + "/monsters", {
+          monster: {
+            name: player.name,
+            hp: player.hp,
+            armor: player.armor,
+            initiative: player.initiative,
           },
         })
         .then(function (response) {
@@ -180,26 +137,11 @@ export default function CreateMonstersScreen(props: {
           console.log(error);
         })
         .finally(() => {
-          handleGetPlayers();
+          getUpdatedInfo();
           setPlayer(initialState);
         });
     }
   };
-
-  const [gameData, setGameData] = useState<any[]>([]);
-
-  function handleGetPlayers() {
-    axios
-      .get("http://localhost:3000/api/v1/games/" + code + "/players")
-      .then(({ data }) => {
-        setGameData(data);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        console.log("Done get");
-        console.log(gameData);
-      });
-  }
 
   if (isLoading) {
     return <A_Loader />;
@@ -217,31 +159,47 @@ export default function CreateMonstersScreen(props: {
   return (
     <>
       <O_Header
-        left="Назад"
-        center="Добавление врагов"
+        left={t("common:back")}
+        center={t("common:addNpc")}
         handleLeftPress={handlePresentModalPress}
-        turn={data.fight ? `${data.turn} раунд` : ""}
+        turn={data.fight ? `${data.turn} ${t("common:round")}` : ""}
       />
       <SingleGameWrapper>
-        <ScrollView>
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current?.scrollToEnd({ animated: true })
+          }
+        >
           {monsterList()}
-          <M_Card type="NpcCreation" />
+          <M_Card
+            type="NpcCreation"
+            npcName={player.name}
+            npcArmor={player.armor}
+            npcHealth={player.hp}
+            npcInitiative={player.initiative}
+            handleNpcNameChange={(text: any) => handleType("name", text)}
+            handleNpcArmorChange={(text: any) => handleType("armor", text)}
+            handleNpcHealthChange={(text: any) => handleType("hp", text)}
+            handleNpcInitiativeChange={(text: any) =>
+              handleType("initiative", text)
+            }
+          />
           <A_Button handleButtonClick={handlePostPlayerClick} offsetBottom={8}>
-            Сохранить игрока
+            {t("common:saveNpc")}
           </A_Button>
           <A_Button
             bright
             offsetBottom={107}
             handleButtonClick={() => navigation.push("SGame", { code: code })}
           >
-            Начать игру
+            {t("common:continueGame")}
           </A_Button>
           <FlexBox style={{ height: 200 }}></FlexBox>
         </ScrollView>
-
         <O_BottomSheet
-          mainHeader="Вы уверены?"
-          subHeader="У вас есть несохраненные данные, а вы уже собираетесь покинуть страницу."
+          mainHeader={t("common:uSure")}
+          subHeader={t("common:unsavedGame")}
           ref={bottomSheetModalRef}
           index={1}
           snapPoints={snapPoints}

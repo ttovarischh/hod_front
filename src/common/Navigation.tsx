@@ -22,6 +22,8 @@ import SettingsScreen from "../screens/Profile/SettingsScreen";
 import PlayerConcScreen from "../screens/Home/PlayerConcScreen";
 import ChangeEmailScreen from "../screens/Profile/ChangeEmailScreen";
 import CreateMonstersScreen from "../screens/Home/CreateMonstersScreen";
+import FullInitiativeScreen from "../screens/Home/FullInitiativeScreen";
+import OnboardingScreen from "../screens/Onboarding/Onboarding";
 
 const ProfileNavigator = createStackNavigator();
 function ProfileStack() {
@@ -111,6 +113,10 @@ function HomeStack(props: { route: any; navigation: any }) {
       navigation.setOptions({
         tabBarVisible: false,
       });
+    } else if (routeName === "FullInitiative") {
+      navigation.setOptions({
+        tabBarVisible: false,
+      });
     } else {
       navigation.setOptions({
         tabBarVisible: true,
@@ -155,7 +161,11 @@ function HomeStack(props: { route: any; navigation: any }) {
         component={CreateMonstersScreen}
         options={{ headerShown: false }}
       />
-      {/* CreateMonstersScreen.tsx */}
+      <HomeNavigator.Screen
+        name="FullInitiative"
+        component={FullInitiativeScreen}
+        options={{ headerShown: false }}
+      />
     </HomeNavigator.Navigator>
   );
 }
@@ -215,10 +225,23 @@ function AuthFlow() {
   );
 }
 
+const OnboardingStack = createStackNavigator();
+function OnboardingFlow() {
+  return (
+    <OnboardingStack.Navigator>
+      <OnboardingStack.Screen
+        options={{ headerShown: false }}
+        name="Onboarding"
+        component={OnboardingScreen}
+      />
+    </OnboardingStack.Navigator>
+  );
+}
+
 export default function Navigation() {
   const MainStack = createStackNavigator();
   const theme = useContext(ThemeContext);
-  const { user } = useAuth();
+  const { user, onboardingCompleted } = useAuth();
 
   return (
     <ThemeProvider theme={theme}>
@@ -232,13 +255,25 @@ export default function Navigation() {
             />
           </>
         ) : (
-          <MainStack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="MainFlow"
-            component={MainFlow}
-          />
+          <>
+            {!onboardingCompleted ? (
+              <MainStack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="OnboardingFlow"
+                component={OnboardingFlow}
+              />
+            ) : (
+              <MainStack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="MainFlow"
+                component={MainFlow}
+              />
+            )}
+          </>
         )}
       </MainStack.Navigator>
     </ThemeProvider>

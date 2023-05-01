@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Text } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { FlexBox, F_Text, E_Text } from "../../common";
@@ -40,6 +40,7 @@ type CardProps = {
 
   npcName?: any;
   npcArmor?: any;
+  npcInitiative?: any;
   npcHealth?: any;
   disabled?: any;
   // langs_input
@@ -48,6 +49,11 @@ type CardProps = {
   handleKeyPress?: any;
   tags?: any;
   removeTag?: any;
+  //
+  handleNpcNameChange?: any;
+  handleNpcArmorChange?: any;
+  handleNpcHealthChange?: any;
+  handleNpcInitiativeChange?: any;
 };
 
 const PlayerWrapper = styled(FlexBox)`
@@ -57,20 +63,6 @@ const PlayerWrapper = styled(FlexBox)`
   padding: 12px;
   width: 100%;
   margin-bottom: 8px;
-`;
-
-const TextAreaFlexBox = styled(FlexBox)`
-  position: relative;
-  background-color: ${({ theme }) => theme.input.fill};
-  border-radius: 12px;
-`;
-
-const PlayerRealInputWrapper = styled.TextInput`
-  width: 100%;
-  height: 55px;
-  background-color: ${({ theme }) => theme.input.fill};
-  border-radius: 12px;
-  font-size: 18;
 `;
 
 const ClearButton = styled.TouchableOpacity`
@@ -162,6 +154,7 @@ const M_Card = ({
   npcArmor,
   npcHealth,
   disabled,
+  npcInitiative,
 
   // langs_input
   inputValue,
@@ -169,9 +162,14 @@ const M_Card = ({
   handleKeyPress,
   tags,
   removeTag,
+  //
+  // handleNpcChange,
+  handleNpcNameChange,
+  handleNpcArmorChange,
+  handleNpcHealthChange,
+  handleNpcInitiativeChange,
   ...rest
 }: CardProps) => {
-  const theme = useContext(ThemeContext);
   if (type == "ch_creation") {
     return (
       <PlayerWrapper direction="column" offsetBottom="8">
@@ -319,28 +317,41 @@ const M_Card = ({
           placeholder="Имя монстра"
           label="Имя монстра"
           value={npcName}
-          handleChange={handleSixthInputChange}
+          handleChange={handleNpcNameChange}
         ></A_Input>
         <A_Input
           placeholder="Здоровье"
           label="Здоровье"
           value={npcHealth}
-          handleChange={handleSixthInputChange}
+          handleChange={handleNpcHealthChange}
           iconName="SmallHealth"
+          keyboardType="numeric"
+          maxLength={2}
         ></A_Input>
         <A_Input
           placeholder="Броня"
           label="Броня"
           value={npcArmor}
-          handleChange={handleSixthInputChange}
+          handleChange={handleNpcArmorChange}
           iconName="SmallArmor"
+          keyboardType="numeric"
+          maxLength={2}
+        ></A_Input>
+        <A_Input
+          placeholder="Инициатива"
+          label="Инициатива"
+          value={npcInitiative}
+          handleChange={handleNpcInitiativeChange}
+          iconName="clock"
+          keyboardType="numeric"
+          maxLength={2}
         ></A_Input>
         <A_Button
           secondary
-          handleButtonClick={() => console.log("Clicked")}
+          handleButtonClick={handleClear}
           disabled={disabled}
         >
-          Сохранить
+          Удалить
         </A_Button>
       </PlayerWrapper>
     );

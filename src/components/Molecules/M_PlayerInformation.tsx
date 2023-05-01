@@ -13,6 +13,7 @@ type AnimatedViewProps = {
   monster?: any;
   d?: any;
   e?: any;
+  fullinit?: boolean;
   f?: any;
 };
 
@@ -32,6 +33,7 @@ const M_PlayerInformation = ({
   c,
   expanded,
   monster,
+  fullinit,
   d,
   e,
   f,
@@ -96,9 +98,6 @@ const M_PlayerInformation = ({
   };
 
   useEffect(() => {
-    console.log(isAExpanded);
-    console.log(isBExpanded);
-    console.log(isCExpanded);
     if (isAExpanded) {
       Animated.parallel([
         Animated.timing(opacityCValue, {
@@ -218,6 +217,7 @@ const M_PlayerInformation = ({
             <A_MicroStat type="SmallInc" text={a} />
             <A_MicroStat type="SmallInv" text={b} />
             <A_MicroStat type="SmallPerc" text={c} />
+            {fullinit && <A_MicroStat type="SmallClocks" text={f} />}
           </>
         )}
         {monster && (

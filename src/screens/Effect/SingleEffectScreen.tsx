@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { ScrollView } from "react-native";
-import styled, { ThemeContext } from "styled-components/native";
+import styled from "styled-components/native";
 import { FlexBox, G_Text, E_Text } from "../../common";
 import O_Header from "../../components/Organisms/O_Header";
 import { StackActions } from "@react-navigation/native";
 import A_Effect from "../../components/Atoms/A_Effect";
+import { useTranslation } from "react-i18next";
 
 const EffectScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.appBg};
@@ -35,6 +36,7 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
   const { route, navigation } = props;
   const params = route.params || {};
   const { effect = {} } = params;
+  const { t } = useTranslation();
 
   const supersplit = () => {
     let text = effect.descr;
@@ -56,8 +58,8 @@ function SingleEffectsScreen(props: { route: any; navigation: any }) {
   return (
     <>
       <O_Header
-        left="Назад"
-        center="Эффект"
+        left={t("common:back")}
+        center={t("common:effect")}
         handleLeftPress={() => navigation.dispatch(StackActions.popToTop())}
       />
       <EffectScreenWrapper>

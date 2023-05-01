@@ -390,11 +390,11 @@ const A_Icon = (props: PropsT) => {
   } else if (props.iconName == "UnconsciousIcon") {
     return (
       <Svg
-        width="31"
-        height="28"
+        width={props.width || "32"}
+        height={props.height || "32"}
+        strokeWidth={props.strokeWidth || 2}
         viewBox="0 0 31 28"
         fill="none"
-        strokeWidth={2}
         stroke={props.fill || "white"}
       >
         <Path d="M26.1321 18.1488C25.8785 18.558 25.4161 18.8979 24.6615 19.0976C23.8998 19.2991 22.8988 19.3387 21.7027 19.1773C19.313 18.8548 16.3344 17.7556 13.3684 15.9174C10.4025 14.0792 8.09265 11.9008 6.74053 9.90428C6.06375 8.90495 5.65375 7.99085 5.4953 7.21909C5.3383 6.45444 5.43697 5.8891 5.6906 5.47986C5.94424 5.07061 6.40662 4.73069 7.16125 4.53104C7.92291 4.32953 8.92396 4.28994 10.1201 4.45135C12.5097 4.77382 15.4883 5.87304 18.4543 7.71124C21.4203 9.54944 23.7301 11.7278 25.0822 13.7243C25.759 14.7237 26.169 15.6378 26.3274 16.4095C26.4844 17.1742 26.3858 17.7395 26.1321 18.1488Z" />
@@ -617,11 +617,11 @@ const A_Icon = (props: PropsT) => {
   } else if (props.iconName == "StunnedIcon") {
     return (
       <Svg
-        width="32"
-        height="32"
+        width={props.width || "32"}
+        height={props.height || "32"}
+        strokeWidth={props.strokeWidth || 2}
         viewBox="0 0 32 32"
         fill="none"
-        strokeWidth={2}
         stroke={props.fill || "#A4A4AC"}
       >
         <Path d="M6.13281 16L6.94217 22.0702C7.54744 26.6097 11.4198 30 15.9995 30V30V30C20.5792 30 24.4515 26.6097 25.0568 22.0702L25.8661 16" />

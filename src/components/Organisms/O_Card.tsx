@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { FlexBox, F_Text, E_Text } from "../../common";
@@ -10,13 +10,14 @@ import A_Input from "../Atoms/A_Input";
 
 type CardProps = {
   type?: string;
+  fullinit?: boolean;
   key?: any;
   avatar?: any;
   name?: string;
   username?: string;
-  inv: any;
-  ins: any;
-  perc: any;
+  inv?: any;
+  ins?: any;
+  perc?: any;
   trueVal1?: any;
   trueVal2?: any;
   trueVal3?: any;
@@ -74,6 +75,7 @@ const AddEffectWrapper = styled(ScrollView)`
 
 const O_Card = ({
   type,
+  fullinit,
   key,
   avatar,
   name,
@@ -331,6 +333,10 @@ const O_Card = ({
     console.log("Toggle is checked: ", checked);
   };
 
+  // useEffect(() => {
+  //   console.log(expanded);
+  // });
+
   if (type == "noInitiative") {
     return (
       <CardWrapper key={key} onPress={() => setExpanded(!expanded)}>
@@ -348,11 +354,26 @@ const O_Card = ({
           a={ins}
           b={inv}
           c={perc}
+          f={initiativeVal}
           expanded={expanded}
           player_id={player_id}
           avatar={avatar}
+          fullinit={fullinit}
         ></M_PlayerCardPart>
         {expanded && <M_PlayerCardPart type="Languages" chld={children} />}
+        {expanded && fullinit && (
+          <>
+            <M_PlayerCardPart type="Divider" />
+            <M_PlayerCardPart
+              type="Inititative"
+              initiativeVal={initiativeVal != null ? initiativeVal : "99"}
+            />
+            <M_Concentration
+              checked={isChecked}
+              onChange={handleToggleChange}
+            />
+          </>
+        )}
       </CardWrapper>
     );
   } else if (type == "monster") {
@@ -378,15 +399,12 @@ const O_Card = ({
         {expanded && (
           <>
             <MonsterEffects />
-            <M_PlayerCardPart
-              type="Armor"
-              initiativeVal={initiativeVal != null ? initiativeVal : "99"}
-            />
+            <M_PlayerCardPart type="Armor" initiativeVal={arm} />
             <M_PlayerCardPart type="Divider" />
 
             <M_PlayerCardPart
               type="Inititative"
-              initiativeVal={initiativeVal != null ? initiativeVal : "99"}
+              initiativeVal={initiativeVal}
             />
             <FlexBox offsetTop="6">
               <M_PlayerCardPart type="Health" initiativeVal={hp} />
@@ -400,9 +418,44 @@ const O_Card = ({
         )}
       </CardWrapper>
     );
+  } else if (type == "ExpandedMonster") {
+    return (
+      <CardWrapper key={key}>
+        <FlexBox offsetBottom="6">
+          <M_PlayerCardPart
+            type="UpperRowMonster"
+            name={name}
+            expanded={true}
+            player_id={player_id}
+          />
+        </FlexBox>
+        <M_PlayerCardPart
+          type="StatsMonster"
+          d={arm}
+          e={hp}
+          f={initiativeVal}
+          expanded={true}
+          player_id={player_id}
+          avatar={avatar}
+        ></M_PlayerCardPart>
+        <M_PlayerCardPart type="Divider" />
+        <FlexBox offsetBottom="6">
+          <M_PlayerCardPart type="Armor" initiativeVal={arm} />
+        </FlexBox>
+        <FlexBox offsetTop="6">
+          <M_PlayerCardPart type="Health" initiativeVal={hp} />
+        </FlexBox>
+        <M_PlayerCardPart type="Divider" />
+        <M_PlayerCardPart type="Inititative" initiativeVal={initiativeVal} />
+      </CardWrapper>
+    );
   } else if (type == "Initiative") {
     return (
-      <CardWrapper key={key} onPress={() => setExpanded(!expanded)}>
+      <CardWrapper
+        key={key}
+        onPress={() => setExpanded(!expanded)}
+        style={{ opacity: initiativeVal > 0 ? 0.6 : 1 }}
+      >
         <M_PlayerCardPart
           type="UpperRow"
           avatar={avatar}

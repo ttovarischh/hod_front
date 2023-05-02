@@ -31,7 +31,8 @@ const FlyingLabelText = styled.Text`
 
 const InputWrapper = styled.TextInput`
   background-color: ${({ theme }) => theme.input.fill};
-  border: 1px solid #373737;
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.input.border};
   outline: none;
   padding-bottom: 18px;
   padding-left: 16px;
@@ -134,7 +135,7 @@ const A_Input = ({
         placeholder={placeholder}
         value={value}
         secureTextEntry={secure}
-        placeholderTextColor="#262626"
+        placeholderTextColor={theme.input.placeholder}
         onChangeText={handleChange}
         onFocus={movePlaceholder}
         onBlur={onBlurHandler}
@@ -158,7 +159,7 @@ const A_Input = ({
             iconName={iconName}
             width={iconWidth || 20}
             height={iconHeight || 27}
-            fill="#EDF2DC"
+            fill={theme.icons.yellow}
             strokeWidth={1.5}
           />
         </IconWrapper>

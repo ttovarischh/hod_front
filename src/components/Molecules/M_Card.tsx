@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Text } from "react-native";
-import styled, { ThemeContext } from "styled-components/native";
+import styled from "styled-components/native";
 import { FlexBox, F_Text, E_Text } from "../../common";
 import A_Input from "../Atoms/A_Input";
 import A_Icon from "../Atoms/A_Icon";
@@ -37,7 +37,7 @@ type CardProps = {
   children?: React.ReactNode;
   avatar?: any;
   imagePresent?: string;
-
+  //
   npcName?: any;
   npcArmor?: any;
   npcInitiative?: any;
@@ -149,20 +149,18 @@ const M_Card = ({
   handleImagePickerPress,
   avatar,
   imagePresent,
-
+  //
   npcName,
   npcArmor,
   npcHealth,
   disabled,
   npcInitiative,
-
   // langs_input
   inputValue,
   handleTextChange,
   handleKeyPress,
   tags,
   removeTag,
-  //
   // handleNpcChange,
   handleNpcNameChange,
   handleNpcArmorChange,
@@ -233,28 +231,6 @@ const M_Card = ({
           keyboardType="numeric"
           maxLength={2}
         ></A_Input>
-        {/* <TextAreaFlexBox>
-          <Text
-            style={{
-              fontSize: 18,
-              color: "#717171",
-              marginLeft: 12,
-              marginTop: 8,
-            }}
-          >
-            Языки
-          </Text>
-          <PlayerRealInputWrapper
-            placeholder="Введите через пробел..."
-            value={val5}
-            placeholderTextColor="#383838"
-            style={{ color: "#EDF2DC", paddingLeft: 12, height: 45 }}
-            onChangeText={handleFifthInputChange}
-            autoCapitalize="none"
-            autoComplete="off"
-            autoCorrect={false}
-          />
-        </TextAreaFlexBox> */}
         <M_Languages
           val5={inputValue}
           handleFifthInputChange={handleTextChange}
@@ -346,11 +322,7 @@ const M_Card = ({
           keyboardType="numeric"
           maxLength={2}
         ></A_Input>
-        <A_Button
-          secondary
-          handleButtonClick={handleClear}
-          disabled={disabled}
-        >
+        <A_Button secondary handleButtonClick={handleClear} disabled={disabled}>
           Удалить
         </A_Button>
       </PlayerWrapper>

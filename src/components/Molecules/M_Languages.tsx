@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components/native";
-import { FlexBox, G_Text, A_Text, H_Text, E_Text } from "../../common";
-import {
-  Animated,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  View,
-} from "react-native";
-import A_Icon from "../Atoms/A_Icon";
-import A_MicroStat from "../Atoms/A_MicroStat";
-import A_ToggleButton from "../Atoms/A_ToggleButton";
-import { onChange } from "react-native-reanimated";
+import { FlexBox } from "../../common";
+import { Text, StyleSheet, View } from "react-native";
 import A_Tag from "../Atoms/A_Tag";
+import { useTranslation } from "react-i18next";
 
 type AnimatedViewProps = {
   val5: any;
@@ -42,6 +33,7 @@ const M_Languages = ({
   tags,
   handleCrossPress,
 }: AnimatedViewProps) => {
+  const { t } = useTranslation();
   return (
     <TextAreaFlexBox>
       <Text
@@ -53,7 +45,7 @@ const M_Languages = ({
           overflow: "hidden",
         }}
       >
-        Языки
+        {t("common:languages")}
       </Text>
       <FlexBox
         offsetTop="12"
@@ -89,59 +81,8 @@ const M_Languages = ({
 export default M_Languages;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
-  },
-  box: {
-    backgroundColor: "blue",
-    height: 100,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 25,
-  },
-  expandedBox: {
-    flex: 1,
-  },
-  text: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  brd: {
-    borderBottomColor: "#282828",
-    borderBottomWidth: 1,
-  },
   tagsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-  },
-  tag: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ddd",
-    padding: 5,
-    borderRadius: 10,
-    marginRight: 5,
-    marginBottom: 5,
-  },
-  tagText: {
-    marginRight: 5,
-  },
-  removeTag: {
-    color: "#555",
-    fontSize: 12,
-    marginLeft: 5,
-  },
-  input: {
-    width: "100%",
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginTop: 5,
   },
 });

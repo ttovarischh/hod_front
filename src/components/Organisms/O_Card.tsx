@@ -7,6 +7,7 @@ import A_Tag from "../Atoms/A_Tag";
 import M_PlayerCardPart from "../Molecules/M_PlayerCardPart";
 import M_Concentration from "../Molecules/M_Concentration";
 import A_Input from "../Atoms/A_Input";
+import M_HealthCalc from "../Molecules/M_HealthCalc";
 
 type CardProps = {
   type?: string;
@@ -27,7 +28,6 @@ type CardProps = {
   onCardPress?: any;
   condition?: any;
   handleInitiativeChange?: any;
-  initiative?: any;
   initiativeVal?: any;
   data?: any;
   code?: any;
@@ -44,6 +44,8 @@ type CardProps = {
   fight?: boolean;
   onSubmitEditing?: any;
   newInitiative?: any;
+  conc?: any;
+  isMonster?: boolean;
 };
 
 const CardRow = styled(FlexBox)`
@@ -92,7 +94,6 @@ const O_Card = ({
   onCardPress,
   condition,
   handleInitiativeChange,
-  initiative,
   initiativeVal,
   data,
   code,
@@ -108,10 +109,16 @@ const O_Card = ({
   fight,
   onSubmitEditing,
   newInitiative,
+  isMonster,
+  conc,
   ...rest
 }: CardProps) => {
   const [plusPressed, setPlusPressed] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    console.log(conc);
+  }, []);
 
   const handlePress = () => {
     setPlusPressed(true);
@@ -129,9 +136,7 @@ const O_Card = ({
           effect_id: effect_id,
         }
       )
-      .then((response) => {
-        // Code
-      })
+      .then((response) => {})
       .catch((error) => console.error(error))
       .finally(() => {});
   };
@@ -144,16 +149,11 @@ const O_Card = ({
           data: { effect_id: effect_id },
         }
       )
-      .then((response) => {
-        // handle success response
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
-        // handle error response
       })
-      .finally(() => {
-        // handle finally
-      });
+      .finally(() => {});
   };
 
   const monsterEffectsList = (monster_id: any) => {
@@ -326,16 +326,20 @@ const O_Card = ({
     );
   };
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleToggleChange = (checked: boolean) => {
-    setIsChecked(checked);
-    console.log("Toggle is checked: ", checked);
+  const handleToggleChange = (item_id: any) => {
+    const patchUrl = isMonster
+      ? `http://localhost:3000/api/v1/games/${code}/monsters/${item_id}`
+      : `http://localhost:3000/api/v1/games/${code}/players/${item_id}`;
+    axios
+      .patch(patchUrl, {
+        [isMonster ? "monster" : "player"]: {
+          conc: conc ? false : true,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {});
   };
-
-  // useEffect(() => {
-  //   console.log(expanded);
-  // });
 
   if (type == "noInitiative") {
     return (
@@ -369,8 +373,8 @@ const O_Card = ({
               initiativeVal={initiativeVal != null ? initiativeVal : "99"}
             />
             <M_Concentration
-              checked={isChecked}
-              onChange={handleToggleChange}
+              checked={conc}
+              onChange={() => handleToggleChange(player_id)}
             />
           </>
         )}
@@ -401,18 +405,17 @@ const O_Card = ({
             <MonsterEffects />
             <M_PlayerCardPart type="Armor" initiativeVal={arm} />
             <M_PlayerCardPart type="Divider" />
-
             <M_PlayerCardPart
               type="Inititative"
               initiativeVal={initiativeVal}
             />
             <FlexBox offsetTop="6">
-              <M_PlayerCardPart type="Health" initiativeVal={hp} />
+              <M_HealthCalc healthVal={hp} player_id={monster_id} code={code} />
             </FlexBox>
             <M_PlayerCardPart type="Divider" />
             <M_Concentration
-              checked={isChecked}
-              onChange={handleToggleChange}
+              checked={conc}
+              onChange={() => handleToggleChange(player_id)}
             />
           </>
         )}
@@ -474,7 +477,6 @@ const O_Card = ({
           player_id={player_id}
           avatar={avatar}
         ></M_PlayerCardPart>
-        <M_PlayerCardPart type="Languages" chld={children} />
         <M_PlayerCardPart type="Divider" />
         {initiativeVal > 0 ? (
           <M_PlayerCardPart
@@ -493,7 +495,10 @@ const O_Card = ({
             onSubmitEditing={onSubmitEditing}
           ></A_Input>
         )}
-        <M_Concentration checked={isChecked} onChange={handleToggleChange} />
+        <M_Concentration
+          checked={conc}
+          onChange={() => handleToggleChange(player_id)}
+        />
       </CardWrapper>
     );
   }

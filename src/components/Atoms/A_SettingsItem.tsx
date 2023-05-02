@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { ThemeContext } from "styled-components/native";
 import styled from "styled-components/native";
 import { FlexBox } from "../../common";
-import { B_Text, G_Text } from "../../common";
 import A_Icon from "./A_Icon";
 import { StyleSheet } from "react-native";
 
@@ -39,17 +38,6 @@ const SettingsItemLink = styled.TouchableOpacity`
   flex-direction: row;
   height: 36px;
   justify-content: space-between;
-`;
-
-const SecondaryButton = styled(FlexBox)`
-  width: 406px;
-  height: 72px;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background: #1a1a1a;
-  border-radius: 20px;
-  margin-bottom: 32px;
 `;
 
 const SettingsTextArea = styled.TextInput`

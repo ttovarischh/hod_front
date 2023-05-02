@@ -7,6 +7,7 @@ import M_Portrait from "./M_Portrait";
 import A_PlayerName from "../Atoms/A_PlayerName";
 import { View } from "react-native";
 import A_Icon from "../Atoms/A_Icon";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   type?: string;
@@ -71,6 +72,7 @@ const M_PlayerCardPart = ({
   initiativeVal,
   fullinit,
 }: Props) => {
+  const { t } = useTranslation();
   if (type === "UpperRow") {
     return (
       <>

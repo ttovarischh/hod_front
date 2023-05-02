@@ -86,7 +86,7 @@ const MonsterLargeAvatar = styled.Image`
   left: 0px;
 `;
 
-const M_Portrait = ({ onPress, imageString, src, type, player_id }: Props) => {
+const M_Portrait = ({ onPress, src, type, player_id }: Props) => {
   if (type === "BottomSheet") {
     return (
       <PlayerAvatarWrapper onPress={onPress}>

@@ -34,13 +34,6 @@ function ProfileStack() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
         headerShown: false,
-        headerStyle: {
-          backgroundColor: "black",
-          height: 80,
-        },
-        headerShadowVisible: false,
-        headerBackTitleVisible: false,
-        headerTintColor: "#636364",
       }}
       initialRouteName="EffectsList"
     >
@@ -62,13 +55,6 @@ function EffectsStack() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
         headerShown: false,
-        headerStyle: {
-          backgroundColor: "black",
-          height: 80,
-        },
-        headerShadowVisible: false,
-        headerBackTitleVisible: false,
-        headerTintColor: "#636364",
       }}
       initialRouteName="EffectsList"
     >

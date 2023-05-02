@@ -18,9 +18,11 @@ export const dark = {
   text: {
     active: Colors.white,
     inactive: Colors.inactive,
+    crud: Colors.crusaders_mantle,
   },
   card: {
     bg: Colors.greyBg,
+    part_fill: Colors.dark_star,
   },
   button: {
     bright: Colors.acid_arrow,
@@ -44,11 +46,15 @@ export const dark = {
   },
   input: {
     fill: Colors.teleport,
-    placeholder: Colors.shadow_of_moil,
+    border: Colors.find_the_path,
+    placeholder: Colors.teleport,
     text: Colors.gentle_repose,
     simple_border: Colors.acid_arrow,
     err_border: Colors.fire_storm,
     err_text: Colors.fire_storm,
+  },
+  service: {
+    loader: Colors.blue,
   },
 };
 
@@ -69,9 +75,11 @@ export const light: ThemeType = {
   text: {
     active: Colors.white,
     inactive: Colors.inactive,
+    crud: Colors.crusaders_mantle,
   },
   card: {
     bg: Colors.dull,
+    part_fill: Colors.dark_star,
   },
   button: {
     bright: Colors.acid_arrow,
@@ -95,11 +103,15 @@ export const light: ThemeType = {
   },
   input: {
     fill: Colors.dark_star,
-    placeholder: Colors.shadow_of_moil,
+    border: Colors.find_the_path,
+    placeholder: Colors.teleport,
     text: Colors.gentle_repose,
     simple_border: Colors.acid_arrow,
     err_border: Colors.fire_storm,
     err_text: Colors.fire_storm,
+  },
+  service: {
+    loader: Colors.blue,
   },
 };
 

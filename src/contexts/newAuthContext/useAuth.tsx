@@ -42,6 +42,14 @@ interface AuthContextType {
   onboardingCompleted?: any;
   toggleOnboardingCompleted?: any;
   offOnboardingCompleted?: any;
+  //
+  firstTCompleted?: any;
+  firstTVisible?: any;
+  firstTInVisible?: any;
+  //
+  secondTCompleted?: any;
+  secondTVisible?: any;
+  secondTInVisible?: any;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -56,12 +64,28 @@ export function AuthProvider({
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
   const [onboardingCompleted, setOnboardingCompleted] = useState<any>();
+  const [firstTCompleted, setFirstTCompleted] = useState<any>();
+  const [secondTCompleted, setSecondTCompleted] = useState<any>();
 
   useEffect(() => {
     usersApi
       .getOnboardingCompleted()
       .then((value) => {
         setOnboardingCompleted(value);
+      })
+      .catch((_error) => {})
+      .finally(() => {});
+    usersApi
+      .getFirstT()
+      .then((value) => {
+        setFirstTCompleted(value);
+      })
+      .catch((_error) => {})
+      .finally(() => {});
+    usersApi
+      .getSecondT()
+      .then((value) => {
+        setSecondTCompleted(value);
       })
       .catch((_error) => {})
       .finally(() => {});
@@ -87,6 +111,26 @@ export function AuthProvider({
     setOnboardingCompleted(false);
   }
 
+  function firstTVisible() {
+    AsyncStorage.setItem("@firstTCompleted", JSON.stringify(true));
+    setFirstTCompleted(true);
+  }
+
+  function firstTInVisible() {
+    AsyncStorage.setItem("@firstTCompleted", JSON.stringify(false));
+    setFirstTCompleted(false);
+  }
+
+  function secondTVisible() {
+    AsyncStorage.setItem("@secondTCompleted", JSON.stringify(true));
+    setSecondTCompleted(true);
+  }
+
+  function secondTInVisible() {
+    AsyncStorage.setItem("@secondTCompleted", JSON.stringify(false));
+    setSecondTCompleted(false);
+  }
+
   function login(email: string, password: string) {
     setLoading(true);
 
@@ -94,6 +138,8 @@ export function AuthProvider({
       .login({ email, password })
       .then((user) => {
         setUser(user);
+        firstTVisible();
+        secondTVisible();
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -132,8 +178,24 @@ export function AuthProvider({
       onboardingCompleted,
       toggleOnboardingCompleted,
       offOnboardingCompleted,
+      //
+      firstTCompleted,
+      firstTVisible,
+      firstTInVisible,
+      //
+      secondTCompleted,
+      secondTVisible,
+      secondTInVisible,
     }),
-    [user, loading, error, loadingInitial, onboardingCompleted]
+    [
+      user,
+      loading,
+      error,
+      loadingInitial,
+      onboardingCompleted,
+      firstTCompleted,
+      secondTCompleted,
+    ]
   );
 
   return (

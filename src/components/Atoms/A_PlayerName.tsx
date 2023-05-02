@@ -3,7 +3,6 @@ import { ThemeContext } from "styled-components/native";
 import styled from "styled-components/native";
 import { FlexBox } from "../../common";
 import { F_Text, E_Text } from "../../common";
-import A_Icon from "./A_Icon";
 
 type TagProps = {
   children?: React.ReactNode;
@@ -16,7 +15,7 @@ type TagProps = {
 const CardHalfRow = styled(FlexBox)`
   height: 57px;
   flex: 1;
-  background: #0e0e0e;
+  background: ${({ theme }) => theme.card.part_fill};
   border-radius: 20px;
   padding-left: 12px;
   padding-right: 12px;
@@ -42,7 +41,7 @@ const A_PlayerName = ({
         <E_Text lineHeight={20} color="white">
           {name}
         </E_Text>
-        <F_Text lineHeight={16} color="#5D5D5D">
+        <F_Text lineHeight={16} color={theme.text.crud}>
           {username ? username : "no username"}
         </F_Text>
       </CardHalfRow>
@@ -53,7 +52,7 @@ const A_PlayerName = ({
         <E_Text lineHeight={20} color="white">
           {name}
         </E_Text>
-        <F_Text lineHeight={16} color="#5D5D5D">
+        <F_Text lineHeight={16} color={theme.text.crud}>
           {username ? username : "no username"}
         </F_Text>
       </CardHalfRowB>

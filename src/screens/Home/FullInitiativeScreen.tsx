@@ -54,12 +54,10 @@ export default function FullInitiativeScreen(props: {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = React.useState<any>([]);
   const [effectsData, setEffectsData] = React.useState<any>([]);
-  const [initiative, setInitiative] = useState("");
   const { user } = useAuth();
   const [playerEffects, setPlayerEffects] = useState({});
   const [monsterEffects, setMonsterEffects] = useState({});
   const { t } = useTranslation();
-
   const [sortedList, setSortedList] = useState<any>([]);
   const [activePlayerIndex, setActivePlayerIndex] = useState<null | number>(
     null
@@ -72,7 +70,12 @@ export default function FullInitiativeScreen(props: {
       if (item.armor) {
         return (
           <FlexBox
-            style={{ opacity: item.active ? 1 : 0.6 }}
+            style={{
+              opacity: item.active ? 1 : 0.6,
+              transform: [{ scale: item.active ? 1 : 0.94 }],
+              marginBottom: item.active ? -6 : -13,
+              marginTop: item.active ? 6 : 0,
+            }}
             ref={i === activePlayerIndex ? activePlayerRef : null}
           >
             <O_Card
@@ -88,7 +91,6 @@ export default function FullInitiativeScreen(props: {
               thisUser={data.user_id}
               author={user?.id}
               master={user?.id === data.user_id}
-              initiative={initiative}
               initiativeVal={item.initiative}
               hp={item.hp}
               arm={item.initiative}
@@ -105,7 +107,12 @@ export default function FullInitiativeScreen(props: {
         }
         return (
           <FlexBox
-            style={{ opacity: item.active ? 1 : 0.6 }}
+            style={{
+              opacity: item.active ? 1 : 0.6,
+              transform: [{ scale: item.active ? 1 : 0.94 }],
+              marginBottom: item.active ? -6 : -13,
+              marginTop: item.active ? 6 : 0,
+            }}
             ref={i === activePlayerIndex ? activePlayerRef : null}
           >
             <O_Card
@@ -122,7 +129,6 @@ export default function FullInitiativeScreen(props: {
               thisUser={data.user_id}
               author={user?.id}
               master={user?.id === data.user_id}
-              initiative={initiative}
               initiativeVal={item.initiative}
               data={effectsData}
               code={code}
@@ -178,6 +184,18 @@ export default function FullInitiativeScreen(props: {
         scrollViewRef.current.scrollTo({ y: pageY, animated: true });
       });
     }
+  };
+
+  const handleFinishGame = () => {
+    axios
+      .patch(`http://localhost:3000/api/v1/games/${code}`, {
+        game: {
+          active: false,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {});
   };
 
   useEffect(() => {
@@ -242,7 +260,6 @@ export default function FullInitiativeScreen(props: {
     axios
       .get(`http://localhost:3000/api/v1/effects`)
       .then(({ data }) => {
-        // console.log(JSON.stringify(data));
         if (data != null) {
           setEffectsData(data);
         }
@@ -281,7 +298,6 @@ export default function FullInitiativeScreen(props: {
         },
       }
     );
-
     const monsterSubscription = consumer.subscriptions.create(
       { channel: "MonsterEffectsChannel" },
       {
@@ -310,7 +326,6 @@ export default function FullInitiativeScreen(props: {
         },
       }
     );
-
     const gameSubscription = consumer.subscriptions.create(
       { channel: "GamesChannel" },
       {
@@ -335,7 +350,6 @@ export default function FullInitiativeScreen(props: {
         },
       }
     );
-
     return () => {
       subscription.unsubscribe();
       monsterSubscription.unsubscribe();
@@ -354,7 +368,6 @@ export default function FullInitiativeScreen(props: {
     if (activePlayer.armor) {
       url = `http://localhost:3000/api/v1/games/${code}/monsters/${activePlayer.id}`;
     }
-
     axios
       .patch(url, {
         [activePlayer.armor ? "monster" : "player"]: {
@@ -380,7 +393,6 @@ export default function FullInitiativeScreen(props: {
               nextPlayerIndex === 0 &&
               activePlayerIndex === sortedList.length - 1
             ) {
-              // If the last item was deactivated and the first activated, update the turn in the game
               axios
                 .patch(`http://localhost:3000/api/v1/games/${code}`, {
                   game: {
@@ -421,20 +433,6 @@ export default function FullInitiativeScreen(props: {
   useEffect(() => {
     scrollToActivePlayer();
   }, [isLoading]);
-
-  const getUpdatedInfo = () => {
-    axios
-      .get(`http://localhost:3000/api/v1/games/${code}`)
-      .then(({ data }) => {
-        if (data != null) {
-          setData(data);
-        }
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        console.log("Updated");
-      });
-  };
 
   const handleConcClick = () => {
     if (data.fight) {
@@ -542,9 +540,7 @@ export default function FullInitiativeScreen(props: {
           snapPoints={snapPoints2}
           handleButtonClick={handleCloseModalPress2}
           twoButtons={true}
-          handleSecondButtonClick={() =>
-            navigation.dispatch(StackActions.popToTop())
-          }
+          handleSecondButtonClick={handleFinishGame}
           b={t("common:finish")}
           a={t("common:cancel")}
         />

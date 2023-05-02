@@ -36,13 +36,6 @@ const SwipeWrapper = styled.View`
   align-items: center;
 `;
 
-const CodeQrWrapper = styled(FlexBox)`
-  width: 100%;
-  align-items: center;
-  align-content: center;
-  margin-top: 6%;
-`;
-
 const ImageWrapper = styled(FlexBox)`
   position: relative;
   width: 100%;
@@ -102,7 +95,7 @@ const OnboardingScreen = (props: { navigation: any }) => {
               width={294}
               height={310}
               fill="white"
-              iconName="StunnedIcon"
+              iconName="Fantasy"
               strokeWidth={1}
             />
           </ImageWrapper>
@@ -123,7 +116,7 @@ const OnboardingScreen = (props: { navigation: any }) => {
               width={294}
               height={310}
               fill="white"
-              iconName="UnconsciousIcon"
+              iconName="Sharable"
               strokeWidth={1}
             />
           </ImageWrapper>
@@ -144,8 +137,8 @@ const OnboardingScreen = (props: { navigation: any }) => {
               width={294}
               height={310}
               fill="white"
-              iconName="StunnedIcon"
-              strokeWidth={1}
+              iconName="UNeed"
+              strokeWidth={1.8}
             />
           </ImageWrapper>
         </SwipeWrapper>
@@ -172,19 +165,21 @@ const OnboardingScreen = (props: { navigation: any }) => {
         </FlexBox>
         <A_Button
           bright
-          handleButtonClick={() =>
-            handlePress(currentScreenKey === "0" ? 1 : 2)
-          }
+          handleButtonClick={() => {
+            if (currentScreenKey === "2") {
+              handleCompleteOnboarding;
+            } else {
+              handlePress(currentScreenKey === "0" ? 1 : 2);
+            }
+          }}
         >
           {currentScreenKey === "2"
             ? t("common:allClear")
             : t("common:continue")}
         </A_Button>
-        {currentScreenKey !== "2" && (
-          <A_Button handleButtonClick={handleCompleteOnboarding}>
-            {t("common:skip")}
-          </A_Button>
-        )}
+        <A_Button handleButtonClick={handleCompleteOnboarding}>
+          {t("common:skip")}
+        </A_Button>
       </FixedWrapper>
     </MainWrapper>
   );

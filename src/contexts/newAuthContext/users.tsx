@@ -8,6 +8,20 @@ export async function getCurrentUser() {
   return JSON.parse(value);
 }
 
+export async function getFirstT() {
+  const value = await AsyncStorage.getItem("@firstTCompleted");
+  console.log(value);
+  // @ts-ignore
+  return JSON.parse(value);
+}
+
+export async function getSecondT() {
+  const value = await AsyncStorage.getItem("@secondTCompleted");
+  console.log(value);
+  // @ts-ignore
+  return JSON.parse(value);
+}
+
 export async function getOnboardingCompleted() {
   const value = await AsyncStorage.getItem("@OnboardingCompleted");
   console.log(value);

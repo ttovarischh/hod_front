@@ -35,7 +35,6 @@ type PropsT = {
 };
 
 const Error = ({ code, errorid, handleButtonClick }: PropsT) => {
-  // bottomsheet_related
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { t } = useTranslation();
   const snapPoints = useMemo(() => ["23%", "93%"], []);

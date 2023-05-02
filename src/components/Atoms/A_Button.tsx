@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components/native";
-import { C_Text } from "../../common";
 
 type ButtonProps = {
   children: React.ReactNode;

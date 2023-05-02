@@ -27,4 +27,6 @@ export var Colors = {
   tabbar_grey: "#2A2A2A",
   teleport: "#262626",
   wet_sand: "#C8CEB3",
+  find_the_path: "#373737",
+  crusaders_mantle: "#5D5D5D",
 };

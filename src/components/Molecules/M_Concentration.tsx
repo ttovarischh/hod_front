@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components/native";
-import { FlexBox, G_Text, A_Text, H_Text, E_Text } from "../../common";
-import { Animated, TouchableOpacity } from "react-native";
-import A_Icon from "../Atoms/A_Icon";
-import A_MicroStat from "../Atoms/A_MicroStat";
+import { FlexBox, E_Text } from "../../common";
 import A_ToggleButton from "../Atoms/A_ToggleButton";
-import { onChange } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 
 type AnimatedViewProps = {
   onChange: any;
@@ -27,9 +24,10 @@ const ConcentrationWrapper = styled(FlexBox)`
 `;
 
 const M_Concentration = ({ onChange, checked }: AnimatedViewProps) => {
+  const { t } = useTranslation();
   return (
     <ConcentrationWrapper>
-      <E_Text>Концентрация</E_Text>
+      <E_Text>{t("common:conc")}</E_Text>
       <A_ToggleButton checked={checked} onChange={onChange} />
     </ConcentrationWrapper>
   );

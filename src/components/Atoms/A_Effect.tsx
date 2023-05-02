@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "styled-components/native";
+import React from "react";
 import styled from "styled-components/native";
 import { FlexBox } from "../../common";
 import { B_Text, G_Text } from "../../common";
@@ -32,7 +31,6 @@ const CardWrapper = styled(FlexBox)`
 `;
 
 const A_Effect = ({ item, onPress }: Props) => {
-  const theme = useContext(ThemeContext);
   return (
     <>
       <CardWrapper direction="column" key={item.id}>

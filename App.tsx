@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { StatusBar, LogBox } from "react-native";
 import styled, { ThemeProvider } from "styled-components/native";
 import theme from "./src/common/themes/mainTheme";

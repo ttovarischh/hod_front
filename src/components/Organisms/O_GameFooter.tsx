@@ -6,7 +6,7 @@ import A_Icon from "../Atoms/A_Icon";
 
 const GameButton = styled.TouchableOpacity`
   display: flex;
-  width: 130px;
+  width: 136px;
   height: 68px;
   border-radius: 50px;
   background: #313131;
@@ -42,12 +42,7 @@ function O_GameFooter(props: {
 }) {
   return (
     <View style={styles.bottomPart}>
-      <FlexBox
-        style={{
-          paddingLeft: 12,
-          paddingRight: 12,
-        }}
-      >
+      <FlexBox>
         {props.fight && (
           <GameButton
             onPress={props.plusDisabled ? undefined : props.handlePlusClick}
@@ -87,7 +82,7 @@ function O_GameFooter(props: {
             ></A_Icon>
           </FlexBox>
         </GameButton>
-        {(props.fight && props.prevEnabled) && (
+        {props.fight && props.prevEnabled && (
           <SmallGameButton onPress={() => console.log("Back clicked")}>
             <FlexBox
               style={{
@@ -140,5 +135,6 @@ const styles = StyleSheet.create({
     height: 116,
     bottom: 0,
     zIndex: 10000,
+    // backgroundColor: "blue",
   },
 });

@@ -21,6 +21,7 @@ import useAuth from "../../contexts/newAuthContext/useAuth";
 import { consumer } from "../../constants";
 import O_GameFooter from "../../components/Organisms/O_GameFooter";
 import { useTranslation } from "react-i18next";
+import M_TooltipView from "../../components/Molecules/M_TooltipView";
 
 const CodeQrWrapper = styled(FlexBox)`
   width: 100%;
@@ -52,10 +53,9 @@ export default function SingleGameScreen(props: {
   const value = `http://localhost:3000/api/v1/games/${code}`;
   const [productQRref, setProductQRref] = useState();
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = React.useState<any>([]);
-  const [effectsData, setEffectsData] = React.useState<any>([]);
-  const [initiative, setInitiative] = useState("");
-  const { user } = useAuth();
+  const [data, setData] = useState<any>([]);
+  const [effectsData, setEffectsData] = useState<any>([]);
+  const { user, firstTCompleted, secondTCompleted } = useAuth();
   const [playerEffects, setPlayerEffects] = useState({});
   const [monsterEffects, setMonsterEffects] = useState({});
   const [newInitiative, setNewInitiative] = useState<any>([]);
@@ -63,15 +63,25 @@ export default function SingleGameScreen(props: {
   const [allPlayersHaveInitiative, setAllPlayersHaveInitiative] =
     useState(true);
 
-  useEffect(() => {
-    if (data && data.players) {
-      const haveInitiative = data.players.every(
-        (player: any) => player.initiative > 0
-      );
-      setAllPlayersHaveInitiative(haveInitiative);
-    }
-  }, [data]);
+  // bottomsheet_related
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef2 = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["23%", "93%"], []);
+  const snapPoints2 = useMemo(() => ["23%", "93%"], []);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleCloseModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+  const handlePresentModalPress2 = useCallback(() => {
+    bottomSheetModalRef2.current?.present();
+  }, []);
+  const handleCloseModalPress2 = useCallback(() => {
+    bottomSheetModalRef2.current?.close();
+  }, []);
 
+  // functions
   const list = () => {
     return data.players?.map((player: any, i: any) => {
       let langs: any[] = [];
@@ -80,6 +90,7 @@ export default function SingleGameScreen(props: {
       }
       return (
         <O_Card
+          conc={player.conc}
           type={data.fight ? "Initiative" : "noInitiative"}
           avatar={player.imagestring}
           name={player.name}
@@ -96,7 +107,6 @@ export default function SingleGameScreen(props: {
             setNewInitiative(text);
             console.log("UR INITIATIVE" + newInitiative);
           }}
-          initiative={initiative}
           initiativeVal={player.initiative}
           data={effectsData}
           code={code}
@@ -104,6 +114,7 @@ export default function SingleGameScreen(props: {
           fight={data.fight}
           onSubmitEditing={() => onSubmitInitiativeEditing(player.id)}
           newInitiative={newInitiative}
+          isMonster={false}
         >
           {langs &&
             langs.map((sublang: any) => (
@@ -125,6 +136,7 @@ export default function SingleGameScreen(props: {
       return (
         <FlexBox style={{ opacity: 0.6 }}>
           <O_Card
+            conc={player.conc}
             type="monster"
             avatar={player.imagestring}
             name={player.name}
@@ -141,54 +153,27 @@ export default function SingleGameScreen(props: {
               setNewInitiative(event.value);
               console.log("UR INITIATIVE" + newInitiative);
             }}
-            initiative={initiative}
             initiativeVal={player.initiative}
             hp={player.hp}
             arm={player.armor}
             data={effectsData}
             code={code}
             monsterEffects={monsterEffects}
+            isMonster={true}
           ></O_Card>
         </FlexBox>
       );
     });
   };
 
-  // bottomsheet_related
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const bottomSheetModalRef2 = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["23%", "93%"], []);
-  const snapPoints2 = useMemo(() => ["23%", "93%"], []);
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
-  const handlePresentModalPress2 = useCallback(() => {
-    bottomSheetModalRef2.current?.present();
-  }, []);
-  const handleCloseModalPress2 = useCallback(() => {
-    bottomSheetModalRef2.current?.close();
-  }, []);
-
-  const onSubmitInitiativeEditing = (playerId: any) => {
-    console.log(playerId);
-    console.log(newInitiative);
-    axios
-      .patch(`http://localhost:3000/api/v1/games/${code}/players/${playerId}`, {
-        player: {
-          initiative: newInitiative,
-        },
-      })
-      .then((response) => {
-        setNewInitiative(null);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        // getUpdatedInfo();
-      });
-  };
+  useEffect(() => {
+    if (data && data.players) {
+      const haveInitiative = data.players.every(
+        (player: any) => player.initiative > 0
+      );
+      setAllPlayersHaveInitiative(haveInitiative);
+    }
+  }, [data]);
 
   useEffect(() => {
     axios
@@ -220,7 +205,6 @@ export default function SingleGameScreen(props: {
     axios
       .get(`http://localhost:3000/api/v1/effects`)
       .then(({ data }) => {
-        // console.log(JSON.stringify(data));
         if (data != null) {
           setEffectsData(data);
         }
@@ -259,7 +243,6 @@ export default function SingleGameScreen(props: {
         },
       }
     );
-
     const monsterSubscription = consumer.subscriptions.create(
       { channel: "MonsterEffectsChannel" },
       {
@@ -268,6 +251,9 @@ export default function SingleGameScreen(props: {
           if (type === "ADD_EFFECT") {
             const { monster_id, effect } = payload;
             setMonsterEffects((prevState: any) => {
+              if (!prevState) {
+                return { [monster_id]: [effect] };
+              }
               return {
                 ...prevState,
                 [monster_id]: [...prevState[monster_id], effect],
@@ -276,6 +262,9 @@ export default function SingleGameScreen(props: {
           } else if (type === "REMOVE_EFFECT") {
             const { monster_id, effect } = payload;
             setMonsterEffects((prevState: any) => {
+              if (!prevState) {
+                return { [monster_id]: [effect] };
+              }
               const updatedPlayerEffects = prevState[monster_id].filter(
                 (e: any) => e.id !== effect.id
               );
@@ -288,7 +277,6 @@ export default function SingleGameScreen(props: {
         },
       }
     );
-
     const gameSubscription = consumer.subscriptions.create(
       { channel: "GamesChannel" },
       {
@@ -299,7 +287,6 @@ export default function SingleGameScreen(props: {
         },
       }
     );
-
     return () => {
       subscription.unsubscribe();
       monsterSubscription.unsubscribe();
@@ -307,18 +294,32 @@ export default function SingleGameScreen(props: {
     };
   }, []);
 
-  const getUpdatedInfo = () => {
+  const onSubmitInitiativeEditing = (playerId: any) => {
+    console.log(playerId);
+    console.log(newInitiative);
     axios
-      .get(`http://localhost:3000/api/v1/games/${code}`)
-      .then(({ data }) => {
-        if (data != null) {
-          setData(data);
-        }
+      .patch(`http://localhost:3000/api/v1/games/${code}/players/${playerId}`, {
+        player: {
+          initiative: newInitiative,
+        },
+      })
+      .then((response) => {
+        setNewInitiative(null);
       })
       .catch((error) => console.error(error))
-      .finally(() => {
-        console.log("Updated");
-      });
+      .finally(() => {});
+  };
+
+  const handleFinishGame = () => {
+    axios
+      .patch(`http://localhost:3000/api/v1/games/${code}`, {
+        game: {
+          active: false,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {});
   };
 
   const handleConcClick = () => {
@@ -379,6 +380,12 @@ export default function SingleGameScreen(props: {
         handleRightPress={handlePresentModalPress}
         turn={data.fight ? `${data.turn} ${t("common:round")}` : ""}
       />
+      {firstTCompleted && data.user_id === user?.id && (
+        <M_TooltipView type="Single" />
+      )}
+      {secondTCompleted && data.fight && data.user_id === user?.id && (
+        <M_TooltipView />
+      )}
       {data.user_id === user?.id && (
         <O_GameFooter
           fight={data.fight}
@@ -430,9 +437,7 @@ export default function SingleGameScreen(props: {
           snapPoints={snapPoints2}
           handleButtonClick={handleCloseModalPress2}
           twoButtons={true}
-          handleSecondButtonClick={() =>
-            navigation.dispatch(StackActions.popToTop())
-          }
+          handleSecondButtonClick={handleFinishGame}
           b={t("common:finish")}
           a={t("common:cancel")}
         />
@@ -491,13 +496,5 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-  },
-  bottomPart: {
-    position: "absolute",
-    width: "100%",
-    backgroundColor: "transparent",
-    height: 116,
-    bottom: 0,
-    zIndex: 10000,
   },
 });

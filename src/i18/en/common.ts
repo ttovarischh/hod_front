@@ -80,4 +80,7 @@ export default {
     "Languages spoken by heroes for social play and concentration for combat",
   allClear: "All clear",
   skip: "Skip",
+  conc: "Concentration",
+  languages: "Languages",
+  type: "Type...",
 };

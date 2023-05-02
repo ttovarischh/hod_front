@@ -20,7 +20,6 @@ const Slider = styled(Animated.View)<{ checked?: boolean }>`
   width: 32px;
   height: 32px;
   border-radius: 100%;
-  // background-color: #fff;
   background-color: ${({ checked }) => (checked ? "#0E0E0E" : "#EDF2DC")};
 `;
 

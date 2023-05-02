@@ -1,6 +1,6 @@
 # HOD MOBILE APP
 React native part for the best D&amp;D tracker ever → → →<br>
-<i>HOD is an app for tracking initiative, number of moves and ongoing states for D&amp;D players.<br>The application counts all the necessary numbers for master, allows players to synchronously follow the game process<br>and makes your hobby more accessible than ever.</i>
+<i>HOD is an app for tracking initiative, number of moves and ongoing states for D&amp;D players.<br>The application counts all the necessary numbers for master, allows players to synchronously follow the game process and makes your hobby more accessible than ever.</i>
 
 Σ>―(〃°ω°〃)♡→
 

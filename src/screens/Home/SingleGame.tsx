@@ -176,6 +176,15 @@ export default function SingleGameScreen(props: {
   }, [data]);
 
   useEffect(() => {
+    if (data.user_id !== user?.id) {
+      if (data.turn == 1) {
+        console.log("To full");
+        navigation.push("FullInitiative", { code: code });
+      }
+    }
+  }, [data.turn]);
+
+  useEffect(() => {
     axios
       .get(`http://localhost:3000/api/v1/games/${code}`)
       .then(({ data }) => {
@@ -322,6 +331,10 @@ export default function SingleGameScreen(props: {
       .finally(() => {});
   };
 
+  const handleLeave = () => {
+    navigation.dispatch(StackActions.popToTop());
+  };
+
   const handleConcClick = () => {
     if (data.fight) {
       axios
@@ -430,15 +443,23 @@ export default function SingleGameScreen(props: {
           </QrWrapper>
         </O_BottomSheet>
         <O_BottomSheet
-          mainHeader={t("common:danger")}
-          subHeader={t("common:uAreAbout")}
+          mainHeader={
+            user?.id === data.user_id ? t("common:danger") : "Уже уходите?"
+          }
+          subHeader={
+            user?.id === data.user_id
+              ? t("common:uAreAbout")
+              : "Не волнуйтесь. Пока мастер не завершит сессию, вы можете вернуться по тому же коду"
+          }
           ref={bottomSheetModalRef2}
           index={1}
           snapPoints={snapPoints2}
           handleButtonClick={handleCloseModalPress2}
           twoButtons={true}
-          handleSecondButtonClick={handleFinishGame}
-          b={t("common:finish")}
+          handleSecondButtonClick={
+            user?.id === data.user_id ? handleFinishGame : handleLeave
+          }
+          b={user?.id === data.user_id ? t("common:finish") : "Выйти"}
           a={t("common:cancel")}
         />
       </SingleGameWrapper>

@@ -116,10 +116,6 @@ const O_Card = ({
   const [plusPressed, setPlusPressed] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    console.log(conc);
-  }, []);
-
   const handlePress = () => {
     setPlusPressed(true);
   };
@@ -127,6 +123,10 @@ const O_Card = ({
   const handleClosePress = () => {
     setPlusPressed(false);
   };
+
+  useEffect(() => {
+    console.log("CONCENTA" + conc + player_id);
+  }, []);
 
   const handleClick = (effect_id: any, type: any, player_id: any) => {
     axios
@@ -216,7 +216,7 @@ const O_Card = ({
               <A_Tag type="Effect">Состояния не наложены</A_Tag>
             )}
 
-            {(!plusPressed || master) && (
+            {!plusPressed && master && (
               <TouchableOpacity onPress={handlePress}>
                 <A_Tag type="PlusIcon" />
               </TouchableOpacity>
@@ -282,7 +282,7 @@ const O_Card = ({
               <A_Tag type="Effect">Состояния не наложены</A_Tag>
             )}
 
-            {(!plusPressed || master) && (
+            {!plusPressed && master && (
               <TouchableOpacity onPress={handlePress}>
                 <A_Tag type="PlusIcon" />
               </TouchableOpacity>
@@ -373,6 +373,7 @@ const O_Card = ({
               initiativeVal={initiativeVal != null ? initiativeVal : "99"}
             />
             <M_Concentration
+              master={master}
               checked={conc}
               onChange={() => handleToggleChange(player_id)}
             />
@@ -414,6 +415,7 @@ const O_Card = ({
             </FlexBox>
             <M_PlayerCardPart type="Divider" />
             <M_Concentration
+              master={master}
               checked={conc}
               onChange={() => handleToggleChange(player_id)}
             />
@@ -484,19 +486,22 @@ const O_Card = ({
             initiativeVal={initiativeVal != null ? initiativeVal : "99"}
           />
         ) : (
-          <A_Input
-            placeholder="Инициатива"
-            label="Инициатива"
-            value={newInitiative}
-            handleChange={handleInitiativeChange}
-            keyboardType="numeric"
-            maxLength={2}
-            iconName="clock"
-            onSubmitEditing={onSubmitEditing}
-          ></A_Input>
+          master && (
+            <A_Input
+              placeholder="Инициатива"
+              label="Инициатива"
+              value={newInitiative}
+              handleChange={handleInitiativeChange}
+              keyboardType="numeric"
+              maxLength={2}
+              iconName="clock"
+              onSubmitEditing={onSubmitEditing}
+            ></A_Input>
+          )
         )}
         <M_Concentration
           checked={conc}
+          master={master}
           onChange={() => handleToggleChange(player_id)}
         />
       </CardWrapper>

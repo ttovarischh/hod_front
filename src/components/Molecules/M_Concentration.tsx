@@ -3,10 +3,12 @@ import styled from "styled-components/native";
 import { FlexBox, E_Text } from "../../common";
 import A_ToggleButton from "../Atoms/A_ToggleButton";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 type AnimatedViewProps = {
   onChange: any;
   checked: any;
+  master?: boolean;
 };
 
 const ConcentrationWrapper = styled(FlexBox)`
@@ -23,8 +25,26 @@ const ConcentrationWrapper = styled(FlexBox)`
   margin-top: 6px;
 `;
 
-const M_Concentration = ({ onChange, checked }: AnimatedViewProps) => {
+const SwitchButton = styled.View`
+  width: 36px;
+  height: 36px;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ checked }: { checked: any }) =>
+    checked ? "#F0FF00" : "#302F2F"};
+`;
+
+const M_Concentration = ({ onChange, checked, master }: AnimatedViewProps) => {
   const { t } = useTranslation();
+  if (!master) {
+    return (
+      <ConcentrationWrapper>
+        <E_Text>{t("common:conc")}</E_Text>
+        <SwitchButton checked={checked} />
+      </ConcentrationWrapper>
+    );
+  }
   return (
     <ConcentrationWrapper>
       <E_Text>{t("common:conc")}</E_Text>

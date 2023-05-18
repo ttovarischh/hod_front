@@ -36,7 +36,7 @@ const O_Header = (props: HeaderProps) => {
       <CustomHeaderInnerWrapper>
         <FlexBox style={{ width: "25%" }}>
           <TouchableOpacity onPress={props.handleLeftPress}>
-            <F_Text color="#373737">{props.left}</F_Text>
+            <F_Text color="#717171">{props.left}</F_Text>
           </TouchableOpacity>
         </FlexBox>
         <FlexBox
@@ -50,7 +50,7 @@ const O_Header = (props: HeaderProps) => {
         </FlexBox>
         <FlexBox style={{ width: "25%" }} justifyContent="flex-end">
           <TouchableOpacity onPress={props.handleRightPress}>
-            <F_Text color="#373737">{props.right}</F_Text>
+            <F_Text color="#717171">{props.right}</F_Text>
           </TouchableOpacity>
         </FlexBox>
       </CustomHeaderInnerWrapper>

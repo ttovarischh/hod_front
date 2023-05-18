@@ -21,6 +21,7 @@ import useAuth from "../../contexts/newAuthContext/useAuth";
 import { consumer } from "../../constants";
 import O_GameFooter from "../../components/Organisms/O_GameFooter";
 import { useTranslation } from "react-i18next";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CodeQrWrapper = styled(FlexBox)`
   width: 100%;
@@ -71,8 +72,8 @@ export default function FullInitiativeScreen(props: {
         return (
           <FlexBox
             style={{
-              opacity: item.active ? 1 : 0.6,
-              transform: [{ scale: item.active ? 1 : 0.94 }],
+              // opacity: item.active ? 1 : 0.6,
+              transform: [{ scale: item.active ? 1 : 0.93 }],
               marginBottom: item.active ? -6 : -13,
               marginTop: item.active ? 6 : 0,
             }}
@@ -97,6 +98,7 @@ export default function FullInitiativeScreen(props: {
               data={effectsData}
               code={code}
               monsterEffects={monsterEffects}
+              conc={item.conc}
             />
           </FlexBox>
         );
@@ -108,8 +110,8 @@ export default function FullInitiativeScreen(props: {
         return (
           <FlexBox
             style={{
-              opacity: item.active ? 1 : 0.6,
-              transform: [{ scale: item.active ? 1 : 0.94 }],
+              // opacity: item.active ? 1 : 0.6,
+              transform: [{ scale: item.active ? 1 : 0.93 }],
               marginBottom: item.active ? -6 : -13,
               marginTop: item.active ? 6 : 0,
             }}
@@ -134,6 +136,7 @@ export default function FullInitiativeScreen(props: {
               code={code}
               playerEffects={playerEffects}
               fight={data.fight}
+              conc={item.conc}
             >
               {langs.map((sublang: any) => (
                 <FlexBox offsetRight="8" offsetBottom="8">
@@ -184,6 +187,10 @@ export default function FullInitiativeScreen(props: {
         scrollViewRef.current.scrollTo({ y: pageY, animated: true });
       });
     }
+  };
+
+  const handleLeave = () => {
+    navigation.dispatch(StackActions.popToTop());
   };
 
   const handleFinishGame = () => {
@@ -417,18 +424,29 @@ export default function FullInitiativeScreen(props: {
   };
 
   useEffect(() => {
-    if (data.turn < 1) {
-      axios
-        .patch(`http://localhost:3000/api/v1/games/${code}`, {
-          game: {
-            turn: 1,
-          },
-        })
-        .then((response) => {})
-        .catch((error) => console.error(error))
-        .finally(() => {});
+    if (data.user_id === user?.id) {
+      if (data.turn < 1) {
+        axios
+          .patch(`http://localhost:3000/api/v1/games/${code}`, {
+            game: {
+              turn: 1,
+            },
+          })
+          .then((response) => {})
+          .catch((error) => console.error(error))
+          .finally(() => {});
+      }
     }
   }, [data]);
+
+  useEffect(() => {
+    if (data.user_id !== user?.id) {
+      if (data.turn == 0) {
+        console.log("To SGame");
+        navigation.push("SGame", { code: code });
+      }
+    }
+  }, [data.turn]);
 
   useEffect(() => {
     scrollToActivePlayer();
@@ -495,6 +513,10 @@ export default function FullInitiativeScreen(props: {
         handleRightPress={handlePresentModalPress}
         turn={data.fight ? `${data.turn} ${t("common:round")}` : ""}
       />
+      <LinearGradient
+        colors={["transparent", "#000000"]}
+        style={styles.background}
+      />
       {data.user_id === user?.id && (
         <O_GameFooter
           fight={data.fight}
@@ -533,15 +555,23 @@ export default function FullInitiativeScreen(props: {
           </QrWrapper>
         </O_BottomSheet>
         <O_BottomSheet
-          mainHeader={t("common:danger")}
-          subHeader={t("common:uAreAbout")}
+          mainHeader={
+            user?.id === data.user_id ? t("common:danger") : "Уже уходите?"
+          }
+          subHeader={
+            user?.id === data.user_id
+              ? t("common:uAreAbout")
+              : "Не волнуйтесь. Пока мастер не завершит сессию, вы можете вернуться по тому же коду"
+          }
           ref={bottomSheetModalRef2}
           index={1}
           snapPoints={snapPoints2}
           handleButtonClick={handleCloseModalPress2}
           twoButtons={true}
-          handleSecondButtonClick={handleFinishGame}
-          b={t("common:finish")}
+          handleSecondButtonClick={
+            user?.id === data.user_id ? handleFinishGame : handleLeave
+          }
+          b={user?.id === data.user_id ? t("common:finish") : "Выйти"}
           a={t("common:cancel")}
         />
         <O_BottomSheet
@@ -619,5 +649,12 @@ const styles = StyleSheet.create({
     height: 116,
     bottom: 0,
     zIndex: 10000,
+  },
+  background: {
+    width: "100%",
+    height: 188,
+    position: "absolute",
+    bottom: 0,
+    zIndex: 9000,
   },
 });

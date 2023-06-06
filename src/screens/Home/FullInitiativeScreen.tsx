@@ -72,7 +72,6 @@ export default function FullInitiativeScreen(props: {
         return (
           <FlexBox
             style={{
-              // opacity: item.active ? 1 : 0.6,
               transform: [{ scale: item.active ? 1 : 0.93 }],
               marginBottom: item.active ? -6 : -13,
               marginTop: item.active ? 6 : 0,
@@ -110,7 +109,6 @@ export default function FullInitiativeScreen(props: {
         return (
           <FlexBox
             style={{
-              // opacity: item.active ? 1 : 0.6,
               transform: [{ scale: item.active ? 1 : 0.93 }],
               marginBottom: item.active ? -6 : -13,
               marginTop: item.active ? 6 : 0,

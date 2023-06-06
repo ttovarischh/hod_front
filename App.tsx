@@ -24,9 +24,8 @@ function App() {
     PP: require("./assets/fonts/PPNeueMontreal-Medium.otf"),
   });
   const [appIsReady, setAppIsReady] = useState(false);
-  const { user, loadingInitial, onboardingCompleted } = useAuth();
+  const { user, loadingInitial } = useAuth();
   console.log("user from context" + JSON.stringify(user));
-  // console.log("oc" + JSON.stringify(onboardingCompleted));
 
   useEffect(() => {
     async function prepare() {

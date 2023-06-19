@@ -22,6 +22,7 @@ import { consumer } from "../../constants";
 import O_GameFooter from "../../components/Organisms/O_GameFooter";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
+import A_MicroInit from "../../components/Atoms/A_MicroInit";
 
 const CodeQrWrapper = styled(FlexBox)`
   width: 100%;
@@ -91,9 +92,9 @@ export default function FullInitiativeScreen(props: {
               thisUser={data.user_id}
               author={user?.id}
               master={user?.id === data.user_id}
-              initiativeVal={item.initiative}
+              initiativeVal={item.initiative ? item.initiative : 0}
               hp={item.hp}
-              arm={item.initiative}
+              arm={item.armor}
               data={effectsData}
               code={code}
               monsterEffects={monsterEffects}
@@ -422,22 +423,6 @@ export default function FullInitiativeScreen(props: {
   };
 
   useEffect(() => {
-    if (data.user_id === user?.id) {
-      if (data.turn < 1) {
-        axios
-          .patch(`http://localhost:3000/api/v1/games/${code}`, {
-            game: {
-              turn: 1,
-            },
-          })
-          .then((response) => {})
-          .catch((error) => console.error(error))
-          .finally(() => {});
-      }
-    }
-  }, [data]);
-
-  useEffect(() => {
     if (data.user_id !== user?.id) {
       if (data.turn == 0) {
         console.log("To SGame");
@@ -448,7 +433,7 @@ export default function FullInitiativeScreen(props: {
 
   useEffect(() => {
     scrollToActivePlayer();
-  }, [isLoading]);
+  }, [data]);
 
   const handleConcClick = () => {
     if (data.fight) {
@@ -511,6 +496,7 @@ export default function FullInitiativeScreen(props: {
         handleRightPress={handlePresentModalPress}
         turn={data.fight ? `${data.turn} ${t("common:round")}` : ""}
       />
+      <A_MicroInit fight />
       <LinearGradient
         colors={["transparent", "#000000"]}
         style={styles.background}

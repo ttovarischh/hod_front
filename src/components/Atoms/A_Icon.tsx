@@ -308,7 +308,12 @@ const A_Icon = (props: PropsT) => {
     );
   } else if (props.iconName == "clockFilled") {
     return (
-      <Svg width={26} height={36} viewBox="0 0 26 36" fill="none">
+      <Svg
+        width={props.width || 26}
+        height={props.height || 36}
+        viewBox="0 0 26 36"
+        fill="none"
+      >
         <Path
           fill-rule="evenodd"
           clip-rule="evenodd"

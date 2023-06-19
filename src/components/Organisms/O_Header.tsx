@@ -44,7 +44,7 @@ const O_Header = (props: HeaderProps) => {
           style={{ width: "50%", position: "relative" }}
         >
           <FlexBox style={{ position: "absolute", top: -25 }}>
-            <F_Text center color="#373737">{props.turn}</F_Text>
+            <F_Text center color="#717171">{props.turn}</F_Text>
           </FlexBox>
           <D_Text color="white">{props.center}</D_Text>
         </FlexBox>

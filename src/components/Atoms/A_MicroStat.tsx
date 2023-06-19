@@ -10,7 +10,11 @@ type TagProps = {
 
 const A_MicroStat = ({ text, type, ...rest }: TagProps) => {
   return (
-    <FlexBox offsetRight="16" alignItems="center">
+    <FlexBox
+      offsetRight="16"
+      alignItems="center"
+      style={{ flexWrap: "nowrap" }}
+    >
       <A_Icon iconName={type} />
       <E_Text offsetLeft={6}>{text}</E_Text>
     </FlexBox>

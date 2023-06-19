@@ -22,6 +22,7 @@ import { consumer } from "../../constants";
 import O_GameFooter from "../../components/Organisms/O_GameFooter";
 import { useTranslation } from "react-i18next";
 import M_TooltipView from "../../components/Molecules/M_TooltipView";
+import A_MicroInit from "../../components/Atoms/A_MicroInit";
 
 const CodeQrWrapper = styled(FlexBox)`
   width: 100%;
@@ -177,7 +178,7 @@ export default function SingleGameScreen(props: {
 
   useEffect(() => {
     if (data.user_id !== user?.id) {
-      if (data.turn == 1) {
+      if (data.turn > 0) {
         console.log("To full");
         navigation.push("FullInitiative", { code: code });
       }
@@ -393,6 +394,7 @@ export default function SingleGameScreen(props: {
         handleRightPress={handlePresentModalPress}
         turn={data.fight ? `${data.turn} ${t("common:round")}` : ""}
       />
+      <A_MicroInit />
       {firstTCompleted && data.user_id === user?.id && (
         <M_TooltipView type="Single" />
       )}
